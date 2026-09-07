@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZinStim — style guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/brand.css">
+<style>
+  .sg-section{padding:var(--space-xl) 0;border-top:1px solid var(--zinc-silver)}
+  .sg-section:first-of-type{border-top:0}
+  .sg-label{
+    font-size:var(--step--1);color:var(--graphite);
+    letter-spacing:.06em;margin-bottom:var(--space-lg);
+  }
+
+  .swatches{display:grid;gap:var(--space-md);
+    grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
+  .sw__chip{height:7rem;border-radius:2px;margin-bottom:var(--space-sm)}
+  .sw__name{font-variation-settings:"wdth" 92,"wght" 600}
+  .sw__hex{font-size:var(--step--1);color:var(--graphite)}
+  .sw__use{font-size:var(--step--1);color:var(--graphite);margin-top:.35rem}
+
+  .scale > * + *{margin-top:var(--space-md)}
+  .scale__row{display:flex;gap:var(--space-md);align-items:baseline;
+    border-bottom:1px solid rgba(110,118,121,.18);padding-bottom:var(--space-md)}
+  .scale__key{flex:0 0 7rem;font-size:var(--step--1);color:var(--graphite)}
+
+  .spacer{background:var(--flame-teal);height:.5rem;border-radius:1px}
+  .space__row{display:flex;gap:var(--space-md);align-items:center;margin-bottom:var(--space-sm)}
+  .space__key{flex:0 0 7rem;font-size:var(--step--1);color:var(--graphite)}
+  .space__bar{background:var(--obsidian);height:.5rem;border-radius:1px}
+
+  .rules{display:grid;gap:var(--space-lg);
+    grid-template-columns:repeat(auto-fit,minmax(19rem,1fr))}
+  .rule-card h3{font-size:var(--step-1);
+    font-variation-settings:"wdth" 92,"wght" 600;margin-bottom:var(--space-xs)}
+  .rule-card p{font-size:var(--step--1);color:var(--graphite);max-width:34ch}
+  .no{color:#B4443C}
+  .yes{color:#1F7A5E}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a class="home" href="#" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 10.4 12 3.5l9 6.9V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/>
+    </svg>
+  </a>
+  <nav class="navgroup" aria-label="Primary" data-group>
+    <a class="origin t-ui" href="#">Origin</a>
+    <div class="capsule" data-capsule>
+      <a class="capsule__label t-ui" data-label href="elements.html">Elements</a>
+      <span class="morph" aria-hidden="true"></span>
+      <ul class="items">
+        <li class="item"><a class="rise t-ui" href="elements.html">Worn</a></li>
+        <li class="item"><a class="rise t-ui" href="fuel.html">Fuel</a></li>
+        <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <section class="sg-section">
+    <div class="shell">
+      <h1 class="t-display">The system.</h1>
+      <p class="t-body t-meta" style="margin-top:var(--space-md)">
+        Everything here comes from one idea: two grams of zinc runs your entire
+        body and you have never once thought about it. Sparse because the subject
+        is trace. Dense because trace means concentrated, not spread thin.
+      </p>
+    </div>
+  </section>
+
+  <!-- COLOUR -->
+  <section class="sg-section">
+    <div class="shell">
+      <p class="sg-label">Colour</p>
+      <div class="swatches">
+        <div>
+          <div class="sw__chip" style="background:var(--obsidian)"></div>
+          <div class="sw__name">Obsidian</div>
+          <div class="sw__hex">#0D0D0D</div>
+          <div class="sw__use">Type on light. Full-bleed dark bands.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--zinc-wash);box-shadow:inset 0 0 0 1px var(--zinc-silver)"></div>
+          <div class="sw__name">Zinc Wash</div>
+          <div class="sw__hex">#E9ECEE</div>
+          <div class="sw__use">Page base. Cool, never cream.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--zinc-silver)"></div>
+          <div class="sw__name">Zinc Silver</div>
+          <div class="sw__hex">#D6DDE2</div>
+          <div class="sw__use">The mark on dark. Rules and dividers.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--obsidian);display:grid;place-items:center">
+            <span style="width:2rem;height:2rem;border-radius:50%;background:var(--flame-teal)"></span>
+          </div>
+          <div class="sw__name">Flame Teal</div>
+          <div class="sw__hex">#00E0B8</div>
+          <div class="sw__use">You are here. Nothing else, ever.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--graphite)"></div>
+          <div class="sw__name">Graphite</div>
+          <div class="sw__hex">#6E7679</div>
+          <div class="sw__use">Secondary text on light.</div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin:var(--space-lg) 0">
+
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="no">Teal never touches light</h3>
+          <p>Flame Teal on Zinc Wash measures about 1.7:1. It is a dark-surface
+             accent only — which is why it lives inside the opened nav and
+             nowhere else.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">No warm neutrals</h3>
+          <p>Zinc is a cool bluish-white metal. Bone was dropped for exactly this
+             reason. A warm base argues with the material and lands on the
+             default cream every generated site uses.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">No gradients</h3>
+          <p>Zinc is a solid. A gradient would be the first dishonest thing on
+             the page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TYPE -->
+  <section class="sg-section">
+    <div class="shell">
+      <p class="sg-label">Type</p>
+      <div class="scale">
+        <div class="scale__row">
+          <div class="scale__key">divider</div>
+          <div class="t-divider" style="font-size:var(--step-4)">Two grams.</div>
+        </div>
+        <div class="scale__row">
+          <div class="scale__key">display</div>
+          <div class="t-head">Small things, <em>repeated.</em></div>
+        </div>
+        <div class="scale__row">
+          <div class="scale__key">bangla</div>
+          <div class="t-bn" style="font-size:var(--step-3)" lang="bn">ছোট জিনিস, বারবার।</div>
+        </div>
+        <div class="scale__row">
+          <div class="scale__key">ui</div>
+          <div class="t-ui">Origin · Elements</div>
+        </div>
+        <div class="scale__row">
+          <div class="scale__key">body</div>
+          <div class="t-body">Creatine monohydrate is a commodity. Chemically
+            identical from every supplier. The powder is not the differentiator
+            and never will be.</div>
+        </div>
+        <div class="scale__row">
+          <div class="scale__key">meta</div>
+          <div class="t-meta">Batch CAT040126 · tested 01 April 2026</div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin:var(--space-lg) 0">
+
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="yes">Width carries hierarchy</h3>
+          <p>Archivo at 900/78 for display, 400/95 for body. One family at
+             its extremes — width does the work a second typeface usually
+             does, and italic is the only emphasis inside a headline.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">No all-caps labels</h3>
+          <p>The most common tell of a templated page. Sentence case
+             everywhere.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">Bangla sits beside English</h3>
+          <p>Not beneath it as a translation, and not behind a toggle. Equal
+             standing, same compression logic. Bangladesh is the first
+             audience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACE -->
+  <section class="sg-section">
+    <div class="shell">
+      <p class="sg-label">Space</p>
+      <div class="space__row"><div class="space__key">xs</div><div class="space__bar" style="width:var(--space-xs)"></div></div>
+      <div class="space__row"><div class="space__key">sm</div><div class="space__bar" style="width:var(--space-sm)"></div></div>
+      <div class="space__row"><div class="space__key">md</div><div class="space__bar" style="width:var(--space-md)"></div></div>
+      <div class="space__row"><div class="space__key">lg</div><div class="space__bar" style="width:var(--space-lg)"></div></div>
+      <div class="space__row"><div class="space__key">xl</div><div class="space__bar" style="width:var(--space-xl)"></div></div>
+      <div class="space__row"><div class="space__key">2xl</div><div class="space__bar" style="width:var(--space-2xl)"></div></div>
+      <p class="t-meta" style="margin-top:var(--space-md);max-width:44ch">
+        Six steps, no more. The 2xl step exists only to surround a divider — if
+        it feels like too much air, it is probably correct.
+      </p>
+    </div>
+  </section>
+
+  <!-- THE DIVIDER -->
+  <section class="band band--dark band--divider">
+    <div class="shell">
+      <p class="t-divider">You carry two grams of it. You have never once thought about it.</p>
+    </div>
+  </section>
+
+  <section class="sg-section">
+    <div class="shell">
+      <p class="sg-label">The divider</p>
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="yes">A claim, not a label</h3>
+          <p>"Two grams" is a divider. "Our Products" is a heading pretending to
+             be one.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">Four or five per page, maximum</h3>
+          <p>The fifteenth one is wallpaper.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">Zinc gets named once</h3>
+          <p>The line above is the only place on the entire site that explains
+             the name. After it, no atomic numbers, no periodic table, no lab
+             language anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOTION -->
+  <section class="sg-section">
+    <div class="shell">
+      <p class="sg-label">Motion</p>
+      <p class="t-head" style="max-width:20ch">Reveal over display.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md)">
+        Nothing is fully visible at rest. Taken straight from the Figma
+        stickies — the box that opens, the treasure seen through in detail, the
+        hover that makes you want to know what the thing is. The nav above is
+        the smallest demonstration of it.
+      </p>
+      <hr class="rule" style="margin:var(--space-lg) 0">
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="yes">Motion answers the cursor</h3>
+          <p>Hover, focus and click get a response. Those are the moments motion
+             belongs.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">Nothing loops</h3>
+          <p>No ambient drifting, pulsing or floating. It reads as decoration and
+             undermines the restraint.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">No fade-up on every section</h3>
+          <p>One orchestrated page-load moment lands better than scattered
+             effects. Scroll-triggered entrances on everything is the generated
+             default.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sg-section" style="padding-bottom:var(--space-xl)">
+    <div class="shell">
+      <p class="sg-label">Quality floor</p>
+      <p class="t-body">
+        Works down to mobile. Visible keyboard focus on everything interactive.
+        <code>prefers-reduced-motion</code> honoured — movement removed, never
+        information. Contrast measured against the values above, not eyeballed.
+        Readable and navigable before JavaScript loads.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<script data-dotmark>
+/* ZinStim — interactive dotmark.
+   Canvas-based particle system that reads text pixels and repels from cursor.
+   Runs only when visible to save battery. */
+(function() {
+  const canvas = document.querySelector('[data-dotmark-canvas]');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let particles = [];
+  let mouse = { x: -9999, y: -9999, radius: 80 };
+  let width, height;
+  let isRunning = false;
+  let animFrame;
+
+  // Use brand colors from CSS variables
+  const rootStyle = getComputedStyle(document.documentElement);
+  let dotColor = rootStyle.getPropertyValue('--graphite').trim() || '#6E7679';
+  let bgColor = rootStyle.getPropertyValue('--zinc-wash').trim() || '#E9ECEE';
+  
+  const isDark = canvas.closest('.band--dark') !== null;
+  if (isDark) {
+    dotColor = rootStyle.getPropertyValue('--muted').trim() || '#828C90';
+    bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
+  }
+
+  function init() {
+    const parent = canvas.parentElement;
+    width = parent.clientWidth;
+    height = Math.min(200, width * 0.2); 
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    
+    createParticles();
+  }
+
+  function createParticles() {
+    particles = [];
+    const offscreen = document.createElement('canvas');
+    const octx = offscreen.getContext('2d', { willReadFrequently: true });
+    offscreen.width = width;
+    offscreen.height = height;
+    
+    const fontSize = Math.min(height * 0.8, width * 0.15);
+    octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
+    octx.textAlign = 'center';
+    octx.textBaseline = 'middle';
+    octx.fillStyle = 'white';
+    octx.letterSpacing = '-0.04em';
+    
+    // Polyfill letterSpacing for older canvas API if needed, but modern browsers support it
+    octx.fillText('ZINSTIM', width / 2, height / 2);
+    
+    const imgData = octx.getImageData(0, 0, width, height).data;
+    const step = 6;
+    
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const index = (y * width + x) * 4;
+        const alpha = imgData[index + 3];
+        if (alpha > 128) {
+          particles.push({
+            x: x + (Math.random() - 0.5) * 2,
+            y: y + (Math.random() - 0.5) * 2,
+            baseX: x,
+            baseY: y,
+            vx: 0,
+            vy: 0,
+            size: 1.5
+          });
+        }
+      }
+    }
+  }
+
+  function animate() {
+    if (!isRunning) return;
+    
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.fillStyle = dotColor;
+    
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      let dx = mouse.x - p.x;
+      let dy = mouse.y - p.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      
+      let forceDirectionX = dx / dist;
+      let forceDirectionY = dy / dist;
+      
+      let force = (mouse.radius - dist) / mouse.radius;
+      if (force < 0) force = 0;
+      
+      let directionX = forceDirectionX * force * 5;
+      let directionY = forceDirectionY * force * 5;
+      
+      if (dist < mouse.radius) {
+        p.vx -= directionX;
+        p.vy -= directionY;
+      }
+      
+      p.vx += (p.baseX - p.x) * 0.1;
+      p.vy += (p.baseY - p.y) * 0.1;
+      
+      p.vx *= 0.8;
+      p.vy *= 0.8;
+      
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      ctx.fillRect(p.x, p.y, p.size * 2, p.size * 2);
+    }
+    
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(() => {
+      cancelAnimationFrame(animFrame);
+      init();
+      if (isRunning) animate();
+    }, 200);
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (!isRunning) {
+          isRunning = true;
+          animate();
+        }
+      } else {
+        isRunning = false;
+        cancelAnimationFrame(animFrame);
+      }
+    });
+    io.observe(canvas);
+  } else {
+    isRunning = true;
+    animate();
+  }
+
+  if (document.fonts) {
+    document.fonts.ready.then(init);
+  } else {
+    setTimeout(init, 500);
+  }
+})();
+
+</script>
+<script src="assets/js/nav.js" defer></script>`n<script src="assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,576 @@
+/* ═══════════════════════════════════════════════════════════════
+   ZINSTIM — brand.css
+   Single source of truth. Nothing hardcodes a value that lives here.
+
+   Fonts load via <link> in the document head, not @import, so they
+   don't block the stylesheet:
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+
+  /* ── colour ─────────────────────────────────────────────────
+     Zinc is a cool bluish-white metal. Every surface follows from
+     that. No warm neutrals anywhere — they fight the material.     */
+
+  --obsidian:    #0D0D0D;   /* type on light, full-bleed dark      */
+  --zinc-wash:   #E9ECEE;   /* page base. cool, never cream        */
+  --zinc-silver: #D6DDE2;   /* the mark, metal surfaces, rules     */
+  --flame-teal:  #00E0B8;   /* you are here. nothing else.         */
+  --graphite:    #6E7679;   /* secondary text on light             */
+  --muted:       #828C90;   /* secondary text on dark              */
+
+  /* Contrast, measured not guessed:
+     obsidian on zinc-wash    ~17.0:1   safe at any size
+     graphite on zinc-wash     ~4.6:1   body text and above
+     zinc-silver on obsidian  ~14.2:1   safe at any size
+     muted on obsidian         ~6.4:1   safe at any size
+     flame-teal on obsidian   ~12.1:1   safe
+     flame-teal on zinc-wash   ~1.7:1   NEVER. teal is dark-surface only. */
+
+  /* ── type ───────────────────────────────────────────────────
+     One family, pushed to its extremes. Display is heavy and
+     narrow: two grams of zinc is concentrated, not spread out, and
+     the brand needs energy, not elegance. Archivo at 900 weight /
+     78 width is dense and loud. The same family at 400/95 carries
+     body text, so the whole site speaks with one voice.           */
+
+  --face-display: "Archivo", system-ui, sans-serif;
+  --face-text:    "Archivo", system-ui, sans-serif;
+  --face-bn:      "Anek Bangla", sans-serif;
+
+  --wdth-display: 78;   --wght-display: 900;
+  --wdth-head:    82;   --wght-head:    800;
+  --wdth-text:    95;   --wght-text:    400;
+  --wdth-ui:      92;   --wght-ui:      600;
+  --wdth-bn:      84;
+
+  --step--1: 0.833rem;
+  --step-0:  1rem;
+  --step-1:  1.125rem;
+  --step-2:  clamp(1.5rem,  1.2rem + 1.4vw,  2.1rem);
+  --step-3:  clamp(2.2rem,  1.5rem + 3.4vw,  4rem);
+  --step-4:  clamp(3.2rem,  1.8rem + 6.6vw,  7rem);
+  --display: clamp(3.2rem,  1rem   + 10vw,   9.5rem);
+  --divider: clamp(2.8rem,  0.5rem + 8.5vw,  8.5rem);
+
+  --lh-tight: 0.82;
+  --lh-snug:  1.05;
+  --lh-body:  1.6;
+
+  /* ── space ──────────────────────────────────────────────────
+     Few steps, wide gaps. Too many steps and everything drifts
+     toward the middle.                                            */
+
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1.5rem;
+  --space-lg: 3rem;
+  --space-xl: 6rem;
+  --space-2xl: clamp(8rem, 14vw, 15rem);   /* around dividers only */
+
+  --measure: 66ch;          /* body line length ceiling            */
+
+  /* ── motion ─────────────────────────────────────────────────
+     Motion answers the cursor. Nothing loops. One page-load
+     moment, not many.                                             */
+
+  --dur-fast: 0.18s;
+  --dur-base: 0.32s;
+  --dur-slow: 0.58s;
+
+  --ease-out:  cubic-bezier(.16, 1, .3, 1);      /* things arriving */
+  --ease-move: cubic-bezier(.62, .03, .2, 1);    /* things moving   */
+
+  /* ── form ───────────────────────────────────────────────────  */
+  --radius-pill: 999px;
+}
+
+/* cross-document view transitions — the nav survives navigation
+   instead of re-mounting. Progressive enhancement: Firefox has not
+   shipped this, and simply gets a normal page load. */
+@view-transition { navigation: auto; }
+
+
+/* ═══ base ═══════════════════════════════════════════════════ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  background:var(--zinc-wash);
+  color:var(--obsidian);
+  font-family:var(--face-text);
+  font-variation-settings:"wdth" var(--wdth-text),"wght" var(--wght-text);
+  font-size:var(--step-0);
+  line-height:var(--lh-body);
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none}
+img,svg{display:block;max-width:100%}
+
+:focus-visible{
+  outline:2px solid var(--obsidian);
+  outline-offset:5px;
+  border-radius:2px;
+}
+
+::selection{background:var(--obsidian);color:var(--zinc-wash)}
+
+
+/* ═══ type ═══════════════════════════════════════════════════ */
+
+.t-divider,.t-display{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-display),"wght" var(--wght-display);
+  letter-spacing:-0.035em;
+  line-height:var(--lh-tight);
+  text-wrap:balance;
+}
+.t-divider{font-size:var(--divider)}
+.t-display{font-size:var(--display)}
+
+.t-head{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
+  font-size:var(--step-3);
+  line-height:var(--lh-snug);
+  letter-spacing:-0.025em;
+  text-wrap:balance;
+}
+
+.t-body{max-width:var(--measure)}
+.t-meta{font-size:var(--step--1);color:var(--graphite);letter-spacing:.012em}
+
+.t-bn{
+  font-family:var(--face-bn);
+  font-variation-settings:"wdth" var(--wdth-bn),"wght" 700;
+  line-height:1.1;letter-spacing:-.01em;
+}
+
+.t-ui{
+  font-size:var(--step-1);
+  font-variation-settings:"wdth" var(--wdth-ui),"wght" var(--wght-ui);
+  letter-spacing:.012em;
+}
+
+
+/* ═══ lines ══════════════════════════════════════════════════
+   Text arrives a line at a time, sliding up from behind a mask.
+   Used for every headline on the site — it is the house move.
+
+     <h1 class="t-display lines" data-reveal>
+       <span class="ln"><span>Small things,</span></span>
+       <span class="ln"><span>repeated.</span></span>
+     </h1>                                                        */
+
+.lines{display:block}
+.ln{display:block;overflow:hidden;padding-bottom:.06em}
+.ln > span{
+  display:block;
+  transform:translateY(115%);
+  opacity:0;
+  transition:transform .82s var(--ease-out),opacity .5s ease;
+}
+.lines.is-in .ln > span,
+.is-ready .lines--load .ln > span{transform:translateY(0);opacity:1}
+
+.ln:nth-child(2) > span{transition-delay:.085s}
+.ln:nth-child(3) > span{transition-delay:.17s}
+.ln:nth-child(4) > span{transition-delay:.255s}
+.ln:nth-child(5) > span{transition-delay:.34s}
+
+
+/* ═══ marquee ════════════════════════════════════════════════
+   Scroll-driven, not autoplaying. It moves because the reader
+   moves, which keeps it inside the "nothing loops" rule.         */
+
+.marquee{overflow:hidden;padding:var(--space-lg) 0;user-select:none}
+.marquee__track{
+  display:flex;gap:0;white-space:nowrap;
+  will-change:transform;
+}
+.marquee__track span{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 70,"wght" 900;
+  font-size:clamp(3rem,10vw,9rem);
+  line-height:1;letter-spacing:-.03em;
+  padding-right:.35em;
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--graphite);
+}
+.marquee__track span:nth-child(even){
+  color:var(--obsidian);-webkit-text-stroke:0;
+}
+.band--dark .marquee__track span:nth-child(even){color:var(--zinc-wash)}
+.band--dark .marquee__track span{-webkit-text-stroke-color:var(--muted)}
+
+
+/* ═══ nav ════════════════════════════════════════════════════ */
+
+.masthead{position:relative;padding:var(--space-md) var(--space-lg)}
+
+.home{
+  position:absolute;left:var(--space-lg);top:var(--space-md);
+  width:3rem;height:3rem;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  transition:background var(--dur-base) var(--ease-out), transform var(--dur-fast) ease;
+  z-index:10;
+}
+.home:hover{background:rgba(200,16,46,.08)}
+.home__logo{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  width:2.1rem;height:2.1rem;
+  overflow:visible;
+}
+.home__logo-img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  transition:opacity .25s ease;
+}
+.home__logo-canvas{
+  position:absolute;inset:-4px;
+  width:calc(100% + 8px);height:calc(100% + 8px);
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+
+.navgroup{
+  --cap-h:3.1rem;
+  --seg:10.25rem;
+  --cap-w:calc(var(--seg) * 3);
+
+  position:relative;
+  display:flex;justify-content:center;
+  height:var(--cap-h);
+  view-transition-name:primary-nav;   /* persists across pages */
+}
+
+/* Origin is anchored off the group's centre line so the capsule
+   can expand symmetrically without ever pushing it. */
+.origin{
+  position:absolute;right:calc(50% + 4.75rem);top:0;
+  height:var(--cap-h);
+  display:flex;align-items:center;
+  padding:0 var(--space-xs);
+  transition:opacity var(--dur-base) ease .18s,
+             transform var(--dur-base) var(--ease-out) .18s;
+}
+.origin::after{
+  content:"";position:absolute;
+  left:var(--space-xs);right:var(--space-xs);bottom:.85rem;
+  height:1px;background:currentColor;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .5s var(--ease-out);
+}
+.origin:hover::after,.origin:focus-visible::after{transform:scaleX(1)}
+
+.navgroup.is-open .origin{
+  opacity:0;transform:translateX(-.5rem);
+  pointer-events:none;transition-delay:0s;
+}
+
+.capsule{position:relative;height:var(--cap-h);display:flex;align-items:center}
+
+.capsule__label{
+  position:relative;z-index:3;
+  padding:0 1.15rem;white-space:nowrap;
+  transition:opacity .22s ease .4s,
+             transform var(--dur-base) var(--ease-out) .4s,
+             color .35s ease;
+}
+.is-open .capsule__label{
+  opacity:0;transform:scale(.86);
+  transition-delay:0s;transition-duration:.16s;
+  pointer-events:none;
+}
+
+/* dot → pill. two properties, two delays, one element. */
+.morph{
+  position:absolute;z-index:1;top:0;left:50%;
+  height:var(--cap-h);width:var(--cap-h);
+  margin-left:calc(var(--cap-h) / -2);
+  border-radius:var(--radius-pill);
+  background:var(--obsidian);
+  opacity:0;transform:scale(.2);
+  transition:
+    width .38s var(--ease-out) .14s,
+    margin-left .38s var(--ease-out) .14s,
+    transform .28s var(--ease-out) .4s,
+    opacity .26s ease .4s;
+}
+.is-open .morph{
+  opacity:1;transform:scale(1);
+  width:var(--cap-w);margin-left:calc(var(--cap-w) / -2);
+  transition:
+    transform .3s var(--ease-out) .04s,
+    opacity .2s ease .04s,
+    width .46s var(--ease-out) .24s,
+    margin-left .46s var(--ease-out) .24s;
+}
+
+.items{
+  position:absolute;z-index:2;top:0;left:50%;
+  width:var(--cap-w);margin-left:calc(var(--cap-w) / -2);
+  height:var(--cap-h);
+  display:flex;pointer-events:none;
+}
+.is-open .items{pointer-events:auto}
+
+.item{
+  flex:1;height:var(--cap-h);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;                       /* clips the slide-up */
+}
+
+.rise{
+  display:block;line-height:1.4rem;white-space:nowrap;
+  color:var(--muted);
+  opacity:0;transform:translateY(150%);
+  transition:transform .28s var(--ease-move),
+             opacity .16s ease,
+             color .35s ease;
+}
+/* entrance: all three together, up out of nothing */
+.is-open .rise{
+  opacity:1;transform:translateY(0);
+  transition:transform var(--dur-slow) var(--ease-out) .28s,
+             opacity .34s ease .28s,
+             color .35s ease;
+}
+/* the only interaction: a quiet lift in tone */
+.rise:hover,.rise:focus-visible{color:var(--zinc-silver)}
+.rise:focus-visible{outline-color:var(--zinc-silver);outline-offset:6px}
+
+/* one dot, one meaning: you are here. */
+.rise.is-current,.rise.is-current:hover{color:var(--flame-teal)}
+
+.is-here::before{
+  content:"";display:inline-block;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--flame-teal);
+  margin-right:.55rem;vertical-align:.12em;
+}
+.origin.is-here::after{display:none}   /* nothing to change to */
+
+
+/* ═══ nav — small screens ════════════════════════════════════ */
+
+@media (max-width:860px){
+  .masthead{padding:var(--space-md) var(--space-md)}
+  .home{left:var(--space-md);top:var(--space-md)}
+
+  .navgroup{height:auto;justify-content:flex-end}
+  .origin{position:static;height:auto;padding:.4rem 0}
+  .navgroup.is-open .origin{opacity:1;transform:none;pointer-events:auto}
+
+  .capsule{flex-direction:column;align-items:flex-end;height:auto}
+  .capsule__label,.morph{display:none}
+
+  .items{
+    position:static;width:auto;margin:0;height:auto;
+    flex-direction:column;align-items:flex-end;pointer-events:auto;
+  }
+  .item{height:auto;padding:.35rem 0;justify-content:flex-end;overflow:visible}
+  .rise{transform:none;opacity:1;color:var(--graphite)}
+  .rise:hover,.rise:focus-visible{color:var(--obsidian)}
+}
+
+
+/* ═══ layout helpers ═════════════════════════════════════════ */
+
+.shell{width:100%;max-width:78rem;margin:0 auto;padding:0 var(--space-lg)}
+@media (max-width:860px){.shell{padding:0 var(--space-md)}}
+
+.band{padding:var(--space-xl) 0}
+.band--dark{background:var(--obsidian);color:var(--zinc-wash)}
+.band--divider{padding:var(--space-2xl) 0}
+
+.rule{height:1px;background:var(--zinc-silver);border:0}
+
+
+/* ═══ cleave ═════════════════════════════════════════════════
+   Section break. Zinc is brittle at room temperature — it does
+   not tear, it fractures along crystal planes. So the edge is
+   angular and faceted, never soft or fibrous.
+
+   Usage: place directly before a band whose background it shares.
+     <div class="cleave cleave--dark" data-reveal>…svg…</div>
+     <section class="band band--dark">…</section>            */
+
+.cleave{
+  position:relative;
+  line-height:0;
+  height:clamp(7rem,17vw,17rem);
+  overflow:hidden;
+  pointer-events:none;
+}
+.cleave svg{display:block;width:100%;height:100%}
+
+/* the fracture opens as it arrives. once, never again. */
+.cleave svg{
+  transform:translateY(38%);
+  transition:transform 1.3s var(--ease-out);
+}
+.cleave.is-in svg{transform:translateY(0)}
+
+/* facing down into a dark band below */
+.cleave--dark{background:var(--zinc-wash)}
+.cleave--dark path{fill:var(--obsidian)}
+
+/* facing up out of a dark band into light below */
+.cleave--light{background:var(--zinc-wash)}
+.cleave--light path{fill:var(--obsidian)}
+.cleave--light svg{transform:translateY(-38%)}
+.cleave--light.is-in svg{transform:translateY(0)}
+
+@media (prefers-reduced-motion:reduce){
+  .cleave svg{transform:none !important}
+  .ln > span{transform:none !important;opacity:1 !important}
+}
+
+
+/* ═══ runway ═════════════════════════════════════════════════
+   Sticky centre track with the product travelling down it while
+   specs light up either side. Everything is driven by how far the
+   reader has scrolled — nothing plays on its own.               */
+
+.runway{position:relative;height:340vh}
+.runway__sticky{
+  position:sticky;top:0;height:100vh;
+  display:grid;grid-template-columns:1fr clamp(13rem,21vw,19rem) 1fr;
+  align-items:center;gap:clamp(1.5rem,4vw,4rem);padding:0 var(--space-lg);
+}
+.runway__track{position:relative;height:100vh;background:var(--obsidian);overflow:hidden}
+.runway__lane{
+  position:absolute;left:50%;top:-20%;bottom:-20%;width:2px;
+  transform:translateX(-50%);opacity:.4;
+  background:repeating-linear-gradient(to bottom,var(--muted) 0 26px,transparent 26px 70px);
+}
+.runway__item{
+  position:absolute;left:50%;top:50%;width:62%;
+  transform:translate(-50%,-50%);will-change:transform,opacity;
+  opacity:0;transition:opacity .45s ease;
+  pointer-events:none;
+}
+.runway__item.is-visible{
+  opacity:1;
+  pointer-events:auto;
+}
+.runway__item svg{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 12px 32px rgba(0,224,184,.1))}
+
+.runway__drift{position:absolute;border-radius:2px;background:var(--muted);
+  opacity:.16;will-change:transform}
+.runway__drift--a{width:22%;height:9%;left:6%;top:18%}
+.runway__drift--b{width:16%;height:6%;right:8%;top:56%}
+.runway__drift--c{width:28%;height:5%;left:14%;top:78%}
+
+/* gradient depth fades on track */
+.runway__fade{position:absolute;left:0;right:0;z-index:2;pointer-events:none}
+.runway__fade--top{top:0;height:22%;background:linear-gradient(to bottom,var(--obsidian) 0%,rgba(13,13,13,.7) 40%,transparent 100%)}
+.runway__fade--bot{bottom:0;height:22%;background:linear-gradient(to top,var(--obsidian) 0%,rgba(13,13,13,.7) 40%,transparent 100%)}
+
+/* progress bar at track bottom */
+.runway__progress{
+  position:absolute;left:0;bottom:0;height:3px;z-index:4;
+  background:linear-gradient(to right,var(--flame-teal),#00F5C8);
+  box-shadow:0 0 12px rgba(0,224,184,.65);
+  width:0%;transition:width .08s linear;
+}
+
+.runway__count{position:absolute;left:50%;bottom:var(--space-md);
+  transform:translateX(-50%);z-index:3;
+  font-variation-settings:"wdth" 88,"wght" 700;
+  font-size:var(--step--1);letter-spacing:.14em;color:var(--muted);
+  transition:opacity .3s ease}
+
+.runway__side{display:flex;flex-direction:column;gap:var(--space-xl);position:relative}
+.runway__side--r{align-items:flex-start}
+
+/* step headings on left side */
+.runway__step{
+  opacity:0;transform:translateY(.8rem);position:absolute;top:0;left:0;
+  transition:opacity .5s ease,transform .5s var(--ease-out);
+  pointer-events:none;
+}
+.runway__step.is-active{
+  opacity:1;transform:translateY(0);position:relative;
+  pointer-events:auto;
+}
+
+.spec{max-width:30ch;opacity:.22;transform:translateY(.6rem);
+  transition:opacity .55s ease,transform .55s var(--ease-out)}
+.spec.is-active{opacity:1;transform:none}
+.spec__i{width:2.6rem;height:2.6rem;margin-bottom:var(--space-sm)}
+.spec__i svg{width:100%;height:100%;display:block}
+.spec__h{font-family:var(--face-display);
+  font-variation-settings:"wdth" 80,"wght" 800;
+  font-size:var(--step-2);line-height:1;letter-spacing:-.02em;
+  margin-bottom:var(--space-sm)}
+
+@media (max-width:980px){
+  .runway{height:auto}
+  .runway__sticky{position:static;height:auto;grid-template-columns:1fr;
+    padding:var(--space-xl) var(--space-md);gap:var(--space-xl)}
+  .runway__track{height:56vh}
+  .runway__item{position:absolute;opacity:0}
+  .runway__item.is-visible{opacity:1}
+  .runway__step{position:relative;opacity:1;transform:none}
+  .runway__step:not(.is-active){display:none}
+  .spec{opacity:1;transform:none;max-width:none}
+  .runway__side{gap:var(--space-lg)}
+}
+
+
+/* ═══ dotmark ════════════════════════════════════════════════
+   The wordmark as a halftone field. Closes every page.          */
+
+.dotmark{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 74,"wght" 900;
+  font-size:clamp(3.2rem,15.5vw,15rem);
+  line-height:.85;letter-spacing:-.04em;text-align:center;
+  padding:var(--space-lg) 0 var(--space-md);user-select:none;
+  background-image:radial-gradient(currentColor 1.15px,transparent 1.3px);
+  background-size:5px 5px;
+  -webkit-background-clip:text;background-clip:text;
+  color:var(--graphite);-webkit-text-fill-color:transparent;
+}
+.band--dark .dotmark{color:var(--muted)}
+
+
+/* ═══ lab panel ══════════════════════════════════════════════
+   Pending state. Rows carry no result until an independent lab
+   returns one — see the note in fuel.html.                      */
+
+.lab-pending{color:var(--muted);font-variation-settings:"wdth" 92,"wght" 500}
+.lab-note{
+  margin-top:var(--space-md);padding:var(--space-md);
+  border:1px solid rgba(214,221,226,.22);border-radius:2px;
+  max-width:56ch;
+}
+
+
+
+/* ═══ reduced motion ═════════════════════════════════════════
+   Removes movement. Never removes information.                  */
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    transition-duration:.01ms !important;
+    transition-delay:0s !important;
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+  }
+  @view-transition{navigation:none}
+}

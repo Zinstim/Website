@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instruments — ZinStim</title>
+<meta name="description" content="Wear and Fuel. Two ways into the ZinStim range.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/brand.css">
+<style>
+/* ── page-load ────────────────────────────────────────────── */
+.settle{opacity:0;transform:translateY(.5em)}
+.is-ready .settle{
+  opacity:1;transform:none;
+  transition:opacity .8s ease,transform 1s var(--ease-out);
+}
+
+/* ── door bands ─────────────────────────────────────────── */
+.door-band{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  position:relative;
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+  padding:var(--space-2xl) 0;
+}
+.door-name{
+  transition:opacity .45s ease, transform .45s ease;
+  opacity:0.28;
+  line-height:1;
+}
+.door-band:hover .door-name,
+.door-band:focus-visible .door-name {
+  opacity:1;
+}
+.door-sub{
+  margin-top:var(--space-md);
+  color:var(--graphite);
+  opacity:0;
+  transform:translateY(1rem);
+  transition:opacity .45s ease, transform .45s ease;
+  font-size:var(--step-1);
+}
+.band--dark .door-sub {
+  color:var(--muted);
+}
+.door-band:hover .door-sub,
+.door-band:focus-visible .door-sub {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ── plates ─────────────────────────────────────────────── */
+.plate{
+  position:absolute;z-index:1;
+  border-radius:2px;
+  background:var(--zinc-silver);
+  opacity:.5;
+  transition:transform .9s var(--ease-out),opacity .6s ease,background .6s ease;
+  will-change:transform;
+}
+.band--dark .plate {
+  background:var(--graphite);
+  opacity:.32;
+}
+
+.door-band .plate--a{width:15vw;height:20vw;max-width:15rem;max-height:20rem;top:10%;left:5%;}
+.door-band .plate--b{width:11vw;height:11vw;max-width:11rem;max-height:11rem;top:55%;right:8%;}
+.door-band .plate--c{width:9vw;height:12vw;max-width:9rem;max-height:12rem;bottom:8%;left:22%;}
+
+/* Hover reveals per door */
+/* Wear */
+.door-band[data-door="0"]:hover .plate--a{transform:translate(1.5rem,2rem) rotate(-3deg)}
+.door-band[data-door="0"]:hover .plate--b{transform:translate(-2rem,-3rem)}
+.door-band[data-door="0"]:hover .plate--c{transform:translate(3rem,-1rem) rotate(2deg)}
+/* Fuel */
+.door-band[data-door="1"]:hover .plate--a{transform:translate(4rem,-3rem) rotate(4deg)}
+.door-band[data-door="1"]:hover .plate--b{transform:translate(-4rem,3rem) rotate(-2deg)}
+.door-band[data-door="1"]:hover .plate--c{transform:translate(-2rem,-4rem)}
+
+.door-band[data-door="2"]:hover .plate--a{transform:translate(-1rem,5rem) rotate(-6deg)}
+.door-band[data-door="2"]:hover .plate--b{transform:translate(2rem,-6rem) rotate(3deg)}
+.door-band[data-door="2"]:hover .plate--c{transform:translate(6rem,2rem)}
+
+@media (max-width:860px){
+  .plate{display:none}
+  .door-name{opacity:1}
+  .door-sub{opacity:1; transform:none}
+}
+
+.foot{padding:var(--space-lg) 0;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:var(--space-md)}
+
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a class="home" href="index.html" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 10.4 12 3.5l9 6.9V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/>
+    </svg>
+  </a>
+  <nav class="navgroup" aria-label="Primary" data-group>
+    <a class="origin t-ui" href="origin.html">Origin</a>
+    <div class="capsule" data-capsule>
+      <a class="capsule__label t-ui is-here" data-label href="instruments.html">Instruments</a>
+      <span class="morph" aria-hidden="true"></span>
+      <ul class="items">
+        <li class="item"><a class="rise t-ui" href="elements.html">Worn</a></li>
+        <li class="item"><a class="rise t-ui" href="fuel.html">Fuel</a></li>
+        <li class="item"><a class="rise t-ui is-current" href="instruments.html">Instruments</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="band" style="padding-top:var(--space-xl)">
+    <div class="shell">
+      <h1 class="t-display lines lines--load">
+        <span class="ln"><span>Instruments</span></span>
+      </h1>
+      <p class="t-body settle" style="margin-top:var(--space-md)">
+        What you use.
+      </p>
+    </div>
+  </section>
+
+  <!-- DOOR 1: WORN -->
+  <a href="#" class="door-band band" data-door="0">
+    <span class="plate plate--a" aria-hidden="true"></span>
+    <span class="plate plate--b" aria-hidden="true"></span>
+    <span class="plate plate--c" aria-hidden="true"></span>
+    <div class="shell" style="text-align:center; position:relative; z-index:2">
+      <h2 class="door-name t-display">Worn</h2>
+      <p class="door-sub">What you put on.</p>
+    </div>
+  </a>
+
+  <div class="cleave cleave--dark" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
+    </svg>
+  </div>
+
+  <!-- DOOR 2: FUEL -->
+  <a href="fuel.html" class="door-band band band--dark" data-door="1">
+    <span class="plate plate--a" aria-hidden="true"></span>
+    <span class="plate plate--b" aria-hidden="true"></span>
+    <span class="plate plate--c" aria-hidden="true"></span>
+    <div class="shell" style="text-align:center; position:relative; z-index:2">
+      <h2 class="door-name t-display">Fuel</h2>
+      <p class="door-sub">What you take in.</p>
+    </div>
+  </a>
+
+  <div class="cleave cleave--light" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,0 L0,118 L84,146 L158,104 L246,138 L318,96 L404,128 L486,88 L570,120 L654,78 L740,112 L822,70 L910,102 L992,62 L1078,94 L1148,54 L1200,84 L1200,0 Z"/>
+    </svg>
+  </div>
+
+  <!-- DOOR 3: INSTRUMENTS -->
+  <a href="instruments.html" class="door-band band" data-door="2">
+    <span class="plate plate--a" aria-hidden="true"></span>
+    <span class="plate plate--b" aria-hidden="true"></span>
+    <span class="plate plate--c" aria-hidden="true"></span>
+    <div class="shell" style="text-align:center; position:relative; z-index:2">
+      <h2 class="door-name t-display">Instruments</h2>
+      <p class="door-sub">What you use.</p>
+    </div>
+  </a>
+
+  <div class="cleave cleave--dark" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
+    </svg>
+  </div>
+
+  <!-- MARQUEE -->
+  <section class="marquee" data-marquee aria-hidden="true">
+    <div class="marquee__track">
+      <span>Worn</span><span>Fuel</span><span>Instruments</span>
+      <span>Worn</span><span>Fuel</span><span>Instruments</span>
+    </div>
+  </section>
+  <div class="shell">
+    <canvas class="dotmark-canvas" data-dotmark-canvas></canvas>
+  </div>
+
+
+
+  <footer class="shell foot t-meta">
+    <span>ZinStim · Dhaka</span>
+    <span>© 2026</span>
+  </footer>
+
+</main>
+
+<script data-dotmark>
+/* ZinStim — interactive dotmark.
+   Canvas-based particle system that reads text pixels and repels from cursor.
+   Runs only when visible to save battery. */
+(function() {
+  const canvas = document.querySelector('[data-dotmark-canvas]');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let particles = [];
+  let mouse = { x: -9999, y: -9999, radius: 80 };
+  let width, height;
+  let isRunning = false;
+  let animFrame;
+
+  // Use brand colors from CSS variables
+  const rootStyle = getComputedStyle(document.documentElement);
+  let dotColor = rootStyle.getPropertyValue('--graphite').trim() || '#6E7679';
+  let bgColor = rootStyle.getPropertyValue('--zinc-wash').trim() || '#E9ECEE';
+  
+  const isDark = canvas.closest('.band--dark') !== null;
+  if (isDark) {
+    dotColor = rootStyle.getPropertyValue('--muted').trim() || '#828C90';
+    bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
+  }
+
+  function init() {
+    const parent = canvas.parentElement;
+    width = parent.clientWidth;
+    height = Math.min(200, width * 0.2); 
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    
+    createParticles();
+  }
+
+  function createParticles() {
+    particles = [];
+    const offscreen = document.createElement('canvas');
+    const octx = offscreen.getContext('2d', { willReadFrequently: true });
+    offscreen.width = width;
+    offscreen.height = height;
+    
+    const fontSize = Math.min(height * 0.8, width * 0.15);
+    octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
+    octx.textAlign = 'center';
+    octx.textBaseline = 'middle';
+    octx.fillStyle = 'white';
+    octx.letterSpacing = '-0.04em';
+    
+    // Polyfill letterSpacing for older canvas API if needed, but modern browsers support it
+    octx.fillText('ZINSTIM', width / 2, height / 2);
+    
+    const imgData = octx.getImageData(0, 0, width, height).data;
+    const step = 6;
+    
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const index = (y * width + x) * 4;
+        const alpha = imgData[index + 3];
+        if (alpha > 128) {
+          particles.push({
+            x: x + (Math.random() - 0.5) * 2,
+            y: y + (Math.random() - 0.5) * 2,
+            baseX: x,
+            baseY: y,
+            vx: 0,
+            vy: 0,
+            size: 1.5
+          });
+        }
+      }
+    }
+  }
+
+  function animate() {
+    if (!isRunning) return;
+    
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.fillStyle = dotColor;
+    
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      let dx = mouse.x - p.x;
+      let dy = mouse.y - p.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      
+      let forceDirectionX = dx / dist;
+      let forceDirectionY = dy / dist;
+      
+      let force = (mouse.radius - dist) / mouse.radius;
+      if (force < 0) force = 0;
+      
+      let directionX = forceDirectionX * force * 5;
+      let directionY = forceDirectionY * force * 5;
+      
+      if (dist < mouse.radius) {
+        p.vx -= directionX;
+        p.vy -= directionY;
+      }
+      
+      p.vx += (p.baseX - p.x) * 0.1;
+      p.vy += (p.baseY - p.y) * 0.1;
+      
+      p.vx *= 0.8;
+      p.vy *= 0.8;
+      
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      ctx.fillRect(p.x, p.y, p.size * 2, p.size * 2);
+    }
+    
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(() => {
+      cancelAnimationFrame(animFrame);
+      init();
+      if (isRunning) animate();
+    }, 200);
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (!isRunning) {
+          isRunning = true;
+          animate();
+        }
+      } else {
+        isRunning = false;
+        cancelAnimationFrame(animFrame);
+      }
+    });
+    io.observe(canvas);
+  } else {
+    isRunning = true;
+    animate();
+  }
+
+  if (document.fonts) {
+    document.fonts.ready.then(init);
+  } else {
+    setTimeout(init, 500);
+  }
+})();
+
+</script>
+<script src="assets/js/nav.js" defer></script>`n<script src="assets/js/site.js" defer></script>
+
+</body>
+</html>

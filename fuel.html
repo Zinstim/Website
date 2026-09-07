@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuel — ZinStim</title>
+<meta name="description" content="Creatine monohydrate. Every batch tested, every result published. No blends, no fillers, no claims we cannot prove.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/brand.css">
+<style>
+.lede{font-size:var(--step-2);line-height:1.35;max-width:32ch;color:var(--graphite)}
+.prose{max-width:var(--measure)}
+.prose p + p{margin-top:var(--space-md)}
+
+.settle{opacity:0;transform:translateY(.5em)}
+.is-ready .settle{opacity:1;transform:none;
+  transition:opacity .8s ease .25s,transform 1s var(--ease-out) .25s}
+
+.lab-panel {
+  margin-top: var(--space-xl);
+}
+.purity-large {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+.purity-n {
+  font-family: var(--face-display);
+  font-variation-settings: "wdth" 70, "wght" 900;
+  font-size: var(--step-4);
+  line-height: .8;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--zinc-silver);
+}
+.purity-unit {
+  font-family: var(--face-display);
+  font-variation-settings: "wdth" 70, "wght" 900;
+  font-size: var(--step-3);
+  color: var(--zinc-wash);
+}
+
+.lab-table {
+  width: 100%;
+  max-width: var(--measure);
+  border-collapse: collapse;
+  margin-top: var(--space-lg);
+}
+.lab-table th, .lab-table td {
+  padding: var(--space-md) var(--space-xs);
+  text-align: left;
+  border-bottom: 1px solid rgba(214, 221, 226, 0.22);
+}
+.lab-table th {
+  color: var(--zinc-silver);
+  font-weight: normal;
+}
+.lab-table td {
+  color: var(--muted);
+}
+.lab-table td:nth-child(2), .lab-table td:nth-child(3) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  letter-spacing: -0.02em;
+}
+.lab-table td:last-child {
+  color: var(--flame-teal);
+}
+
+.waitlist-form {
+  display: flex;
+  gap: var(--space-xs);
+  margin-top: var(--space-lg);
+  max-width: 26rem;
+}
+.waitlist-form input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--muted);
+  color: var(--zinc-wash);
+  padding: .75rem 1rem;
+  font-family: inherit;
+  font-size: var(--step-0);
+  border-radius: 2px;
+}
+.waitlist-form input::placeholder {
+  color: var(--muted);
+}
+.waitlist-form button {
+  background: var(--zinc-wash);
+  color: var(--obsidian);
+  border: none;
+  padding: 0 1.5rem;
+  font-family: var(--face-text);
+  font-variation-settings: "wdth" var(--wdth-ui), "wght" var(--wght-ui);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: opacity var(--dur-base) ease;
+}
+.waitlist-form button:hover {
+  opacity: 0.8;
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <a class="home" href="index.html" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 10.4 12 3.5l9 6.9V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/>
+    </svg>
+  </a>
+  <nav class="navgroup" aria-label="Primary" data-group>
+    <a class="origin t-ui" href="origin.html">Origin</a>
+    <div class="capsule" data-capsule>
+      <a class="capsule__label t-ui is-here" data-label href="fuel.html">Fuel</a>
+      <span class="morph" aria-hidden="true"></span>
+      <ul class="items">
+        <li class="item"><a class="rise t-ui" href="elements.html">Worn</a></li>
+        <li class="item"><a class="rise t-ui is-current" href="fuel.html">Fuel</a></li>
+        <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="band" style="padding-top:var(--space-xl)">
+    <div class="shell">
+      <h1 class="t-display lines lines--load">
+        <span class="ln"><span>Fuel</span></span>
+      </h1>
+      <p class="lede settle" style="margin-top:var(--space-md)">What you take in.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell">
+      <div class="prose" style="max-width: 40ch;">
+        <p>Creatine monohydrate is a commodity. Chemically identical from every supplier. The powder is not the differentiator and never will be. What we sell is the chain of custody from lab to tub, and the willingness to publish every number along the way.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cleave cleave--dark" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
+    </svg>
+  </div>
+
+  <section class="band band--dark">
+    <div class="shell lab-panel">
+      <p class="t-head lines" data-reveal>
+        <span class="ln"><span>Every batch. Published.</span></span>
+      </p>
+      <div class="t-meta" style="margin-top:var(--space-md);color:var(--muted)">
+        CAT040126 · 200 Mesh · Tested 01 April 2026<br>
+        Ningxia Xinyue Chemical Co., Ltd.
+      </div>
+      
+      <div class="purity-large" style="margin-top:var(--space-xl)">
+        <span class="purity-n">--</span>
+        <span class="purity-unit">%</span>
+      </div>
+      <p class="t-meta" style="margin-top:var(--space-xs);color:var(--muted)">Assay purity, batch CAT040126</p>
+
+      <table class="lab-table">
+        <thead>
+          <tr>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Specification</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Assay (Purity)</td>
+            <td class="lab-pending">Pending</td>
+            <td>&ge; 99.5%</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Moisture</td>
+            <td class="lab-pending">Pending</td>
+            <td>&le; 12.0%</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>pH (1% solution)</td>
+            <td class="lab-pending">Pending</td>
+            <td>6.5 &ndash; 8.5</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Lead (Pb)</td>
+            <td class="lab-pending">Pending</td>
+            <td>&le; 0.1 ppm</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Arsenic (As)</td>
+            <td class="lab-pending">Pending</td>
+            <td>&le; 0.1 ppm</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Mercury (Hg)</td>
+            <td class="lab-pending">Pending</td>
+            <td>&le; 0.05 ppm</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Cadmium (Cd)</td>
+            <td class="lab-pending">Pending</td>
+            <td>&le; 0.1 ppm</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Mesh Size</td>
+            <td class="lab-pending">Pending</td>
+            <td>200</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Dicyandiamide</td>
+            <td class="lab-pending">Pending</td>
+            <td>Not detected</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+          <tr>
+            <td>Dihydrotriazine</td>
+            <td class="lab-pending">Pending</td>
+            <td>Not detected</td>
+            <td class="lab-pending">&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="lab-note">
+        <p class="t-meta" style="color:var(--zinc-silver)">
+          <strong>No results yet, and we will not invent any.</strong>
+        </p>
+        <p class="t-meta" style="margin-top:.6rem;color:var(--muted)">
+          This panel fills in when our first batch comes back from an accredited
+          independent laboratory &mdash; not from the supplier's own certificate.
+          Heavy metals will be published as numbers, never as the word
+          &ldquo;complies&rdquo;, and the batch code printed on your tub will match
+          the report shown here.
+        </p>
+      </div>
+<p class="t-meta" style="margin-top:var(--space-md);color:var(--muted)">Values from independent third-party analysis. Full PDF available on request.</p>
+    </div>
+  </section>
+
+  <div class="cleave cleave--light" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,0 L0,118 L84,146 L158,104 L246,138 L318,96 L404,128 L486,88 L570,120 L654,78 L740,112 L822,70 L910,102 L992,62 L1078,94 L1148,54 L1200,84 L1200,0 Z"/>
+    </svg>
+  </div>
+
+  <section class="band">
+    <div class="shell">
+      <div class="prose">
+        <p>Creatine monohydrate. Nothing else.</p>
+        <p>5g per serving. One ingredient. No fillers, no flavouring, no proprietary blend.</p>
+        <p>Sourced from Ningxia Xinyue Chemical Co., certified FSSC 22000, ISO 22000, Halal, Kosher.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="marquee" data-marquee aria-hidden="true">
+    <div class="marquee__track">
+      <span>Fuel</span><span>Tested</span><span>Fuel</span><span>Published</span><span>Fuel</span><span>Tested</span><span>Fuel</span><span>Published</span><span>Fuel</span><span>Tested</span><span>Fuel</span><span>Published</span>
+    </div>
+  </section>
+
+  <div class="cleave cleave--dark" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,300 L0,238 L86,258 L164,206 L244,232 L316,188 L400,214 L482,166 L568,192 L650,148 L738,174 L820,128 L906,156 L988,112 L1072,138 L1146,96 L1200,120 L1200,300 Z"/>
+    </svg>
+  </div>
+
+  <section class="band band--dark">
+    <div class="shell">
+      <p class="t-head lines" data-reveal>
+        <span class="ln"><span>Nothing is for</span></span>
+        <span class="ln"><span>sale yet.</span></span>
+      </p>
+      <div class="prose" style="margin-top:var(--space-lg);color:var(--muted)">
+        <p>One email when the first drop is ready. Pricing, sizing, early access. Nothing else, ever.</p>
+      </div>
+      <form class="waitlist-form" onsubmit="event.preventDefault()">
+        <input type="email" placeholder="Your email address" required>
+        <button type="submit">Join the list</button>
+      </form>
+      <p class="t-meta" style="margin-top:var(--space-md);color:var(--muted)">Static preview &mdash; this form does not send anything yet.</p>
+    </div>
+  </section>
+  <div class="shell">
+    <canvas class="dotmark-canvas" data-dotmark-canvas></canvas>
+  </div>
+
+
+
+  <footer class="shell foot t-meta">
+    <span>ZinStim &middot; Dhaka</span>
+    <span>&copy; 2026</span>
+  </footer>
+
+</main>
+
+<script data-dotmark>
+/* ZinStim — interactive dotmark.
+   Canvas-based particle system that reads text pixels and repels from cursor.
+   Runs only when visible to save battery. */
+(function() {
+  const canvas = document.querySelector('[data-dotmark-canvas]');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d', { alpha: false });
+  let particles = [];
+  let mouse = { x: -9999, y: -9999, radius: 80 };
+  let width, height;
+  let isRunning = false;
+  let animFrame;
+
+  // Use brand colors from CSS variables
+  const rootStyle = getComputedStyle(document.documentElement);
+  let dotColor = rootStyle.getPropertyValue('--graphite').trim() || '#6E7679';
+  let bgColor = rootStyle.getPropertyValue('--zinc-wash').trim() || '#E9ECEE';
+  
+  const isDark = canvas.closest('.band--dark') !== null;
+  if (isDark) {
+    dotColor = rootStyle.getPropertyValue('--muted').trim() || '#828C90';
+    bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
+  }
+
+  function init() {
+    const parent = canvas.parentElement;
+    width = parent.clientWidth;
+    height = Math.min(200, width * 0.2); 
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    
+    createParticles();
+  }
+
+  function createParticles() {
+    particles = [];
+    const offscreen = document.createElement('canvas');
+    const octx = offscreen.getContext('2d', { willReadFrequently: true });
+    offscreen.width = width;
+    offscreen.height = height;
+    
+    const fontSize = Math.min(height * 0.8, width * 0.15);
+    octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
+    octx.textAlign = 'center';
+    octx.textBaseline = 'middle';
+    octx.fillStyle = 'white';
+    octx.letterSpacing = '-0.04em';
+    
+    // Polyfill letterSpacing for older canvas API if needed, but modern browsers support it
+    octx.fillText('ZINSTIM', width / 2, height / 2);
+    
+    const imgData = octx.getImageData(0, 0, width, height).data;
+    const step = 6;
+    
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const index = (y * width + x) * 4;
+        const alpha = imgData[index + 3];
+        if (alpha > 128) {
+          particles.push({
+            x: x + (Math.random() - 0.5) * 2,
+            y: y + (Math.random() - 0.5) * 2,
+            baseX: x,
+            baseY: y,
+            vx: 0,
+            vy: 0,
+            size: 1.5
+          });
+        }
+      }
+    }
+  }
+
+  function animate() {
+    if (!isRunning) return;
+    
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.fillStyle = dotColor;
+    
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      let dx = mouse.x - p.x;
+      let dy = mouse.y - p.y;
+      let dist = Math.sqrt(dx * dx + dy * dy);
+      
+      let forceDirectionX = dx / dist;
+      let forceDirectionY = dy / dist;
+      
+      let force = (mouse.radius - dist) / mouse.radius;
+      if (force < 0) force = 0;
+      
+      let directionX = forceDirectionX * force * 5;
+      let directionY = forceDirectionY * force * 5;
+      
+      if (dist < mouse.radius) {
+        p.vx -= directionX;
+        p.vy -= directionY;
+      }
+      
+      p.vx += (p.baseX - p.x) * 0.1;
+      p.vy += (p.baseY - p.y) * 0.1;
+      
+      p.vx *= 0.8;
+      p.vy *= 0.8;
+      
+      p.x += p.vx;
+      p.y += p.vy;
+      
+      ctx.fillRect(p.x, p.y, p.size * 2, p.size * 2);
+    }
+    
+    animFrame = requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window.resizeTimer);
+    window.resizeTimer = setTimeout(() => {
+      cancelAnimationFrame(animFrame);
+      init();
+      if (isRunning) animate();
+    }, 200);
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (!isRunning) {
+          isRunning = true;
+          animate();
+        }
+      } else {
+        isRunning = false;
+        cancelAnimationFrame(animFrame);
+      }
+    });
+    io.observe(canvas);
+  } else {
+    isRunning = true;
+    animate();
+  }
+
+  if (document.fonts) {
+    document.fonts.ready.then(init);
+  } else {
+    setTimeout(init, 500);
+  }
+})();
+
+</script>
+<script src="assets/js/nav.js" defer></script>`n<script src="assets/js/site.js" defer></script>
+<script>
+// mark Fuel as current on this page
+(function(){
+  var links = document.querySelectorAll('.rise');
+  links.forEach(function(l){
+    if(l.textContent.trim()==='Fuel') {
+      l.classList.add('is-current');
+      var label=document.querySelector('[data-label]');
+      if(label){label.textContent='Fuel';label.setAttribute('href','fuel.html');label.classList.add('is-here');}
+    }
+  });
+})();
+
+requestAnimationFrame(function(){document.body.classList.add('is-ready')});
+
+</script>
+</body>
+</html>
