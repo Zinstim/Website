@@ -16,6 +16,47 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
   els.forEach(function(el){io.observe(el)});
 })();
 
+
+
+
+/* doors — hover or focus a category, its cards arrive and its word
+   changes face. All this does is set data-active on the section and
+   is-active on the door; brand.css owns every visual decision.
+
+   Focus gets the identical state to hover, because hover-only is
+   unreachable by keyboard. */
+(function(){
+  var doors = document.querySelector('[data-doors]');
+  if (!doors) return;
+  var links = doors.querySelectorAll('.door');
+  if (!links.length) return;
+
+  function activate(door){
+    links.forEach(function(l){ l.classList.toggle('is-active', l === door); });
+    doors.setAttribute('data-active', door.dataset.door);
+  }
+  function clear(){
+    links.forEach(function(l){ l.classList.remove('is-active'); });
+    doors.removeAttribute('data-active');
+  }
+
+  links.forEach(function(door){
+    door.addEventListener('mouseenter', function(){ activate(door); });
+    door.addEventListener('focus',      function(){ activate(door); });
+    door.addEventListener('blur', function(){
+      // only clear if focus actually left the group
+      setTimeout(function(){
+        if (!doors.contains(document.activeElement)) clear();
+      }, 0);
+    });
+  });
+
+  doors.addEventListener('mouseleave', function(){
+    if (!doors.contains(document.activeElement)) clear();
+  });
+})();
+
+
 /* runway — scroll drives track, multi-product crossfade, drift, specs, steps & progress */
 (function(){
   var sec = document.querySelector('[data-runway]');
@@ -43,16 +84,29 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     var numSteps = Math.max(items.length, specs.length, 3);
     var stepIndex = Math.min(numSteps - 1, Math.floor(p * numSteps));
 
-    // 3. Multi-product crossfade and smooth floating
+    // 3. Product travel. With several products this crossfades between
+    //    them; with one it simply travels the length of the track.
+    //    (.runway__item is opacity:0 until .is-visible, so a single
+    //    product must never be stepped out of view — it would leave
+    //    the track empty for two thirds of the scroll.)
+    var single = items.length < 2;
     items.forEach(function(item, idx){
-      var isCur = (idx === stepIndex);
+      var isCur = single || (idx === stepIndex);
       item.classList.toggle('is-visible', isCur);
-      if (!reduce) {
-        var localP = (p * numSteps) - idx - 0.5; // [-0.5, 0.5]
-        var yShift = localP * 38;
-        var rot = localP * 5;
-        item.style.transform = 'translate(-50%, -50%) translateY(' + yShift + '%) rotate(' + rot + 'deg)';
+      if (reduce) return;
+
+      if (single) {
+        item.style.transform = 'translate(-50%, -50%) translateY(' + ((p - 0.5) * 46) + '%) rotate(' + ((p - 0.5) * 5) + 'deg)';
+        item.style.opacity = 1;
+        return;
       }
+
+      var localP = (p * numSteps) - idx - 0.5; // [-0.5, 0.5]
+      var yShift = localP * 20;
+      var rot = localP * 8;
+      var scale = isCur ? 1 - Math.abs(localP * 0.2) : 0.8;
+      item.style.transform = 'translate(-50%, -50%) translateY(' + yShift + '%) rotate(' + rot + 'deg) scale(' + scale + ')';
+      item.style.opacity = isCur ? 1 - Math.abs(localP * 1.5) : 0;
     });
 
     // 4. Parallax lane & drift elements

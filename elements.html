@@ -110,10 +110,10 @@
   <nav class="navgroup" aria-label="Primary" data-group>
     <a class="origin t-ui" href="origin.html">Origin</a>
     <div class="capsule" data-capsule>
-      <a class="capsule__label t-ui is-here" data-label href="elements.html">Worn</a>
+      <a class="capsule__label t-ui is-here" data-label href="elements.html">Elements</a>
       <span class="morph" aria-hidden="true"></span>
       <ul class="items">
-        <li class="item"><a class="rise t-ui is-current" href="elements.html">Worn</a></li>
+        <li class="item"><a class="rise t-ui" href="elements.html">Wear</a></li>
         <li class="item"><a class="rise t-ui" href="fuel.html">Fuel</a></li>
         <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
       </ul>
@@ -133,13 +133,14 @@
     </div>
   </section>
 
-  <!-- DOOR 1: WORN -->
-  <a href="#" class="door-band band" data-door="0">
+  <!-- DOOR 1: WEAR — no category page of its own yet, so it points at
+       the apparel that actually exists on the homepage. -->
+  <a href="index.html#kit" class="door-band band" data-door="0">
     <span class="plate plate--a" aria-hidden="true"></span>
     <span class="plate plate--b" aria-hidden="true"></span>
     <span class="plate plate--c" aria-hidden="true"></span>
     <div class="shell" style="text-align:center; position:relative; z-index:2">
-      <h2 class="door-name t-display">Worn</h2>
+      <h2 class="door-name t-display">Wear</h2>
       <p class="door-sub">What you put on.</p>
     </div>
   </a>
@@ -187,8 +188,8 @@
   <!-- MARQUEE -->
   <section class="marquee" data-marquee aria-hidden="true">
     <div class="marquee__track">
-      <span>Worn</span><span>Fuel</span><span>Instruments</span>
-      <span>Worn</span><span>Fuel</span><span>Instruments</span>
+      <span>Wear</span><span>Fuel</span><span>Instruments</span>
+      <span>Wear</span><span>Fuel</span><span>Instruments</span>
     </div>
   </section>
   <div class="shell">
@@ -370,7 +371,8 @@
 })();
 
 </script>
-<script src="assets/js/nav.js" defer></script>`n<script src="assets/js/site.js" defer></script>
+<script src="assets/js/nav.js" defer></script>
+<script src="assets/js/site.js" defer></script>
 
 </body>
 </html>

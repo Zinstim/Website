@@ -84,6 +84,10 @@
 
   --ease-out:  cubic-bezier(.16, 1, .3, 1);      /* things arriving */
   --ease-move: cubic-bezier(.62, .03, .2, 1);    /* things moving   */
+  --ease-spring: cubic-bezier(.34, 1.57, .64, 1);/* the face swap only —
+                                                    overshoots, so it reads
+                                                    as a swap rather than a
+                                                    rendering glitch        */
 
   /* ── form ───────────────────────────────────────────────────  */
   --radius-pill: 999px;
@@ -561,6 +565,303 @@ img,svg{display:block;max-width:100%}
 }
 
 
+
+/* ═══ hero ═══════════════════════════════════════════════════
+   One line, one settling gesture on load, and nothing else that
+   moves. The whole job is: what is this, and why keep scrolling. */
+
+.hero{min-height:78vh;display:flex;align-items:center}
+.hero__bn{font-size:var(--step-4);color:var(--graphite);margin-top:var(--space-md)}
+
+/* the one page-load moment. nothing else on the site does this. */
+.settle{opacity:0;transform:translateY(.5em)}
+.is-ready .settle{
+  opacity:1;transform:none;
+  transition:opacity .8s ease,transform 1s var(--ease-out);
+}
+.is-ready .settle:nth-of-type(2){transition-delay:.12s}
+
+.reveal{opacity:0;transform:translateY(.35em)}
+.reveal.is-in{
+  opacity:1;transform:none;
+  transition:opacity .9s ease,transform 1.1s var(--ease-out);
+}
+
+
+/* ═══ waitlist ═══════════════════════════════════════════════
+   The only conversion on the site, so the only button on it.    */
+
+.signup{display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-top:var(--space-lg)}
+.signup input{
+  flex:1 1 18rem;min-width:0;
+  background:transparent;
+  border:0;border-bottom:1px solid rgba(233,236,238,.35);
+  color:var(--zinc-wash);
+  font:inherit;padding:.7rem .2rem;
+}
+.signup input::placeholder{color:rgba(233,236,238,.4)}
+.signup input:focus{outline:0;border-bottom-color:var(--flame-teal)}
+
+.btn{
+  border:0;cursor:pointer;
+  background:var(--flame-teal);color:var(--obsidian);
+  font:inherit;font-variation-settings:"wdth" 92,"wght" 600;
+  padding:.7rem 1.6rem;border-radius:var(--radius-pill);
+  transition:transform .3s var(--ease-out),opacity .3s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+
+.foot{padding:var(--space-lg) 0;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:var(--space-md)}
+
+
+/* ═══ doors ══════════════════════════════════════════════════
+   The homepage choice. Three words, and the cards that belong to
+   each one arriving around them on hover.
+
+   Two things happen at once, and both are the point:
+
+   1. THE FACE SWAP. font-family cannot be transitioned, so each
+      door carries two stacked copies of its word — a base in
+      Archivo and an alternate in the face that belongs to that
+      category. Hover crossfades between them and springs the
+      scale, so it reads as a deliberate swap and not as a font
+      finishing its download. The letterforms are the information:
+      Wear reads as apparel, Fuel reads as a lab report,
+      Instruments reads as a measuring device. You learn the
+      register before you click.
+
+   2. THE CARDS. Each category owns four cards that fade up from
+      nothing, staggered, into positions that belong to that
+      category alone. They are placeholders for photography that
+      does not exist yet — see the decision log. Positions live
+      here rather than in the page so no page carries a number.
+
+   Everything is driven by data-active on the section, set by JS
+   on hover AND focus. The :hover fallbacks below mean the swap
+   still works before site.js loads.                              */
+
+.doors{position:relative;padding:var(--space-2xl) 0;overflow:hidden}
+.doors__inner{position:relative;z-index:2;text-align:center}
+
+.door{
+  /* fit-content, not block: a block-level anchor is as wide as the
+     section, so its hover target would be a full-width band and the
+     cards underneath would sit inside it. The word is the target. */
+  position:relative;display:block;
+  width:fit-content;margin-inline:auto;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-display),"wght" var(--wght-display);
+  font-size:var(--step-4);
+  line-height:1.08;letter-spacing:-.018em;
+  padding:.12em 0;
+  transition:opacity .45s ease,filter .25s var(--ease-out);
+}
+
+/* the two stacked copies */
+.door__face{
+  display:block;
+  transition:opacity .16s var(--ease-move) .04s,
+             transform .38s var(--ease-spring);
+}
+.door__face--alt{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:scale(.78,1.22);
+  font-variation-settings:normal;
+}
+
+/* one alternate face per category. no new families — Instruments
+   uses Archivo pushed the other way, wide and light, because the
+   width axis is already carrying hierarchy everywhere else. */
+.door[data-face="wear"] .door__face--alt{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-weight:400;font-style:italic;letter-spacing:-.01em;
+}
+.door[data-face="fuel"] .door__face--alt{
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-weight:700;letter-spacing:-.055em;
+  font-size:.86em;                    /* mono runs wide — hold the width */
+}
+.door[data-face="instruments"] .door__face--alt{
+  font-variation-settings:"wdth" 125,"wght" 300;
+  letter-spacing:.02em;
+}
+
+/* the swap. :hover keeps it alive before JS; .is-active is what
+   JS sets, so keyboard focus gets the identical state. */
+.door:hover .door__face--base,
+.door.is-active .door__face--base{opacity:0;transform:scale(1.06,.9)}
+.door:hover .door__face--alt,
+.door.is-active .door__face--alt{opacity:1;transform:scale(1)}
+
+/* the others recede. blur rather than opacity alone — it reads as
+   depth of field, which is what choosing actually feels like.
+   :has() rather than .doors:hover, so crossing the empty margin of
+   the section does not dim all three with nothing chosen. */
+.doors:has(.door:hover) .door,
+.doors[data-active] .door{opacity:.24;filter:blur(1.2px)}
+.doors:has(.door:hover) .door:hover,
+.doors[data-active] .door.is-active{opacity:1;filter:none}
+.door:focus-visible{outline-offset:12px}
+
+/* ── the card field ──────────────────────────────────────── */
+
+.doors__field{position:absolute;inset:0;z-index:1;pointer-events:none}
+.doors__set{position:absolute;inset:0}
+
+.door-card{
+  position:absolute;
+  border-radius:2px;
+  background:var(--zinc-silver);
+  box-shadow:0 1px 0 rgba(13,13,13,.05) inset,
+             0 0 0 1px rgba(13,13,13,.05);
+  opacity:0;
+  transform:translate3d(var(--dx,0),1.9rem,0) scale(.9) rotate(var(--r,0deg));
+  transition:opacity .45s ease var(--d,0s),
+             transform .8s var(--ease-out) var(--d,0s),
+             box-shadow .6s ease var(--d,0s);
+  will-change:transform,opacity;
+}
+
+.doors[data-active="0"] .doors__set[data-set="0"] .door-card,
+.doors[data-active="1"] .doors__set[data-set="1"] .door-card,
+.doors[data-active="2"] .doors__set[data-set="2"] .door-card{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1) rotate(var(--r,0deg));
+  box-shadow:0 0 0 1px rgba(13,13,13,.05),
+             0 26px 50px -12px rgba(13,13,13,.28);
+}
+
+/* each one drifts in from its own side, so they arrive as a
+   handful of objects rather than a row sliding up together */
+.door-card:nth-child(odd){--dx:-1.1rem}
+.door-card:nth-child(even){--dx:1.1rem}
+
+/* the cards are empty on purpose — there is no photography yet.
+   When there is, put an <img> inside the card and it fills it:
+     <span class="door-card"><img src="…" alt=""></span>          */
+.door-card img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  border-radius:inherit;
+}
+
+/* stagger — they arrive as a handful, not as a row */
+.door-card:nth-child(1){--d:0s}
+.door-card:nth-child(2){--d:.06s}
+.door-card:nth-child(3){--d:.12s}
+.door-card:nth-child(4){--d:.18s}
+
+/* one size ladder, shared by all three sets */
+.door-card:nth-child(1){width:15vw;height:20vw;max-width:14rem;max-height:19rem}
+.door-card:nth-child(2){width:11vw;height:14vw;max-width:11rem;max-height:14rem}
+.door-card:nth-child(3){width:9vw;height:12vw;max-width:9rem;max-height:12rem}
+.door-card:nth-child(4){width:13vw;height:9vw;max-width:13rem;max-height:9rem}
+
+/* position and rotation are what differ per category, so the
+   field re-composes rather than fading one set into another */
+.doors__set[data-set="0"] .door-card:nth-child(1){left:4%;top:7%;--r:-4deg}
+.doors__set[data-set="0"] .door-card:nth-child(2){right:6%;top:16%;--r:3deg}
+.doors__set[data-set="0"] .door-card:nth-child(3){left:13%;bottom:6%;--r:2deg}
+.doors__set[data-set="0"] .door-card:nth-child(4){right:11%;bottom:11%;--r:-3deg}
+
+.doors__set[data-set="1"] .door-card:nth-child(1){right:5%;top:11%;--r:5deg}
+.doors__set[data-set="1"] .door-card:nth-child(2){left:7%;top:22%;--r:-3deg}
+.doors__set[data-set="1"] .door-card:nth-child(3){right:15%;bottom:8%;--r:-2deg}
+.doors__set[data-set="1"] .door-card:nth-child(4){left:9%;bottom:9%;--r:4deg}
+
+.doors__set[data-set="2"] .door-card:nth-child(1){left:6%;bottom:9%;--r:3deg}
+.doors__set[data-set="2"] .door-card:nth-child(2){right:8%;bottom:16%;--r:-5deg}
+.doors__set[data-set="2"] .door-card:nth-child(3){left:16%;top:8%;--r:-2deg}
+.doors__set[data-set="2"] .door-card:nth-child(4){right:6%;top:12%;--r:4deg}
+
+@media (max-width:860px){
+  .doors{padding:var(--space-xl) 0}
+  .doors__field{display:none}          /* no room, and nothing to gain */
+  .doors:hover .door,
+  .doors[data-active] .door{opacity:1;filter:none}
+}
+
+/* movement removed, information kept: the cards still arrive and
+   the face still swaps — they just do not travel to get there. */
+@media (prefers-reduced-motion:reduce){
+  .door-card{transform:rotate(var(--r,0deg)) !important}
+  .door__face--alt{transform:none}
+}
+
+
+/* ═══ kit ════════════════════════════════════════════════════
+   Technical product grid. Monospace codes, specs held back until
+   hover. Utilitarian rather than boutique — the ASRV register.   */
+
+.kit{display:grid;gap:1px;background:rgba(110,118,121,.28);
+  grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
+
+.kit__item{
+  position:relative;background:var(--zinc-wash);
+  padding:var(--space-lg) var(--space-md) var(--space-md);
+  display:flex;flex-direction:column;min-height:24rem;
+  overflow:hidden;
+}
+.band--dark .kit__item{background:var(--obsidian)}
+
+.kit__code{
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.7rem;letter-spacing:.14em;
+  color:var(--graphite);
+}
+.band--dark .kit__code{color:var(--muted)}
+
+.kit__fig{
+  flex:1;display:grid;place-items:center;
+  padding:var(--space-md) 0;
+  transition:transform .7s var(--ease-out);
+}
+.kit__fig svg{width:62%;height:auto;overflow:visible}
+.kit__item:hover .kit__fig{transform:translateY(-1.4rem) scale(1.03)}
+
+.kit__name{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 82,"wght" 800;
+  font-size:var(--step-2);line-height:1;letter-spacing:-.025em;
+}
+
+/* specs sit below the fold of the card and rise on hover */
+.kit__specs{
+  margin-top:var(--space-sm);
+  display:grid;gap:.35rem;
+  opacity:0;transform:translateY(.6rem);
+  transition:opacity .4s ease,transform .5s var(--ease-out);
+}
+.kit__item:hover .kit__specs,
+.kit__item:focus-within .kit__specs{opacity:1;transform:none}
+
+.kit__spec{
+  display:flex;justify-content:space-between;gap:var(--space-sm);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.72rem;letter-spacing:.02em;
+  padding-bottom:.35rem;
+  border-bottom:1px solid rgba(110,118,121,.2);
+  color:var(--graphite);
+}
+.band--dark .kit__spec{color:var(--muted);border-bottom-color:rgba(214,221,226,.14)}
+.kit__spec b{font-weight:400;color:var(--obsidian)}
+.band--dark .kit__spec b{color:var(--zinc-silver)}
+
+.kit__state{
+  position:absolute;top:var(--space-md);right:var(--space-md);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.66rem;letter-spacing:.12em;
+  color:var(--flame-teal);opacity:0;
+  transition:opacity .4s ease;
+}
+.band--dark .kit__item:hover .kit__state{opacity:1}
+
+@media (max-width:640px){
+  .kit__item{min-height:20rem}
+  .kit__specs{opacity:1;transform:none}
+}
 
 /* ═══ reduced motion ═════════════════════════════════════════
    Removes movement. Never removes information.                  */

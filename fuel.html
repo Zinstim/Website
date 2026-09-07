@@ -117,7 +117,7 @@
       <a class="capsule__label t-ui is-here" data-label href="fuel.html">Fuel</a>
       <span class="morph" aria-hidden="true"></span>
       <ul class="items">
-        <li class="item"><a class="rise t-ui" href="elements.html">Worn</a></li>
+        <li class="item"><a class="rise t-ui" href="elements.html">Wear</a></li>
         <li class="item"><a class="rise t-ui is-current" href="fuel.html">Fuel</a></li>
         <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
       </ul>
@@ -477,22 +477,7 @@
 })();
 
 </script>
-<script src="assets/js/nav.js" defer></script>`n<script src="assets/js/site.js" defer></script>
-<script>
-// mark Fuel as current on this page
-(function(){
-  var links = document.querySelectorAll('.rise');
-  links.forEach(function(l){
-    if(l.textContent.trim()==='Fuel') {
-      l.classList.add('is-current');
-      var label=document.querySelector('[data-label]');
-      if(label){label.textContent='Fuel';label.setAttribute('href','fuel.html');label.classList.add('is-here');}
-    }
-  });
-})();
-
-requestAnimationFrame(function(){document.body.classList.add('is-ready')});
-
-</script>
+<script src="assets/js/nav.js" defer></script>
+<script src="assets/js/site.js" defer></script>
 </body>
 </html>

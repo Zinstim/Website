@@ -48,11 +48,13 @@ The project deliberately avoids a frontend framework because the site is mostly 
 ├── fuel.html
 ├── instruments.html
 ├── styleguide.html
+├── dotmark.js
 ├── ZinstimLogo.png
 ├── ZinstimLogo.svg
 ├── ZinstimLogo_cropped.png
 ├── ZinstimLogo_mark.png
 ├── README.md
+├── .editorconfig
 └── .gitignore
 ```
 
@@ -65,10 +67,13 @@ Main landing page. Controls the hero, the three-door navigation section, the run
 Brand story page explaining the origin, material concept, and company positioning.
 
 ### `elements.html`
-Category landing page that organizes the product story into brand sections like Wear and Fuel.
+The range index. Three full-viewport door bands — Wear, Fuel, Instruments — each committing to its category on click.
 
 ### `fuel.html`
-Supplement/product page with the pending lab panel and product education formatting.
+Supplement/product page with the pending lab panel and product education formatting. **The lab table ships empty on purpose** — see the decision log before touching it.
+
+### `instruments.html`
+Third category page. The page exists but nothing is behind it yet; treat it as a placeholder, not a shipped category.
 
 ### `assets/css/brand.css`
 This is the single source of truth for the design system. It defines:
@@ -83,6 +88,14 @@ This is the single source of truth for the design system. It defines:
 
 ### `assets/js/nav.js`
 Handles the interactive navigation capsule, hover/focus behavior, and current-page state for the primary nav.
+
+### `assets/js/site.js`
+Everything else that responds to the reader: the page-load settle, scroll reveals, the doors hover/focus controller, the runway scroll track, and the marquee.
+
+### `dotmark.js`
+The interactive ZINSTIM wordmark that closes each page. A canvas particle field that reads the letterforms as pixels and repels from the cursor. It only animates while on screen, to save battery.
+
+**Every page must load both `nav.js` and `site.js`.** If a page drops `nav.js` the nav capsule silently stops opening — it degrades to plain links rather than throwing an error, so it is easy to miss.
 
 ### `docs/ZINSTIM.md`
 The master brand and site design brief. Read this first. It includes the rules, branding rationale, decision log, and current state.
@@ -101,6 +114,43 @@ This is a static multi-page website rather than a framework app:
 5. GitHub Pages publishes the repository root directly.
 
 The project is built around a system-first design philosophy. Instead of using a JavaScript framework for a mostly static site, the code focuses on performance, simplicity, and clean brand storytelling.
+
+## The two interactions worth understanding
+
+Most of the site is plain markup. Two pieces are not, and both get broken by well-meaning edits.
+
+### The nav capsule
+
+At rest the nav shows one word. On hover or focus it widens from its centre into a dark pill holding Wear, Fuel and Instruments. Origin fades out so the capsule can expand without pushing anything.
+
+The important part: **focus does everything hover does.** Hover-only would make the nav unreachable by keyboard. `nav.js` is progressive enhancement — the links work before it loads.
+
+### The doors (homepage)
+
+Hovering a category does two things at once:
+
+1. **The word changes typeface.** `font-family` cannot be transitioned, so each door carries its word *twice* — a base copy in Archivo and an alternate copy in the face belonging to that category — stacked on top of each other. Hover crossfades between the two layers and springs the scale. Collapsing this back to a single element with `:hover { font-family: … }` reintroduces the hard, glitchy cut.
+2. **That category's cards arrive.** Four per category, fading up from nothing with a stagger, into positions that belong to that category alone.
+
+Faces: Wear → Instrument Serif italic, Fuel → Space Mono, Instruments → Archivo pushed wide and light. No fourth font is downloaded — the width axis carries it.
+
+The cards are **empty placeholders**; there is no photography in the repo yet. When there is, put an image inside a card and it fills it automatically:
+
+```html
+<span class="door-card"><img src="assets/img/tee-01.jpg" alt=""></span>
+```
+
+Card positions live in `brand.css` (via `nth-child`), not in the page, so no page carries a layout number.
+
+## Things that have broken before
+
+Worth reading before an edit, because each of these has actually happened:
+
+- **A page dropped `nav.js`** and the capsule stopped animating on that page only. Nothing errors; it just goes inert.
+- **Inline `<style>`/`<script>` blocks drifted** out of sync with `brand.css` and `site.js`. The inline copy wins over the stylesheet, so the shared fix appears to do nothing. Keep CSS and JS in `assets/`.
+- **A literal `` `n `` was written into five pages** by a PowerShell script that meant to write a newline, and rendered as visible text.
+- **The runway went blank for most of its scroll** because `site.js` cycled three products while the page contained one.
+- **Fabricated lab numbers** were published on `fuel.html`. They were removed. Do not put figures back until a real accredited lab returns a batch.
 
 ## Local development
 
@@ -126,9 +176,24 @@ This is recommended because page-to-page view transitions and relative path beha
 
 ## Deployment
 
-The repo is configured for GitHub Pages using the workflow in `.github/workflows/pages.yml`.
+Hosted on GitHub Pages, published by `.github/workflows/pages.yml`. Every push to `main` uploads the repository root as-is and deploys it — there is no build step.
 
-When changes are pushed to the main branch, GitHub Actions publishes the site.
+**Repository:** `Zinstim/Website`
+**Live URL:** `https://zinstim.github.io/Website/`
+
+To publish a change:
+
+```bash
+git add -A
+git commit -m "your message"
+git push
+```
+
+Then watch the run under the repository's **Actions** tab. A deploy takes roughly a minute.
+
+One-time setup, if Pages has never been switched on for this repo: go to **Settings → Pages** and set **Source** to **GitHub Actions** (not "Deploy from a branch"). The workflow cannot publish until that is set, and it will fail with a permissions error instead.
+
+Because the site is served from a subpath (`/Website/`), every link and asset reference must stay **relative** — `assets/css/brand.css`, not `/assets/css/brand.css`. A leading slash resolves to `zinstim.github.io/assets/…` and 404s. To serve from the domain root instead, rename the repository to `Zinstim.github.io`.
 
 ## Important project guidelines
 
@@ -172,8 +237,8 @@ This project is a repository for the ZinStim website. Use it as a reference for 
 ## Quick start
 
 ```bash
-git clone <repo-url>
-cd Zinstim
+git clone https://github.com/Zinstim/Website.git
+cd Website
 python -m http.server 8000
 ```
 
