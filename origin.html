@@ -4,53 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Origin — ZinStim</title>
-<meta name="description" content="Where the name comes from, and why we are building this in Dhaka.">
+<meta name="description" content="Confidence is built, not worn. Where the name comes from, what we make, and what we refuse to do.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/brand.css">
-<style>
-.lede{font-size:var(--step-2);line-height:1.35;max-width:32ch;color:var(--graphite)}
-.prose{max-width:var(--measure)}
-.prose p + p{margin-top:var(--space-md)}
-
-.settle{opacity:0;transform:translateY(.5em)}
-.is-ready .settle{opacity:1;transform:none;
-  transition:opacity .8s ease .25s,transform 1s var(--ease-out) .25s}
-
-.facts{display:grid;gap:var(--space-lg);
-  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));margin-top:var(--space-xl)}
-.fact__n{font-family:var(--face-display);
-  font-variation-settings:"wdth" 70,"wght" 900;
-  font-size:var(--step-4);line-height:.8;
-  color:transparent;-webkit-text-stroke:1.5px var(--graphite)}
-.fact__t{margin-top:var(--space-sm);max-width:26ch}
-
-.refuse{margin-top:var(--space-lg)}
-.refuse li{display:flex;gap:var(--space-md);flex-wrap:wrap;
-  padding:var(--space-md) 0;border-top:1px solid rgba(110,118,121,.22)}
-.refuse li:last-child{border-bottom:1px solid rgba(110,118,121,.22)}
-.refuse__k{flex:0 0 10rem;
-  font-variation-settings:"wdth" 82,"wght" 800;letter-spacing:-.01em}
-
-.people{display:grid;gap:var(--space-md);
-  grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));margin-top:var(--space-lg)}
-.person__f{aspect-ratio:3/4;background:rgba(233,236,238,.08);border-radius:2px}
-.person__n{margin-top:var(--space-sm);
-  font-variation-settings:"wdth" 88,"wght" 800}
-
-.foot{padding:var(--space-lg) 0;display:flex;justify-content:space-between;
-  flex-wrap:wrap;gap:var(--space-md)}
-</style>
 </head>
 <body>
 
 <header class="masthead">
-  <a class="home" href="index.html" aria-label="Home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M3 10.4 12 3.5l9 6.9V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/>
-    </svg>
+  <a class="home" href="index.html" aria-label="ZinStim — home">
+    <span class="home__mark">
+      <img class="home__mark-real" src="assets/img/zinstim-mark.png"
+           width="128" height="114" alt="" aria-hidden="true">
+    </span>
   </a>
   <nav class="navgroup" aria-label="Primary" data-group>
     <a class="origin t-ui is-here" href="origin.html">Origin</a>
@@ -58,7 +25,7 @@
       <a class="capsule__label t-ui" data-label href="elements.html">Elements</a>
       <span class="morph" aria-hidden="true"></span>
       <ul class="items">
-        <li class="item"><a class="rise t-ui" href="elements.html">Wear</a></li>
+        <li class="item"><a class="rise t-ui" href="wear.html">Wear</a></li>
         <li class="item"><a class="rise t-ui" href="fuel.html">Fuel</a></li>
         <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
       </ul>
@@ -68,14 +35,76 @@
 
 <main>
 
-  <section class="band" style="padding-top:var(--space-xl)">
-    <div class="shell">
-      <h1 class="t-display lines lines--load">
-        <span class="ln"><span>Origin</span></span>
+  <!-- HERO — two lines hold, the third deals through and lands.
+       Runs once on load. See .rollcall in brand.css. -->
+  <section class="band band--dark" style="padding:var(--space-xl) 0 var(--space-lg)">
+    <div class="shell shell--full">
+      <h1 class="rollcall" data-rollcall>
+        <span class="rollcall__line">Confidence</span>
+        <span class="rollcall__line">is</span>
+        <span class="rollcall__slot">
+          <!-- The motto is first, so the line the page opens on is the
+               one the brand actually stands on; the rest turn past it.
+               Only the motto is content — without aria-hidden on the
+               others the whole list is read as one run-on sentence.
+               data-note ties the footnote to the starred line. -->
+          <span class="rollcall__word" data-note>built, not worn.<span class="rollcall__star" aria-hidden="true">*</span></span>
+          <span class="rollcall__word" aria-hidden="true">the flex.</span>
+          <span class="rollcall__word" aria-hidden="true">earned, rep by rep.</span>
+          <span class="rollcall__word" aria-hidden="true">every set nobody saw.</span>
+          <span class="rollcall__word" aria-hidden="true">the art of showing up.</span>
+        </span>
       </h1>
-      <p class="lede settle" style="margin-top:var(--space-md)">
-        Where the name comes from, what we refuse to do, and why any of this is
-        happening in Dhaka.
+      <p class="rollcall__note t-body" data-rollcall-note>
+        *Never bought at checkout.
+      </p>
+    </div>
+  </section>
+
+  <div class="cleave cleave--light" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,0 L0,118 L84,146 L158,104 L246,138 L318,96 L404,128 L486,88 L570,120 L654,78 L740,112 L822,70 L910,102 L992,62 L1078,94 L1148,54 L1200,84 L1200,0 Z"/>
+    </svg>
+  </div>
+
+  <!-- THE THESIS -->
+  <section class="band">
+    <div class="shell">
+      <p class="t-head lines" data-reveal style="max-width:22ch">
+        <span class="ln"><span>Confidence is not</span></span>
+        <span class="ln"><span>bought at checkout.</span></span>
+      </p>
+      <div class="prose" style="margin-top:var(--space-lg)">
+        <p>It is built. Rep after rep, set after set, one grip on the bar at a
+          time. Nobody hands it over and no purchase shortcuts it.</p>
+        <p>It is also quiet. The people who have it are rarely the ones
+          announcing it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT WE MAKE — the list is the argument -->
+  <section class="band" style="padding-top:0">
+    <div class="shell">
+      <p class="t-head lines" data-reveal style="max-width:24ch">
+        <span class="ln"><span>Everything we make</span></span>
+        <span class="ln"><span>exists for that one rep.</span></span>
+      </p>
+      <ul class="refuse">
+        <li><span class="refuse__k">The shirt</span>
+            <span class="prose">That does not get in your way.</span></li>
+        <li><span class="refuse__k">The shaker</span>
+            <span class="prose">That does not leak in your bag.</span></li>
+        <li><span class="refuse__k">The belt</span>
+            <span class="prose">That holds when your spine stops trusting itself.</span></li>
+        <li><span class="refuse__k">The fuel</span>
+            <span class="prose">That shows up on the days you do not want to.</span></li>
+      </ul>
+      <p class="t-head lines" data-reveal
+         style="max-width:26ch;margin-top:var(--space-xl)">
+        <span class="ln"><span>We did not build</span></span>
+        <span class="ln"><span>a wardrobe. We built</span></span>
+        <span class="ln"><span>what sits underneath.</span></span>
       </p>
     </div>
   </section>
@@ -86,6 +115,7 @@
     </svg>
   </div>
 
+  <!-- THE NAME — the one place zinc gets explained -->
   <section class="band band--dark">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:22ch">
@@ -99,8 +129,8 @@
           wound repair.</p>
         <p>Remove it and everything downstream fails, quietly, over months. You
           would not be able to point at the cause.</p>
-        <p>That is the whole idea behind this company. The thing that matters
-          most is usually the thing nobody notices.</p>
+        <p>That is the whole idea behind this company. The thing holding you up
+          is rarely the thing you notice.</p>
       </div>
     </div>
   </section>
@@ -111,10 +141,11 @@
     </svg>
   </div>
 
+  <!-- THE ARGUMENT AGAINST EVERYONE ELSE -->
   <section class="band">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:26ch">
-        <span class="ln"><span>Every brand here</span></span>
+        <span class="ln"><span>Every other brand</span></span>
         <span class="ln"><span>sells the gesture.</span></span>
       </p>
       <div class="prose" style="margin-top:var(--space-lg)">
@@ -130,39 +161,11 @@
 
   <section class="marquee" data-marquee aria-hidden="true">
     <div class="marquee__track">
-      <span>Small things</span><span>repeated</span><span>Small things</span><span>repeated</span><span>Small things</span><span>repeated</span>
+      <span>Built</span><span>not worn</span><span>Built</span><span>not worn</span><span>Built</span><span>not worn</span>
     </div>
   </section>
 
-  <section class="band">
-    <div class="shell">
-      <p class="t-head lines" data-reveal style="max-width:20ch">
-        <span class="ln"><span>Why Dhaka.</span></span>
-      </p>
-      <div class="prose" style="margin-top:var(--space-lg)">
-        <p>Because it is where we are from, and because the market here deserves
-          better than it currently gets.</p>
-        <p>Counterfeits are the single biggest thing Bangladeshi customers worry
-          about when they buy a supplement, and they are right to worry. The
-          honest answer is not a louder claim. It is publishing the numbers.</p>
-      </div>
-      <div class="facts">
-        <div data-reveal class="lines">
-          <div class="fact__n">01</div>
-          <p class="fact__t t-meta">Every batch goes to an independent lab before it goes anywhere near a tub.</p>
-        </div>
-        <div data-reveal class="lines">
-          <div class="fact__n">02</div>
-          <p class="fact__t t-meta">Full panel published. Numeric heavy metals, not the word "complies".</p>
-        </div>
-        <div data-reveal class="lines">
-          <div class="fact__n">03</div>
-          <p class="fact__t t-meta">The batch number on your tub matches a report you can read on this site.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
+  <!-- WHAT WE REFUSE -->
   <section class="band">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:22ch">
@@ -182,7 +185,69 @@
     </div>
   </section>
 
+  <!-- THE COMMITMENTS -->
+  <section class="band" style="padding-top:0">
+    <div class="shell">
+      <p class="t-head lines" data-reveal style="max-width:24ch">
+        <span class="ln"><span>When Fuel</span></span>
+        <span class="ln"><span>goes on sale.</span></span>
+      </p>
+      <div class="prose" style="margin-top:var(--space-lg)">
+        <p>It is in registration, and that takes as long as it takes. Nothing is
+          for sale until it clears.</p>
+        <p>Counterfeits are the thing people are right to worry about when they
+          buy a supplement. The honest answer to that is not a louder claim. It
+          is publishing the numbers. Three things we hold ourselves to:</p>
+      </div>
+      <div class="facts">
+        <div data-reveal class="lines">
+          <div class="fact__n">01</div>
+          <p class="fact__t t-meta">Every batch goes to an independent lab before it goes anywhere near a tub.</p>
+        </div>
+        <div data-reveal class="lines">
+          <div class="fact__n">02</div>
+          <p class="fact__t t-meta">Full panel published. Numeric heavy metals, not the word "complies".</p>
+        </div>
+        <div data-reveal class="lines">
+          <div class="fact__n">03</div>
+          <p class="fact__t t-meta">The batch number on your tub matches a report you can read on this site.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <div class="cleave cleave--dark" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
+    </svg>
+  </div>
+
+  <!-- PULL QUOTE — our own line, lifted out at scale.
+       Reusable: .quote works on any band, light or dark. -->
+  <section class="band band--dark quote-band" style="padding:var(--space-2xl) 0">
+    <div class="shell">
+      <span class="quote__mark" aria-hidden="true">&ldquo;&thinsp;&rdquo;</span>
+      <blockquote class="quote">
+        <p class="quote__text lines" data-reveal>
+          <span class="ln"><span>Small correct things,</span></span>
+          <span class="ln"><span>long after anyone</span></span>
+          <span class="ln"><span><em>stopped watching.</em></span></span>
+        </p>
+        <hr class="quote__rule">
+        <footer class="quote__by">
+          <span><b>ZinStim</b></span>
+          <span>The Origin</span>
+          <span>2026</span>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <div class="cleave cleave--light" data-reveal aria-hidden="true">
+    <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
+      <path d="M0,0 L0,118 L84,146 L158,104 L246,138 L318,96 L404,128 L486,88 L570,120 L654,78 L740,112 L822,70 L910,102 L992,62 L1078,94 L1148,54 L1200,84 L1200,0 Z"/>
+    </svg>
+  </div>
 
   <section class="band band--divider" style="text-align:center">
     <div class="shell">
@@ -195,11 +260,10 @@
         ছোট জিনিস, বারবার।</p>
     </div>
   </section>
+
   <div class="shell">
     <canvas class="dotmark-canvas" data-dotmark-canvas></canvas>
   </div>
-
-
 
   <footer class="shell foot t-meta">
     <span>ZinStim · Dhaka</span>
@@ -208,173 +272,8 @@
 
 </main>
 
-<script data-dotmark>
-/* ZinStim — interactive dotmark.
-   Canvas-based particle system that reads text pixels and repels from cursor.
-   Runs only when visible to save battery. */
-(function() {
-  const canvas = document.querySelector('[data-dotmark-canvas]');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d', { alpha: false });
-  let particles = [];
-  let mouse = { x: -9999, y: -9999, radius: 80 };
-  let width, height;
-  let isRunning = false;
-  let animFrame;
-
-  // Use brand colors from CSS variables
-  const rootStyle = getComputedStyle(document.documentElement);
-  let dotColor = rootStyle.getPropertyValue('--graphite').trim() || '#6E7679';
-  let bgColor = rootStyle.getPropertyValue('--zinc-wash').trim() || '#E9ECEE';
-  
-  const isDark = canvas.closest('.band--dark') !== null;
-  if (isDark) {
-    dotColor = rootStyle.getPropertyValue('--muted').trim() || '#828C90';
-    bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
-  }
-
-  function init() {
-    const parent = canvas.parentElement;
-    width = parent.clientWidth;
-    height = Math.min(200, width * 0.2); 
-    canvas.width = width * devicePixelRatio;
-    canvas.height = height * devicePixelRatio;
-    canvas.style.width = width + 'px';
-    canvas.style.height = height + 'px';
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-    
-    createParticles();
-  }
-
-  function createParticles() {
-    particles = [];
-    const offscreen = document.createElement('canvas');
-    const octx = offscreen.getContext('2d', { willReadFrequently: true });
-    offscreen.width = width;
-    offscreen.height = height;
-    
-    const fontSize = Math.min(height * 0.8, width * 0.15);
-    octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
-    octx.textAlign = 'center';
-    octx.textBaseline = 'middle';
-    octx.fillStyle = 'white';
-    octx.letterSpacing = '-0.04em';
-    
-    // Polyfill letterSpacing for older canvas API if needed, but modern browsers support it
-    octx.fillText('ZINSTIM', width / 2, height / 2);
-    
-    const imgData = octx.getImageData(0, 0, width, height).data;
-    const step = 6;
-    
-    for (let y = 0; y < height; y += step) {
-      for (let x = 0; x < width; x += step) {
-        const index = (y * width + x) * 4;
-        const alpha = imgData[index + 3];
-        if (alpha > 128) {
-          particles.push({
-            x: x + (Math.random() - 0.5) * 2,
-            y: y + (Math.random() - 0.5) * 2,
-            baseX: x,
-            baseY: y,
-            vx: 0,
-            vy: 0,
-            size: 1.5
-          });
-        }
-      }
-    }
-  }
-
-  function animate() {
-    if (!isRunning) return;
-    
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, width, height);
-    
-    ctx.fillStyle = dotColor;
-    
-    for (let i = 0; i < particles.length; i++) {
-      let p = particles[i];
-      let dx = mouse.x - p.x;
-      let dy = mouse.y - p.y;
-      let dist = Math.sqrt(dx * dx + dy * dy);
-      
-      let forceDirectionX = dx / dist;
-      let forceDirectionY = dy / dist;
-      
-      let force = (mouse.radius - dist) / mouse.radius;
-      if (force < 0) force = 0;
-      
-      let directionX = forceDirectionX * force * 5;
-      let directionY = forceDirectionY * force * 5;
-      
-      if (dist < mouse.radius) {
-        p.vx -= directionX;
-        p.vy -= directionY;
-      }
-      
-      p.vx += (p.baseX - p.x) * 0.1;
-      p.vy += (p.baseY - p.y) * 0.1;
-      
-      p.vx *= 0.8;
-      p.vy *= 0.8;
-      
-      p.x += p.vx;
-      p.y += p.vy;
-      
-      ctx.fillRect(p.x, p.y, p.size * 2, p.size * 2);
-    }
-    
-    animFrame = requestAnimationFrame(animate);
-  }
-
-  window.addEventListener('resize', () => {
-    clearTimeout(window.resizeTimer);
-    window.resizeTimer = setTimeout(() => {
-      cancelAnimationFrame(animFrame);
-      init();
-      if (isRunning) animate();
-    }, 200);
-  });
-
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    mouse.x = -9999;
-    mouse.y = -9999;
-  });
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        if (!isRunning) {
-          isRunning = true;
-          animate();
-        }
-      } else {
-        isRunning = false;
-        cancelAnimationFrame(animFrame);
-      }
-    });
-    io.observe(canvas);
-  } else {
-    isRunning = true;
-    animate();
-  }
-
-  if (document.fonts) {
-    document.fonts.ready.then(init);
-  } else {
-    setTimeout(init, 500);
-  }
-})();
-
-</script>
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="dotmark.js" defer></script>
 </body>
 </html>

@@ -13,11 +13,11 @@
 <body>
  
 <header class="masthead">
-  <a class="home" href="#" aria-label="Home">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"
-         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M3 10.4 12 3.5l9 6.9V20a1 1 0 0 1-1 1h-5v-6.5H9V21H4a1 1 0 0 1-1-1z"/>
-    </svg>
+  <a class="home" href="index.html" aria-label="ZinStim — home">
+    <span class="home__mark">
+      <img class="home__mark-real" src="assets/img/zinstim-mark.png"
+           width="128" height="114" alt="" aria-hidden="true">
+    </span>
   </a>
   <nav class="navgroup" aria-label="Primary" data-group>
     <a class="origin t-ui" href="origin.html">Origin</a>
@@ -25,7 +25,7 @@
       <a class="capsule__label t-ui" data-label href="elements.html">Elements</a>
       <span class="morph" aria-hidden="true"></span>
       <ul class="items">
-        <li class="item"><a class="rise t-ui" href="elements.html">Wear</a></li>
+        <li class="item"><a class="rise t-ui" href="wear.html">Wear</a></li>
         <li class="item"><a class="rise t-ui" href="fuel.html">Fuel</a></li>
         <li class="item"><a class="rise t-ui" href="instruments.html">Instruments</a></li>
       </ul>
@@ -90,7 +90,7 @@
     </div>
 
     <div class="shell doors__inner">
-      <a class="door" href="elements.html" data-door="0" data-face="wear">
+      <a class="door" href="wear.html" data-door="0" data-face="wear">
         <span class="door__face door__face--base">Wear</span>
         <span class="door__face door__face--alt" aria-hidden="true">Wear</span>
       </a>
@@ -248,7 +248,7 @@
   </div>
  
   <!-- WAITLIST — the only conversion on the site -->
-  <section class="band band--dark">
+  <section class="band band--dark" id="waitlist">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:20ch">
         <span class="ln"><span>Nothing is</span></span>
