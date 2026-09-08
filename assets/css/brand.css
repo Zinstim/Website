@@ -217,7 +217,18 @@ img,svg{display:block;max-width:100%}
 
 /* ═══ nav ════════════════════════════════════════════════════ */
 
-.masthead{position:relative;padding:var(--space-md) var(--space-lg)}
+/* The nav follows you down the page. It needs its own opaque ground:
+   it travels over full-bleed obsidian bands, and without a background
+   the obsidian nav type would vanish into them. The hairline only
+   appears once you have actually left the top, so the masthead sits
+   on nothing at rest — see the is-stuck toggle in site.js. */
+.masthead{
+  position:sticky;top:0;z-index:40;
+  padding:var(--space-md) var(--space-lg);
+  background:var(--zinc-wash);
+  transition:box-shadow var(--dur-base) var(--ease-out);
+}
+.masthead.is-stuck{box-shadow:0 1px 0 rgba(13,13,13,.10)}
 
 .home{
   position:absolute;left:var(--space-lg);top:var(--space-md);
@@ -227,27 +238,52 @@ img,svg{display:block;max-width:100%}
   transition:background var(--dur-base) var(--ease-out), transform var(--dur-fast) ease;
   z-index:10;
 }
-.home:hover{background:rgba(200,16,46,.08)}
-.home__logo{
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-  width:2.1rem;height:2.1rem;
-  overflow:visible;
+.home:hover{background:rgba(13,13,13,.06)}
+
+/* The mark, built the way the rest of the nav behaves: quiet at rest,
+   the real thing revealed on hover. Same crossfade grammar as the
+   capsule label and the door faces.
+
+   Two layers on one box, from ONE 23KB file:
+     rest   the artwork used as a mask, filled with currentColor, so
+            the silhouette is genuinely theirs but the colour is ours
+            — Obsidian on light, Zinc Silver on dark. The palette says
+            the mark is never anything else, and the source art is
+            glossy red, so it cannot simply be dropped in.
+     hover  the artwork as drawn, carbon and all, faded up underneath.
+            The detail is the reward for asking — "reveal over
+            display", which is the rule the whole site runs on.
+
+   Masking is the enhancement, not the baseline: without support the
+   real artwork simply shows at rest and nothing is lost. */
+.home__mark{
+  position:relative;display:block;
+  width:1.55rem;height:1.55rem;
+  transition:transform var(--dur-base) var(--ease-out);
 }
-.home__logo-img{
+.home:hover .home__mark{transform:translateX(1px) rotate(-3deg)}
+
+.home__mark-real{
+  position:absolute;inset:0;
   width:100%;height:100%;
   object-fit:contain;
-  display:block;
-  user-select:none;
-  -webkit-user-drag:none;
-  transition:opacity .25s ease;
+  transition:opacity var(--dur-base) var(--ease-out);
 }
-.home__logo-canvas{
-  position:absolute;inset:-4px;
-  width:calc(100% + 8px);height:calc(100% + 8px);
-  pointer-events:none;
-  transition:opacity .25s ease;
+
+@supports (mask-image:url("i.png")) or (-webkit-mask-image:url("i.png")){
+  .home__mark::before{
+    content:"";position:absolute;inset:0;
+    background-color:currentColor;
+    -webkit-mask:url("../img/zinstim-mark.png") center/contain no-repeat;
+            mask:url("../img/zinstim-mark.png") center/contain no-repeat;
+    transition:opacity var(--dur-base) var(--ease-out);
+  }
+  .home__mark-real{opacity:0}
+  .home:hover .home__mark::before{opacity:0}
+  .home:hover .home__mark-real{opacity:1}
 }
+
+.band--dark .home__mark{color:var(--zinc-silver)}
 
 .navgroup{
   --cap-h:3.1rem;
@@ -396,6 +432,11 @@ img,svg{display:block;max-width:100%}
 .shell{width:100%;max-width:78rem;margin:0 auto;padding:0 var(--space-lg)}
 @media (max-width:860px){.shell{padding:0 var(--space-md)}}
 
+/* drops the 78rem measure cap and keeps only the page gutter. For
+   display type that needs the full width — the measure exists to
+   stop body copy running long, and a headline is not body copy. */
+.shell--full{max-width:none}
+
 .band{padding:var(--space-xl) 0}
 .band--dark{background:var(--obsidian);color:var(--zinc-wash)}
 .band--divider{padding:var(--space-2xl) 0}
@@ -539,6 +580,11 @@ img,svg{display:block;max-width:100%}
 /* ═══ dotmark ════════════════════════════════════════════════
    The wordmark as a halftone field. Closes every page.          */
 
+/* the interactive version. JS sets an explicit pixel width on it, so
+   this is the belt to that braces: whatever JS computes, the canvas
+   can never be wider than the column it sits in. */
+.dotmark-canvas{display:block;width:100%;max-width:100%}
+
 .dotmark{
   font-family:var(--face-display);
   font-variation-settings:"wdth" 74,"wght" 900;
@@ -587,6 +633,13 @@ img,svg{display:block;max-width:100%}
   transition:opacity .9s ease,transform 1.1s var(--ease-out);
 }
 
+/* the standing line under a page title, and the body copy under
+   that. Several pages still carry their own inline copies of these
+   from before the stylesheet existed; the values are identical. */
+.lede{font-size:var(--step-2);line-height:1.35;max-width:32ch;color:var(--graphite)}
+.prose{max-width:var(--measure)}
+.prose p + p{margin-top:var(--space-md)}
+
 
 /* ═══ waitlist ═══════════════════════════════════════════════
    The only conversion on the site, so the only button on it.    */
@@ -613,6 +666,174 @@ img,svg{display:block;max-width:100%}
 
 .foot{padding:var(--space-lg) 0;display:flex;justify-content:space-between;
   flex-wrap:wrap;gap:var(--space-md)}
+
+
+/* ═══ rollcall ═══════════════════════════════════════════════
+   The Origin hero. Two lines hold still and the third deals
+   through a short list before landing on the one that stays —
+   the About-Nike construction, built out of our own type.
+
+   It runs once, on load, and settles. It is not a loop: an
+   endlessly cycling headline is ambient decoration, and the
+   motion rule in tokens.md rules that out. The last word is the
+   one the page is actually about, so it is the one left standing.
+
+   The slot is a fixed-height mask; the words are stacked inside
+   it and slide through. Same mechanic as .ln, dealt on a timer. */
+
+/* SIZE IS SET BY THE LONGEST PHRASE, NOT BY "Confidence".
+   The slot masks with overflow:hidden, which clips sideways as well
+   as vertically — so any phrase wider than the slot is cut off mid
+   word rather than overflowing visibly. Measured: the longest line
+   runs about 8.5em, so the type has to fit 8.5 x font-size inside
+   the container at every width. If you add a longer phrase, either
+   shorten it or bring this size down; there is no wrapping to save
+   you, because the words are absolutely positioned inside a mask. */
+
+.rollcall{
+  /* the mask height, and the distance a word travels. These must be
+     the same value: the words are pushed out by exactly one mask, so
+     a taller mask needs a longer throw. A percentage will not do it,
+     because a percentage resolves against the word's own line box
+     (0.86em), not against the mask — which is how parked words end
+     up peeking in along the bottom edge. */
+  --slot-h:1.16em;
+
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-display),"wght" var(--wght-display);
+  font-size:clamp(1.5rem,9vw,9.5rem);
+  line-height:.86;
+  /* NOT tighter than this. At 900 weight and 78 width the pair "rn"
+     closes up into an "m" at display size — "worn" was reading as
+     "worm". Tracking is what fixes it, so leave it alone unless you
+     re-check that word at full size. Looser tracking also makes every
+     line wider, which is why the size above came down with it. */
+  letter-spacing:-.012em;
+}
+.rollcall__line{display:block}
+
+.rollcall__slot{
+  display:block;position:relative;
+  /* taller than one line so descenders (the g in "showing") clear
+     the mask; the negative margin takes that slack back off the
+     bottom so the block still reads as one stack of lines. */
+  height:var(--slot-h);overflow:hidden;
+  margin-bottom:calc((var(--slot-h) - 1em) * -1);
+}
+.rollcall__word{
+  position:absolute;left:0;top:0;
+  white-space:nowrap;
+  transform:translateY(var(--slot-h));
+  transition:transform .52s var(--ease-out);
+}
+.rollcall__word.is-on{transform:translateY(0)}
+.rollcall__word.is-out{transform:translateY(calc(var(--slot-h) * -1))}
+
+/* the only teal on the page, and it sits on obsidian, which is
+   the only surface teal is allowed on */
+.rollcall__star{color:var(--flame-teal)}
+
+.rollcall__note{
+  margin-top:var(--space-md);
+  max-width:44ch;color:var(--muted);
+  opacity:0;transform:translateY(.4em);
+  transition:opacity .7s ease,transform .8s var(--ease-out);
+}
+.rollcall__note.is-in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  .rollcall__word{transition:none}
+}
+
+
+/* ═══ quote ══════════════════════════════════════════════════
+   The pull-quote block. Marks above, one line at a scale that
+   stops the scroll, a hairline, then the attribution stacked
+   under it. The trevornoah.com device, in our own materials.
+
+   One deliberate departure from that reference: it colours a
+   single word of the quote. tokens.md rules that out — "no
+   accenting a single word in a headline in a different colour;
+   if the line needs help, rewrite the line" — so emphasis here is
+   italic, which is already the house move for a stressed word.
+
+   Reusable: drop it on any dark band. Keep the quote under about
+   eighteen words or it stops being a quote and becomes a
+   paragraph set large.                                          */
+
+.quote-band{text-align:center}
+
+.quote__mark{
+  display:block;margin:0 auto var(--space-md);
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 78,"wght" 900;
+  font-size:clamp(3.2rem,7vw,6rem);
+  line-height:.7;letter-spacing:-.02em;
+  color:var(--zinc-silver);opacity:.4;
+  user-select:none;
+}
+
+.quote{margin:0}
+.quote__text{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 82,"wght" 800;
+  /* display scale — the quote is the loudest thing on the page after
+     the hero, so it is sized against --display rather than a heading.
+     The measure is deliberately short: a pull-quote that runs to a
+     full line length stops reading as a quote. */
+  font-size:clamp(2.2rem,1rem + 6vw,6.4rem);
+  line-height:1.02;letter-spacing:-.022em;
+  max-width:16ch;margin:0 auto;
+  text-wrap:balance;
+}
+.quote__text em{font-style:italic}
+
+.quote__rule{
+  width:5rem;height:1px;border:0;
+  margin:var(--space-xl) auto var(--space-md);
+  background:var(--muted);opacity:.5;
+}
+
+.quote__by{
+  display:grid;gap:.15rem;
+  font-style:italic;font-size:var(--step-0);
+  color:var(--muted);
+}
+.quote__by b{font-weight:inherit;color:var(--zinc-silver)}
+
+/* on a light band the same block flips its greys */
+.band:not(.band--dark) .quote__mark{color:var(--graphite);opacity:.3}
+.band:not(.band--dark) .quote__by{color:var(--graphite)}
+.band:not(.band--dark) .quote__by b{color:var(--obsidian)}
+.band:not(.band--dark) .quote__rule{background:var(--graphite)}
+
+
+/* ═══ facts ══════════════════════════════════════════════════
+   Numbered commitments. Outlined numerals so the figure reads as
+   a mark rather than as more body copy.                         */
+
+.facts{display:grid;gap:var(--space-lg);
+  grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));margin-top:var(--space-xl)}
+.fact__n{font-family:var(--face-display);
+  font-variation-settings:"wdth" 70,"wght" 900;
+  font-size:var(--step-4);line-height:.8;
+  color:transparent;-webkit-text-stroke:1.5px var(--graphite)}
+.band--dark .fact__n{-webkit-text-stroke-color:var(--muted)}
+.fact__t{margin-top:var(--space-sm);max-width:26ch}
+
+
+/* ═══ refuse ═════════════════════════════════════════════════
+   A list of things we will not do. Ruled rows, because a refusal
+   should read like a specification, not like a manifesto.       */
+
+.refuse{margin-top:var(--space-lg)}
+.refuse li{display:flex;gap:var(--space-md);flex-wrap:wrap;
+  padding:var(--space-md) 0;border-top:1px solid rgba(110,118,121,.22)}
+.refuse li:last-child{border-bottom:1px solid rgba(110,118,121,.22)}
+.refuse__k{flex:0 0 10rem;
+  font-variation-settings:"wdth" 82,"wght" 800;letter-spacing:-.01em}
+.band--dark .refuse li{border-top-color:rgba(214,221,226,.16)}
+.band--dark .refuse li:last-child{border-bottom-color:rgba(214,221,226,.16)}
 
 
 /* ═══ doors ══════════════════════════════════════════════════

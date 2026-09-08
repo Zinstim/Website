@@ -24,8 +24,15 @@
 
   function init() {
     const parent = canvas.parentElement;
-    width = parent.clientWidth;
-    height = Math.min(200, width * 0.2); 
+    // clientWidth INCLUDES the container's padding, so using it raw makes
+    // the canvas wider than the space it actually sits in — which put a
+    // horizontal scrollbar on every page carrying the wordmark at any
+    // viewport narrower than the shell's max-width. Subtract the padding.
+    const pad = getComputedStyle(parent);
+    width = parent.clientWidth
+          - (parseFloat(pad.paddingLeft) || 0)
+          - (parseFloat(pad.paddingRight) || 0);
+    height = Math.min(200, width * 0.2);
     canvas.width = width * devicePixelRatio;
     canvas.height = height * devicePixelRatio;
     canvas.style.width = width + 'px';

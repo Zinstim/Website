@@ -19,6 +19,92 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
 
 
 
+/* sticky masthead — the hairline only once you have left the top, so
+   the nav sits on nothing at rest and gains an edge when it starts
+   travelling over content. */
+(function(){
+  var head = document.querySelector('.masthead');
+  if (!head) return;
+  var ticking = false;
+  function frame(){
+    head.classList.toggle('is-stuck', window.scrollY > 8);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if (!ticking) { ticking = true; requestAnimationFrame(frame); }
+  }, {passive:true});
+  frame();
+})();
+
+
+/* rollcall — the Origin hero. Two lines hold still and the third
+   cycles. Opens on the motto, so the first thing read is the brand
+   line, then it turns through the variations and comes back.
+
+   Slow on purpose: HOLD is a reading pace, not a ticker. Each word
+   rises from below the mask, sits, then leaves upward — so the
+   movement always travels one way. A word that has left is parked
+   back underneath with the transition suppressed, otherwise it
+   would visibly slide back down through the mask on the way round.
+
+   Pauses when scrolled off screen. Reduced motion holds the motto
+   and never cycles — the other lines are decoration. */
+(function(){
+  var rc = document.querySelector('[data-rollcall]');
+  if (!rc) return;
+  var words = Array.prototype.slice.call(rc.querySelectorAll('.rollcall__word'));
+  var note  = document.querySelector('[data-rollcall-note]');
+  if (!words.length) return;
+
+  var HOLD = 3200;      // time each line is readable
+  var EXIT = 640;       // slide-out duration plus a margin
+  var i = 0, timer = null;
+
+  // the footnote belongs to the starred line, so it comes and goes with it
+  function syncNote(){
+    if (note) note.classList.toggle('is-in', words[i].hasAttribute('data-note'));
+  }
+
+  function park(w){
+    w.style.transition = 'none';
+    w.classList.remove('is-out');       // back below the mask, silently
+    void w.offsetWidth;
+    w.style.transition = '';
+  }
+
+  function step(){
+    var cur = words[i];
+    i = (i + 1) % words.length;
+    cur.classList.remove('is-on');
+    cur.classList.add('is-out');
+    words[i].classList.add('is-on');
+    syncNote();
+    setTimeout(function(){ park(cur); }, EXIT);
+  }
+
+  function start(){ if (!timer) timer = setInterval(step, HOLD); }
+  function stop(){ clearInterval(timer); timer = null; }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    words.forEach(function(w, n){ if (w.hasAttribute('data-note')) i = n; });
+    words[i].classList.add('is-on');
+    syncNote();
+    return;
+  }
+
+  setTimeout(function(){           // let the two fixed lines land first
+    words[0].classList.add('is-on');
+    syncNote();
+    start();                       // cycle regardless; the observer only pauses it
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(es){
+        if (es[0].isIntersecting) start(); else stop();
+      }, {threshold:.25}).observe(rc);
+    }
+  }, 780);
+})();
+
+
 /* doors — hover or focus a category, its cards arrive and its word
    changes face. All this does is set data-active on the section and
    is-active on the door; brand.css owns every visual decision.

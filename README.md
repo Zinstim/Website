@@ -45,6 +45,7 @@ The project deliberately avoids a frontend framework because the site is mostly 
 ├── index.html
 ├── origin.html
 ├── elements.html
+├── wear.html
 ├── fuel.html
 ├── instruments.html
 ├── styleguide.html
@@ -64,16 +65,37 @@ The project deliberately avoids a frontend framework because the site is mostly 
 Main landing page. Controls the hero, the three-door navigation section, the runway product story, and the waitlist CTA.
 
 ### `origin.html`
-Brand story page explaining the origin, material concept, and company positioning.
+The brand story. Opens with the **rollcall** hero — "Confidence / is / …" where the third line turns through five payoffs on a slow cycle, and closes with the **pull-quote** block.
+
+Things about the rollcall that are easy to break:
+
+- **The motto is first in the DOM on purpose.** The hero opens on *built, not worn.* so the first line anyone reads is the one the brand stands on. Reordering the spans changes what the page says first.
+- **It holds 3.2s per line** — about a 16-second turn. That is a reading pace, not a ticker. It pauses when scrolled off screen.
+- **The four non-motto phrases are `aria-hidden`.** Without that the `<h1>` is read aloud as one run-on sentence. Only the motto is content.
+- **The footnote is tied to the starred line** via `data-note`, so it appears and leaves with it rather than sitting under an unrelated phrase.
+
+### The `.quote` block
+A reusable pull-quote: marks, one line at scale, hairline, attribution. Drop it on any band — it flips its own greys on light. Keep quotes under ~18 words. Emphasis is **italic, never a colour** — see the decision log.
 
 ### `elements.html`
-The range index. Three full-viewport door bands — Wear, Fuel, Instruments — each committing to its category on click.
+The range **index** — not a category. Three full-viewport door bands that send you into Wear, Fuel or Instruments. Nothing is sold here; it is a chooser.
+
+### The three categories
+
+| Page | Category | Contains |
+|---|---|---|
+| `wear.html` | Clothing | Drop 01 — Training Tee, Floor Short |
+| `fuel.html` | Supplements — the main line | Creatine monohydrate, plus the lab panel |
+| `instruments.html` | Accessories | Nothing yet. Deliberately empty. |
+
+### `wear.html`
+Apparel. Uses the shared `.kit` grid, so the two pieces here and the ones on the homepage are the same component with the same specs.
 
 ### `fuel.html`
-Supplement/product page with the pending lab panel and product education formatting. **The lab table ships empty on purpose** — see the decision log before touching it.
+The supplement line and the published lab panel. **The lab table ships empty on purpose** — see the decision log before touching it.
 
 ### `instruments.html`
-Third category page. The page exists but nothing is behind it yet; treat it as a placeholder, not a shipped category.
+Accessories — watches and fitbands. There is no supplier, no sample and no date, so the page says exactly that and points at the two doors that are open. Do not fill it with renders of products that do not exist.
 
 ### `assets/css/brand.css`
 This is the single source of truth for the design system. It defines:
