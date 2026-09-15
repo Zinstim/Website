@@ -240,22 +240,20 @@ img,svg{display:block;max-width:100%}
 }
 .home:hover{background:rgba(13,13,13,.06)}
 
-/* The mark, built the way the rest of the nav behaves: quiet at rest,
-   the real thing revealed on hover. Same crossfade grammar as the
-   capsule label and the door faces.
-
-   Two layers on one box, from ONE 23KB file:
-     rest   the artwork used as a mask, filled with currentColor, so
-            the silhouette is genuinely theirs but the colour is ours
-            — Obsidian on light, Zinc Silver on dark. The palette says
-            the mark is never anything else, and the source art is
-            glossy red, so it cannot simply be dropped in.
-     hover  the artwork as drawn, carbon and all, faded up underneath.
-            The detail is the reward for asking — "reveal over
-            display", which is the rule the whole site runs on.
-
-   Masking is the enhancement, not the baseline: without support the
-   real artwork simply shows at rest and nothing is lost. */
+/* The mark. Always the real artwork — the crossfade-on-hover version
+   that used to live here is GONE. It masked the artwork with
+   currentColor for the rest state and only faded in the real image on
+   hover. That relies on CSS mask-image, and mask-image referencing an
+   external file silently fails to paint anything over the file://
+   protocol in Chromium/Edge — confirmed by screenshotting the exact
+   same HTML headless over file:// (blank) and http:// (renders).
+   Since this site is routinely opened by double-clicking the HTML —
+   not through a server — that made the mark invisible at rest on
+   every page, always, for exactly the readers who never hover. A
+   nav element that vanishes for most visitors is a worse defect than
+   losing the palette-flip trick, so the mark now just always shows,
+   the way a plain <img> always does regardless of protocol. Hover
+   keeps a small, honest motion cue instead of a reveal. */
 .home__mark{
   position:relative;display:block;
   width:1.55rem;height:1.55rem;
@@ -264,26 +262,10 @@ img,svg{display:block;max-width:100%}
 .home:hover .home__mark{transform:translateX(1px) rotate(-3deg)}
 
 .home__mark-real{
-  position:absolute;inset:0;
+  display:block;
   width:100%;height:100%;
   object-fit:contain;
-  transition:opacity var(--dur-base) var(--ease-out);
 }
-
-@supports (mask-image:url("i.png")) or (-webkit-mask-image:url("i.png")){
-  .home__mark::before{
-    content:"";position:absolute;inset:0;
-    background-color:currentColor;
-    -webkit-mask:url("../img/zinstim-mark.png") center/contain no-repeat;
-            mask:url("../img/zinstim-mark.png") center/contain no-repeat;
-    transition:opacity var(--dur-base) var(--ease-out);
-  }
-  .home__mark-real{opacity:0}
-  .home:hover .home__mark::before{opacity:0}
-  .home:hover .home__mark-real{opacity:1}
-}
-
-.band--dark .home__mark{color:var(--zinc-silver)}
 
 .navgroup{
   --cap-h:3.1rem;
