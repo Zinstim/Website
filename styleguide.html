@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZinStim — style guide</title>
+<meta name="description" content="The ZinStim design system: tokens, type, motion and the liquid components.">
+<link rel="icon" type="image/svg+xml" href="assets/img/zinstim-mark.svg">
+<meta name="theme-color" content="#E9ECEE">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ZinStim — style guide">
+<meta property="og:description" content="The ZinStim design system: tokens, type, motion and the liquid components.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
@@ -38,8 +44,71 @@
   .rule-card h3{font-size:var(--step-1);
     font-variation-settings:"wdth" 92,"wght" 600;margin-bottom:var(--space-xs)}
   .rule-card p{font-size:var(--step--1);color:var(--graphite);max-width:34ch}
-  .no{color:#B4443C}
-  .yes{color:#1F7A5E}
+  /* these were hardcoded hexes, which broke the rule that brand.css
+     is the only place design values live. Now tokens — and better
+     measured ones: the old pair scored 4.6 and 4.4 on light. */
+  .no{color:var(--fail)}
+  .yes{color:var(--pass)}
+
+  /* demo strips for the component sections */
+  .sg-demo{display:flex;flex-wrap:wrap;gap:var(--space-sm);
+    align-items:center;margin-bottom:var(--space-md)}
+  .sg-demo--dark{background:var(--obsidian);padding:var(--space-md);
+    border-radius:var(--radius-sm)}
+  .sg-cap{font-size:var(--step--1);color:var(--graphite);
+    width:100%;margin-bottom:.15rem}
+  .sg-demo--dark .sg-cap{color:var(--muted)}
+  .sg-pair{display:grid;gap:var(--space-md);
+    grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+  .sg-sig{display:flex;align-items:center;gap:.6rem;
+    font-size:var(--step--1);margin-bottom:.4rem}
+  .sg-sig i{width:1.6rem;height:1.6rem;border-radius:var(--radius-sm);
+    flex:none;box-shadow:inset 0 0 0 1px rgba(13,13,13,.12)}
+  .sg-motion{width:100%;border-collapse:collapse;font-size:var(--step--1)}
+  .sg-motion th,.sg-motion td{text-align:left;padding:.55rem .6rem;
+    border-bottom:1px solid rgba(110,118,121,.2);vertical-align:top}
+  .sg-motion th{color:var(--graphite);font-weight:400}
+
+  /* mood board — references with the numbers taken off them */
+  .mood{display:grid;gap:var(--space-md);
+    grid-template-columns:repeat(auto-fit,minmax(11rem,1fr))}
+  .mood__item{margin:0}
+  .mood__item img{width:100%;height:auto;display:block;
+    border-radius:2px;background:var(--obsidian)}
+  .mood__item figcaption{font-size:var(--step--1);color:var(--graphite);
+    margin-top:var(--space-sm);line-height:1.45}
+  .mood__item figcaption b{display:block;color:var(--obsidian);
+    font-variation-settings:"wdth" 92,"wght" 700;margin-bottom:.25rem}
+  .mood__sw{display:flex;gap:4px;margin-top:.5rem}
+  .mood__sw i{width:1.25rem;height:1.25rem;border-radius:2px;display:block;
+    box-shadow:inset 0 0 0 1px rgba(13,13,13,.14)}
+
+/* liquid demos */
+.sg-liq-demo{cursor:default}
+.sg-liq-demo .vessel{width:9rem;height:auto;margin:var(--space-sm) auto 0;color:var(--obsidian)}
+.sg-liq-demo:hover .vessel,.sg-liq-demo:focus-visible .vessel{--vessel-level:.94}
+.sg-liq-demo:hover .vessel__liquid,.sg-liq-demo:focus-visible .vessel__liquid{animation-play-state:running}
+.sg-kit .kit__item{min-height:16rem}
+
+/* handoff */
+.sg-toc{display:flex;flex-wrap:wrap;gap:.35rem var(--space-md);margin-top:var(--space-lg);font-size:var(--step--1)}
+.sg-toc a{color:var(--graphite);text-decoration:underline;text-underline-offset:.25em}
+.sg-toc a:hover{color:var(--obsidian)}
+.sg-code{display:block;overflow-x:auto;margin:var(--space-xs) 0 var(--space-lg);padding:var(--space-md);
+  background:var(--obsidian);color:var(--zinc-silver);border-radius:var(--radius-sm);
+  font-family:"Space Mono",ui-monospace,monospace;font-size:.72rem;line-height:1.65;white-space:pre}
+.sg-mark-row{display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-lg);width:100%}
+.sg-mark{display:block;cursor:default}
+.sg-mark--nav .mark{width:1.7rem;height:auto}
+.sg-mark--m .mark{width:4rem;height:auto}
+.sg-mark--l .mark{width:8rem;height:auto}
+.sg-mark:hover .mark{--vessel-level:1.12}
+.sg-mark:hover .vessel__liquid{animation-play-state:running}
+.sg-steps{list-style:none;counter-reset:s;display:grid;gap:.55rem;margin-top:var(--space-sm);
+  font-size:var(--step--1);max-width:72ch}
+.sg-steps li{counter-increment:s;display:grid;grid-template-columns:2rem 1fr;gap:.5rem;color:var(--graphite)}
+.sg-steps li::before{content:counter(s,decimal-leading-zero);font-family:"Space Mono",ui-monospace,monospace;color:var(--obsidian)}
+.sg-steps b{color:var(--obsidian);font-weight:600}
 </style>
 </head>
 <body>
@@ -47,8 +116,7 @@
 <header class="masthead">
   <a class="home" href="index.html" aria-label="ZinStim — home">
     <span class="home__mark">
-      <img class="home__mark-real" src="assets/img/zinstim-mark.png"
-           width="128" height="114" alt="" aria-hidden="true">
+      <svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-clip"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-fill" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-clip)" mask="url(#mark-fill)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg>
     </span>
   </a>
   <nav class="navgroup" aria-label="Primary" data-group>
@@ -75,11 +143,44 @@
         body and you have never once thought about it. Sparse because the subject
         is trace. Dense because trace means concentrated, not spread thin.
       </p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">This page is the handoff. Every component on the site is here with the reason it is the way it is; the decision log in <code>docs/ZINSTIM.md</code> has the history. Take it from here.</p>
+      <nav class="sg-toc" aria-label="Contents"><a href="#mark">The mark</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#space">Space</a><a href="#divider">The divider</a><a href="#motion">Motion</a><a href="#signals">Signals</a><a href="#button">Button</a><a href="#liquid">Liquid</a><a href="#views">Views</a><a href="#field">Field</a><a href="#radius">Radius and elevation</a><a href="#anatomy">Page anatomy</a><a href="#quality">Quality floor</a></nav>
+    </div>
+  </section>
+
+  <!-- THE MARK -->
+  <section class="sg-section" id="mark">
+    <div class="shell">
+      <p class="sg-label">The mark</p>
+      <p class="t-head" style="max-width:22ch">A vessel that fills.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        A vector trace of the carbon-fibre mark &mdash; IoU .996 against the PNG, 33 points
+        across two pieces &mdash; drawn flat. Under the cursor the liquid rises inside it, and
+        what it fills with is the mark's own red carbon fibre. Hover each one.
+      </p>
+      <div class="sg-pair" style="margin-top:var(--space-lg)">
+        <div class="sg-demo">
+          <p class="sg-cap">On light &mdash; Obsidian, fills with the carbon fibre. Nav size, 4rem, 8rem.</p>
+          <div class="sg-mark-row"><span class="sg-mark sg-mark--nav"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-1"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-1" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-1)" mask="url(#mark-sg-fill-1)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span><span class="sg-mark sg-mark--m"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-2"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-2" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-2)" mask="url(#mark-sg-fill-2)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span><span class="sg-mark sg-mark--l"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-3"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-3" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-3)" mask="url(#mark-sg-fill-3)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span></div>
+        </div>
+        <div class="sg-demo sg-demo--dark band--dark">
+          <p class="sg-cap">On Obsidian &mdash; Zinc Silver, fills with the same carbon fibre.</p>
+          <div class="sg-mark-row"><span class="sg-mark sg-mark--nav"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-4"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-4" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-4)" mask="url(#mark-sg-fill-4)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span><span class="sg-mark sg-mark--m"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-5"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-5" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-5)" mask="url(#mark-sg-fill-5)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span><span class="sg-mark sg-mark--l"><svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-sg-6"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-sg-fill-6" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-sg-6)" mask="url(#mark-sg-fill-6)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg></span></div>
+        </div>
+      </div>
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:9rem">Colour</th><td>Obsidian on light, Zinc Silver on dark at rest &mdash; the mark rule carried in from the start. Never painted a colour and never Flame Teal: the red enters only as the liquid, only while it is pointed at, and it is the artwork itself &mdash; the same carbon fibre on both grounds.</td></tr>
+        <tr><th>Hover</th><td>The liquid rises in .75s to <code>--vessel-level: 1.12</code> and drains when the cursor leaves. Full has to be well past 1: at level 1 the wave's troughs are still 10.5 units below the top of the mark, and at 1.08 they drifted along the top of the blade as small bumps of the base colour &mdash; invisible in the nav, plain at 8rem. The liquid is a mask, not a paint: the artwork is placed once and holds still, and the rising wave uncovers it &mdash; only the edge moves, the weave never slides. The mark is the brand rather than a control, so it is the one deliberate crossing of the dots-and-liquid rule.</td></tr>
+        <tr><th>Checked</th><td>Chrome, Edge and Firefox, opened from disk over <code>file://</code>, with a real pointer: no red at rest, the fibre rising from the bottom, the whole artwork showing within about half a second, and no red again once the cursor has left.</td></tr>
+        <tr><th>Size</th><td>1.7rem in the nav. Holds at 16px as the favicon; smaller than that, the gap between blade and wedge closes.</td></tr>
+        <tr><th>Files</th><td><code>assets/img/zinstim-mark.svg</code> &mdash; vector master and favicon; switches to Zinc Silver in dark browser UI. <code>assets/img/zinstim-mark.png</code> &mdash; the carbon-fibre artwork the liquid uncovers, 128&times;114, so it sits exactly on the vector. To change what the mark fills with, replace this file with art of the same 128:114 proportions. Larger sources are in the repo root (<code>ZinstimLogo_mark.png</code>, 512px).</td></tr>
+        <tr><th>Markup</th><td>Inline in every masthead, so it paints over <code>file://</code>. The carbon fibre comes in as an SVG <code>&lt;image&gt;</code> under an SVG <code>&lt;mask&gt;</code>, both inside that inline SVG &mdash; never CSS <code>mask-image</code>, which is what made the 07 Sep mark vanish when a page was opened from disk. Ids are unique per page: <code>mark-clip</code> and <code>mark-fill</code> in the masthead.</td></tr>
+      </table>
     </div>
   </section>
 
   <!-- COLOUR -->
-  <section class="sg-section">
+  <section class="sg-section" id="colour">
     <div class="shell">
       <p class="sg-label">Colour</p>
       <div class="swatches">
@@ -117,6 +218,162 @@
         </div>
       </div>
 
+      <p class="sg-label" style="margin-top:var(--space-xl)">Mood board</p>
+      <p class="t-body t-meta" style="margin-bottom:var(--space-lg);max-width:64ch">
+        Five references, and the numbers taken off them rather than impressions.
+        The headline finding is not a hue, it is a ratio: across the whole board
+        saturated pixels run between <b>0.3% and 5.6% of frame</b>. Ninety-five
+        percent or more of what we are looking at is black, charcoal and
+        concrete. That is the actual brief — colour is a rare event here, not a
+        scheme — and the only real decision is which single hue gets to interrupt
+        it.
+      </p>
+      <div class="mood">
+
+        <figure class="mood__item">
+          <img src="assets/img/moodboard/ref1.jpg" alt="Gym interior at night, black sleeveless top, tungsten lighting" loading="lazy">
+          <figcaption>
+            <b>Charcoal + tungsten</b>
+            The light the brand lives in. 5.6% saturated, and nearly all of that
+            is skin and warm lamps at hue 18° — photographic, not brand colour.
+            <span class="mood__sw"><i style="background:#543C32"></i><i style="background:#256D91"></i></span>
+          </figcaption>
+        </figure>
+
+        <figure class="mood__item">
+          <img src="assets/img/moodboard/ref2.jpg" alt="Gym, white compression top, concrete floor and walls" loading="lazy">
+          <figcaption>
+            <b>Concrete + steel</b>
+            The surfaces. Cooler and more architectural, and the most restrained
+            frame on the board at 2.6% saturated.
+            <span class="mood__sw"><i style="background:#55372D"></i><i style="background:#C3B7A5"></i></span>
+          </figcaption>
+        </figure>
+
+        <figure class="mood__item">
+          <img src="assets/img/moodboard/ref3.jpg" alt="ASRV website, black layout with red buttons" loading="lazy">
+          <figcaption>
+            <b>What we are not</b>
+            ASRV. <b style="display:inline">96%</b> of its saturated pixels are a
+            single red at hue 2°. A one-note brand, and the note the decision log
+            already calls the category default.
+            <span class="mood__sw"><i style="background:#BF2C26"></i><i style="background:#963436"></i></span>
+          </figcaption>
+        </figure>
+
+        <figure class="mood__item">
+          <img src="assets/img/moodboard/ref4.jpg" alt="Teal-green car on night asphalt, red tail lights" loading="lazy">
+          <figcaption>
+            <b>The colour event</b>
+            The one hue on the board worth taking: <b style="display:inline">hue
+            169°</b>, against black asphalt. The elixir is built on it — our
+            <code>--elixir-void</code> computes to hue 168°, a one-degree match.
+            <span class="mood__sw"><i style="background:#1C4C43"></i><i style="background:#762832"></i><i style="background:#623F31"></i></span>
+          </figcaption>
+        </figure>
+
+        <figure class="mood__item">
+          <img src="assets/img/moodboard/ref5.jpg" alt="Hand-drawn six-panel storyboard of a liquid filling a frame" loading="lazy">
+          <figcaption>
+            <b>The behaviour</b>
+            The storyboard. 0.3% saturated — it is not supplying a palette, it is
+            supplying the motion: fill first, then the text surfaces out of it.
+            <span class="mood__sw"><i style="background:#0D0D0D"></i><i style="background:#E9ECEE"></i></span>
+          </figcaption>
+        </figure>
+
+      </div>
+
+      <div class="rules" style="margin-top:var(--space-lg)">
+        <div class="rule-card">
+          <h3 class="yes">Colour is an event, not a scheme</h3>
+          <p>0.3–5.6% saturation across the board. If a page ever reads as
+             colourful, it has left the reference.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">The board's greys are warm — ours are not</h3>
+          <p>Gym light lands at hue 15–18°. That is tungsten and skin in a
+             photograph, not a surface instruction. Zinc Wash stays cool; the
+             warmth belongs in the photography, never in the UI.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">Red is taken</h3>
+          <p>Hue 2°, and ASRV owns it at 96% of their saturated pixels. Using it
+             would make us the thing this brand argues against.</p>
+        </div>
+      </div>
+
+      <p class="sg-label" style="margin-top:var(--space-xl)">Colour — the elixir</p>
+      <p class="t-body t-meta" style="margin-bottom:var(--space-lg);max-width:60ch">
+        The zinc tokens above are the metal: inert, cool, what the thing is on a
+        shelf. These are the same element activated — what two grams of a trace
+        element does once it is inside you. The hue is taken from the mood board
+        above, which is near-black almost everywhere and has exactly one electric
+        colour event in it: the teal-green car against night asphalt. Red is on
+        that board too, once, on ASRV — the competitor the decision log already
+        calls the category default, so we deliberately do not take it. Teal also
+        means no rival accent is introduced: Flame Teal was already the one
+        live-state colour, and this gives it depth rather than competition.
+      </p>
+      <div class="swatches">
+        <div>
+          <div class="sw__chip" style="background:var(--elixir-void)"></div>
+          <div class="sw__name">Elixir Void</div>
+          <div class="sw__hex">#062821</div>
+          <div class="sw__use">The substance at depth.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--elixir-deep)"></div>
+          <div class="sw__name">Elixir Deep</div>
+          <div class="sw__hex">#0A4A3F</div>
+          <div class="sw__use">Its body.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--elixir)"></div>
+          <div class="sw__name">Elixir</div>
+          <div class="sw__hex">#0B6B5C</div>
+          <div class="sw__use">The core.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--elixir-lit)"></div>
+          <div class="sw__name">Elixir Lit</div>
+          <div class="sw__hex">#12B394</div>
+          <div class="sw__use">Where light enters it.</div>
+        </div>
+        <div>
+          <div class="sw__chip" style="background:var(--elixir-void);display:grid;place-items:center">
+            <span style="width:2rem;height:2rem;border-radius:50%;background:var(--elixir-glow)"></span>
+          </div>
+          <div class="sw__name">Elixir Glow</div>
+          <div class="sw__hex">#5BF5D6</div>
+          <div class="sw__use">The specular rim. Rarest, use least.</div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin:var(--space-lg) 0">
+
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="no">The elixir never carries copy on light</h3>
+          <p>Elixir Lit on Zinc Wash measures 2.2:1 — that fails at every size,
+             large type included. Like Flame Teal, this is a dark-surface
+             family. Measured, not eyeballed.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">Gradients, but only inside the liquid</h3>
+          <p>"No gradients" is a rule about surfaces and it stands — not on a
+             button, a card or a band. A liquid is a volume with light passing
+             through it. Painted flat it is just a flat rectangle, so here the
+             gradient is the physics, which is what the rule was protecting.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">The charge survives the state change</h3>
+          <p>Flame Teal still means "live", and it still reads on the elixir at
+             9.3:1. It is not a second accent — it is the same accent, and the
+             elixir is the depth behind it.</p>
+        </div>
+      </div>
+
       <hr class="rule" style="margin:var(--space-lg) 0">
 
       <div class="rules">
@@ -142,7 +399,7 @@
   </section>
 
   <!-- TYPE -->
-  <section class="sg-section">
+  <section class="sg-section" id="type">
     <div class="shell">
       <p class="sg-label">Type</p>
       <div class="scale">
@@ -199,7 +456,7 @@
   </section>
 
   <!-- SPACE -->
-  <section class="sg-section">
+  <section class="sg-section" id="space">
     <div class="shell">
       <p class="sg-label">Space</p>
       <div class="space__row"><div class="space__key">xs</div><div class="space__bar" style="width:var(--space-xs)"></div></div>
@@ -222,7 +479,7 @@
     </div>
   </section>
 
-  <section class="sg-section">
+  <section class="sg-section" id="divider">
     <div class="shell">
       <p class="sg-label">The divider</p>
       <div class="rules">
@@ -246,7 +503,7 @@
   </section>
 
   <!-- MOTION -->
-  <section class="sg-section">
+  <section class="sg-section" id="motion">
     <div class="shell">
       <p class="sg-label">Motion</p>
       <p class="t-head" style="max-width:20ch">Reveal over display.</p>
@@ -264,9 +521,12 @@
              belongs.</p>
         </div>
         <div class="rule-card">
-          <h3 class="no">Nothing loops</h3>
-          <p>No ambient drifting, pulsing or floating. It reads as decoration and
-             undermines the restraint.</p>
+          <h3 class="no">Nothing moves at an idle reader</h3>
+          <p>No ambient drifting, pulsing or floating. One logged exception: the
+             Origin rollcall cycles at 3.2s a line. The liquid moves only while it
+             is being filled — under the cursor or keyboard focus, or once as a
+             page title fills on load — and settles when the cursor leaves. The
+             homepage pour is driven by scroll, never by a timer.</p>
         </div>
         <div class="rule-card">
           <h3 class="no">No fade-up on every section</h3>
@@ -278,7 +538,353 @@
     </div>
   </section>
 
-  <section class="sg-section" style="padding-bottom:var(--space-xl)">
+  <!-- SIGNALS -->
+  <section class="sg-section" id="signals">
+    <div class="shell">
+      <p class="sg-label">Signals</p>
+      <p class="t-body t-meta" style="max-width:64ch">
+        State colour, and it is not brand colour — a red error message does not
+        make this a red brand. These earn their place by doing a job. There are
+        <b>two of each</b> because the measurements left no choice: every value
+        that passes on Zinc Wash fails on Obsidian and vice versa, so one value
+        per state would be wrong on half the site. Info is hue 200° — the window
+        and screen light measured out of the gym references, so even the
+        functional colours come from the material.
+      </p>
+      <div class="sg-pair" style="margin-top:var(--space-lg)">
+        <div>
+          <p class="sg-cap">On Zinc Wash — body text and above</p>
+          <div class="sg-sig"><i style="background:var(--fail)"></i> Fail <span style="color:var(--graphite)">#B0332B · 5.28</span></div>
+          <div class="sg-sig"><i style="background:var(--warn)"></i> Warn <span style="color:var(--graphite)">#8A5B12 · 4.94</span></div>
+          <div class="sg-sig"><i style="background:var(--pass)"></i> Pass <span style="color:var(--graphite)">#2C6E4F · 5.13</span></div>
+          <div class="sg-sig"><i style="background:var(--info)"></i> Info <span style="color:var(--graphite)">#256D91 · 4.82</span></div>
+        </div>
+        <div class="sg-demo--dark" style="color:var(--zinc-wash)">
+          <p class="sg-cap">On Obsidian — safe at any size</p>
+          <div class="sg-sig"><i style="background:var(--fail-lit)"></i> Fail <span style="color:var(--muted)">#FF7A6B · 7.63</span></div>
+          <div class="sg-sig"><i style="background:var(--warn-lit)"></i> Warn <span style="color:var(--muted)">#F0B429 · 10.43</span></div>
+          <div class="sg-sig"><i style="background:var(--pass-lit)"></i> Pass <span style="color:var(--muted)">#52D89B · 10.79</span></div>
+          <div class="sg-sig"><i style="background:var(--info-lit)"></i> Info <span style="color:var(--muted)">#6BC2EC · 9.77</span></div>
+        </div>
+      </div>
+      <hr class="rule" style="margin:var(--space-lg) 0">
+      <div class="rules">
+        <div class="rule-card">
+          <h3 class="no">Pass is not Flame Teal</h3>
+          <p>Teal already means one thing — live, you are here. Giving it a
+             second meaning would blunt the only signal the nav has.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">Signals are not decoration</h3>
+          <p>They appear on validation, the lab panel and the waitlist. If one
+             shows up anywhere else it is being used as a colour, not a signal.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">Never pair a light value with a dark ground</h3>
+          <p>`--fail` on Obsidian is 3.10 and `--fail-lit` on Zinc Wash is 2.15.
+             Both fail. Match the value to the surface.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BUTTON -->
+  <section class="sg-section" id="button">
+    <div class="shell">
+      <p class="sg-label">Button</p>
+      <p class="t-body t-meta" style="max-width:64ch">
+        The button is a vessel, and hovering fills it. It flips with its surface
+        and it has to — Flame Teal on Zinc Wash is 1.7:1, so teal is only ever
+        correct on a dark band. On light the primary is Obsidian and fills with
+        the elixir; on dark it is an empty teal rim that fills with Flame Teal.
+        Hover each one.
+      </p>
+
+      <div class="sg-demo" style="margin-top:var(--space-lg)">
+        <p class="sg-cap">On light — primary, secondary, ghost, small</p>
+        <button class="btn" type="button">Join the list</button>
+        <button class="btn btn--secondary" type="button">Read the rest</button>
+        <button class="btn btn--ghost" type="button">Not now</button>
+        <button class="btn btn--sm" type="button">Small</button>
+      </div>
+      <div class="sg-demo">
+        <p class="sg-cap">States — disabled and busy are the two that get skipped</p>
+        <button class="btn" type="button" disabled>Disabled</button>
+        <button class="btn is-busy" type="button">Sending</button>
+      </div>
+
+      <div class="sg-demo sg-demo--dark band--dark">
+        <p class="sg-cap">On Obsidian — an empty vessel that fills</p>
+        <button class="btn" type="button">Join the list</button>
+        <button class="btn btn--secondary" type="button">Read the rest</button>
+        <button class="btn" type="button" disabled>Disabled</button>
+        <button class="btn is-busy" type="button">Sending</button>
+      </div>
+
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:9rem">Hover</th><td>Fills. A turning rounded square rises through the pill in .75s and turns only while it is filled. On dark the label flips to Obsidian as the surface reaches it.</td></tr>
+        <tr><th>Active</th><td>Scales to .985. The press has to be felt, not just seen.</td></tr>
+        <tr><th>Focus</th><td>Global <code>:focus-visible</code> outline, 2px at 5px offset. Never removed.</td></tr>
+        <tr><th>Disabled</th><td>Opacity .45, no transform, <code>not-allowed</code>. Hover does nothing.</td></tr>
+        <tr><th>Busy</th><td>Pointer events off, spinner at .7s. Under reduced motion the ring stops turning and simply holds.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- FIELD -->
+  <!-- LIQUID -->
+  <section class="sg-section" id="liquid">
+    <div class="shell">
+      <p class="sg-label">Liquid</p>
+      <p class="t-head" style="max-width:24ch">Dots mean where you are. Liquid means what you do.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        Two interaction families, never mixed on one control. Navigation and
+        selection use the nav&rsquo;s dot-to-pill morph. Anything a reader acts on
+        fills with the elixir. Still at rest: the liquid moves only under the
+        cursor or focus, or once as a page title fills on load. Hover each demo.
+      </p>
+
+      <div class="sg-pair" style="margin-top:var(--space-lg)">
+        <div class="sg-demo">
+          <p class="sg-cap">Liquid type &mdash; page titles and door names</p>
+          <p class="t-display" style="font-size:var(--step-4)"><span class="liq-type liq-type--filled" data-liq="Liquid">Liquid</span></p>
+        </div>
+        <div class="sg-demo sg-liq-demo" tabindex="0">
+          <p class="sg-cap">Vessel &mdash; a drawing fills inside its own line</p>
+          <svg class="vessel" viewBox="0 0 200 226" aria-hidden="true" focusable="false"><defs><clipPath id="vessel-sg-tee"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z"/></clipPath></defs><g clip-path="url(#vessel-sg-tee)"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></g><path class="vessel__line" d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z"/><path class="vessel__line vessel__line--soft" d="M82,13 C90,29 110,29 118,13"/></svg>
+        </div>
+      </div>
+      <div class="sg-pair">
+        <div class="sg-demo sg-demo--dark band--dark">
+          <p class="sg-cap">Flood &mdash; the whole card fills</p>
+          <div class="kit sg-kit">
+            <article class="kit__item" tabindex="0">
+              <span class="kit__code">ZS&mdash;01</span>
+              <div class="kit__fig" aria-hidden="true">
+                <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>
+              </div>
+              <h3 class="kit__name">Training Tee</h3>
+            </article>
+          </div>
+        </div>
+        <div class="sg-demo sg-demo--dark band--dark">
+          <p class="sg-cap">Button &mdash; an empty vessel on dark</p>
+          <button class="btn" type="button">Join the list</button>
+        </div>
+      </div>
+
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:9rem">Button</th><td>From the liquid-button reference. A turning rounded square rises through the pill and turns only while filled. Every button on every page.</td></tr>
+        <tr><th>Type</th><td>From the liquid-type reference. The word twice: solid text, and a copy whose fill is a wave-topped body clipped to the letterforms. Titles pour to .5 on load &mdash; measured to put the waterline at half the cap height. Wear, Fuel, Instruments, Elements, and the Elements doors.</td></tr>
+        <tr><th>Vessel</th><td>From the liquid-SVG reference. The outline is the clip; a wave-topped body rises inside it. The homepage tees and the Fuel tub.</td></tr>
+        <tr><th>Flood</th><td>From the single-div fill reference. The card fills with Elixir Deep; small muted type brightens to Zinc Silver as the flood reaches it (muted on Elixir Deep is ~2.9:1). The homepage kit.</td></tr>
+        <tr><th>Touch</th><td>No hover, so vessels and door names hold at half &mdash; the idea stays visible.</td></tr>
+        <tr><th>Reduced motion</th><td>End states only: no turning, no drift, no travel.</td></tr>
+      </table>
+      <p class="sg-label" style="margin-top:var(--space-xl)">Which construction, for which shape</p>
+      <table class="sg-motion">
+        <tr><th style="width:11rem">Turning blob</th><td>A large rounded square rising through the element, turning as it rises. Only for containers near square &mdash; buttons, cards. In a thin row a straight edge of the square crosses as a slanted wedge; that was captured on Origin and replaced.</td></tr>
+        <tr><th>Wave-topped body</th><td>A body with the wave tile on its top edge, rising straight up. For thin, wide things &mdash; list rows &mdash; and inside type.</td></tr>
+        <tr><th>Clipped vessel</th><td>A drawing's own outline used as the clip, with a wave-topped body translated up inside it. For drawings &mdash; tees, the tub, the vial.</td></tr>
+        <tr><th>Masked reveal</th><td>The clipped vessel with its body moved into an SVG <code>&lt;mask&gt;</code>, over a still image: the level uncovers the picture instead of pouring a colour. For artwork that keeps its own texture &mdash; the mark.</td></tr>
+        <tr><th>Scroll-built shape</th><td>One path rebuilt every frame from scroll progress. Only the homepage pour.</td></tr>
+      </table>
+
+      <p class="sg-label" style="margin-top:var(--space-xl)">Where it is used</p>
+      <div class="sg-pair">
+        <div class="sg-demo">
+          <p class="sg-cap">Row fill &mdash; Origin, what we make</p>
+          <ul class="refuse refuse--make" style="width:100%;margin-top:0">
+            <li><span class="refuse__k">The shirt</span><span class="prose">That does not get in your way.</span></li>
+          </ul>
+        </div>
+        <div class="sg-demo">
+          <p class="sg-cap">Numeral &mdash; Origin commitments: hollow, half on reveal, full on hover</p>
+          <div class="facts" style="margin-top:0;width:100%">
+            <div data-reveal class="lines"><div class="fact__n"><span class="liq-type" data-liq="01">01</span></div></div>
+          </div>
+        </div>
+      </div>
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:11rem">Page titles</th><td><code>.liq-type.liq-type--filled</code> &mdash; Wear, Fuel, Instruments, Elements. Pour to .5 on load (measured to half the cap height), full on hover.</td></tr>
+        <tr><th>Door names</th><td><code>.door-name .liq-type</code> &mdash; Elements. Fill when their band is chosen.</td></tr>
+        <tr><th>Rolling line</th><td><code>.rollcall__word.liq-type</code> &mdash; the Origin H1. Each phrase pours full in Flame Teal as it lands and drains as it leaves; &ldquo;Confidence / is&rdquo; hold in Zinc Wash.</td></tr>
+        <tr><th>Stressed phrase</th><td><code>em.liq-type</code> &mdash; Origin's quote (&ldquo;stopped watching.&rdquo;, pours full) and closing line (&ldquo;repeated.&rdquo;, half).</td></tr>
+        <tr><th>Numerals</th><td><code>.fact__n .liq-type</code> &mdash; Origin commitments. The outline stays on top of the fill.</td></tr>
+        <tr><th>Row fill</th><td><code>.refuse--make</code> &mdash; Origin. The refusals list below it stays still, on purpose.</td></tr>
+        <tr><th>Vessels</th><td><code>.vessel</code> &mdash; the homepage tees, the Fuel tub, the Origin two-grams vial (a sliver; it never fills &mdash; the point is how little it is), the mark (a masked reveal of its carbon fibre).</td></tr>
+        <tr><th>Flood</th><td><code>.band--dark .kit__item</code> &mdash; the homepage kit.</td></tr>
+        <tr><th>Buttons</th><td><code>.btn</code> &mdash; every button on every page.</td></tr>
+        <tr><th>Colour in type</th><td>The type rule stands: no painted accent on a word. The one way colour enters display type is as the substance filling it.</td></tr>
+      </table>
+    </div>
+  </section>
+
+    <!-- VIEWS -->
+  <section class="sg-section" id="views">
+    <div class="shell">
+      <p class="sg-label">Views</p>
+      <p class="t-head" style="max-width:24ch">Every piece, four ways.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        On <a href="wear.html">Wear</a>, each piece has a strip of views under its display &mdash;
+        front, back, detail, fabric. Choosing one swaps the display: the old drawing sinks into
+        the block and the new one rises out of it.
+      </p>
+      <table class="sg-motion" style="margin-top:var(--space-lg)">
+        <tr><th style="width:11rem">Selection</th><td>Choosing a view is navigation, so it uses dots, not liquid: the chosen slot's dot goes Flame Teal and its plate takes an Obsidian hairline. Hover only lifts the plate 3px.</td></tr>
+        <tr><th>Memory</th><td>Per piece. Leave Training Tee on Detail, open Floor Short, come back &mdash; still on Detail.</td></tr>
+        <tr><th>Transition</th><td>The dip. Out: fade .35s while sinking 1.4rem. In: rise .8s and fade .5s, after .12s.</td></tr>
+        <tr><th>Drawings</th><td>Defined once as symbols in a sprite at the top of the viewer and placed with <code>&lt;use&gt;</code> &mdash; twice in the display (for the two-tone split at the block edge) and once in the slot. Naming: <code>v{piece}-{view}</code>, e.g. <code>v2-detail</code>.</td></tr>
+        <tr><th>Photography</th><td>Plates are uncoloured Zinc Silver placeholders. Put an <code>&lt;img&gt;</code> in <code>.vview__plate</code> and in the matching <code>.vpanel__view</code>; <code>object-fit</code> does the rest.</td></tr>
+        <tr><th>Keyboard</th><td>Slots are buttons with <code>aria-pressed</code>. The piece rail is a tablist with arrow keys.</td></tr>
+        <tr><th>Phone</th><td>The strip stays four across, under the numeral; slots measure 77px at 390.</td></tr>
+      </table>
+      <p class="sg-cap" style="margin-top:var(--space-lg)">Adding a view to a piece (the strip is four columns &mdash; a fifth view needs <code>.vpanel__views</code>' grid changed in &sect;views)</p>
+      <code class="sg-code">&lt;!-- 1. in the sprite at the top of the viewer --&gt;
+&lt;symbol id="v1-inside" viewBox="0 0 200 226"&gt;
+  &lt;path d="..." fill="none" stroke="currentColor" stroke-width="2.2"/&gt;
+&lt;/symbol&gt;
+
+&lt;!-- 2. in that piece's .vpanel__plate --&gt;
+&lt;div class="vpanel__view" data-v="inside"&gt;
+  &lt;span class="vpanel__art vpanel__art--out"&gt;&lt;svg viewBox="0 0 200 226"&gt;&lt;use href="#v1-inside"/&gt;&lt;/svg&gt;&lt;/span&gt;
+  &lt;span class="vpanel__art vpanel__art--in"&gt;&lt;svg viewBox="0 0 200 226"&gt;&lt;use href="#v1-inside"/&gt;&lt;/svg&gt;&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- 3. in that piece's .vpanel__views --&gt;
+&lt;button class="vview" type="button" data-v="inside" aria-pressed="false"&gt;
+  &lt;span class="vview__plate"&gt;&lt;svg viewBox="0 0 200 226"&gt;&lt;use href="#v1-inside"/&gt;&lt;/svg&gt;&lt;/span&gt;
+  &lt;span class="vview__label"&gt;&lt;span class="vview__dot"&gt;&lt;/span&gt;Inside&lt;/span&gt;
+&lt;/button&gt;</code>
+      <p class="sg-cap">Adding a piece</p>
+      <ol class="sg-steps">
+        <li><span>Add a tab to <code>.viewer__rail</code> &mdash; id <code>vtN</code>, <code>aria-controls="vpN"</code>.</span></li>
+        <li><span>Add its four symbols to the sprite: <code>vN-front</code>, <code>vN-back</code>, <code>vN-detail</code>, <code>vN-fabric</code>.</span></li>
+        <li><span>Copy an <code>&lt;article class="vpanel"&gt;</code>; rename its ids, code, caption and wordmark; point every <code>&lt;use&gt;</code> at the new symbols.</span></li>
+        <li><span>Change the previous piece's next-button label to the new piece's name.</span></li>
+        <li><span>No CSS and no JS changes &mdash; the controller counts the tabs.</span></li>
+      </ol>
+    </div>
+  </section>
+
+<section class="sg-section" id="field">
+    <div class="shell">
+      <p class="sg-label">Field</p>
+      <p class="t-body t-meta" style="max-width:64ch">
+        One input pattern with the states that actually occur. The error colour
+        is paired for the same reason everything else is — neither value is
+        readable on both surfaces.
+      </p>
+
+      <div class="sg-pair" style="margin-top:var(--space-lg)">
+        <div>
+          <p class="sg-cap">On light</p>
+          <div class="field" style="margin-bottom:var(--space-md)">
+            <label class="field__label" for="d1">Email address</label>
+            <input class="field__input" id="d1" type="email" placeholder="you@email.com">
+            <span class="field__help">One email when the first drop is ready.</span>
+          </div>
+          <div class="field field--error" style="margin-bottom:var(--space-md)">
+            <label class="field__label" for="d2">Email address</label>
+            <input class="field__input" id="d2" type="email" value="you@" aria-invalid="true">
+            <span class="field__help">That address is missing a domain.</span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="d3">Email address</label>
+            <input class="field__input" id="d3" type="email" placeholder="Closed for now" disabled>
+            <span class="field__help">Disabled — nothing is for sale yet.</span>
+          </div>
+        </div>
+
+        <div class="sg-demo--dark band--dark">
+          <p class="sg-cap">On Obsidian</p>
+          <div class="field" style="margin-bottom:var(--space-md);color:var(--zinc-wash)">
+            <label class="field__label" for="d4">Email address</label>
+            <input class="field__input" id="d4" type="email" placeholder="you@email.com">
+            <span class="field__help">One email when the first drop is ready.</span>
+          </div>
+          <div class="field field--error" style="color:var(--zinc-wash)">
+            <label class="field__label" for="d5">Email address</label>
+            <input class="field__input" id="d5" type="email" value="you@" aria-invalid="true">
+            <span class="field__help">That address is missing a domain.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORM / RADIUS -->
+  <section class="sg-section" id="radius">
+    <div class="shell">
+      <p class="sg-label">Radius and elevation</p>
+      <p class="t-body t-meta" style="max-width:64ch">
+        Two radii and two lifts, no more. 2px was hardcoded in four separate
+        places before it was a token — a scale is what stops that drifting.
+        Elevation is shadow only. Gradients stay banned on surfaces; the elixir
+        is the one logged exception and it is a liquid, not a surface.
+      </p>
+      <div class="sg-demo" style="margin-top:var(--space-lg);gap:var(--space-md)">
+        <div style="width:8rem;height:4.5rem;background:var(--zinc-silver);border-radius:var(--radius-sm)"></div>
+        <div style="width:8rem;height:4.5rem;background:var(--zinc-silver);border-radius:var(--radius-pill)"></div>
+        <div style="width:8rem;height:4.5rem;background:var(--zinc-wash);border-radius:var(--radius-sm);box-shadow:var(--lift-1)"></div>
+        <div style="width:8rem;height:4.5rem;background:var(--zinc-wash);border-radius:var(--radius-sm);box-shadow:var(--lift-2)"></div>
+      </div>
+      <table class="sg-motion">
+        <tr><th style="width:9rem"><code>--radius-sm</code></th><td>2px. Cards, inputs, plates, swatches. Zinc is cut, not moulded.</td></tr>
+        <tr><th><code>--radius-pill</code></th><td>999px. The nav capsule and buttons only.</td></tr>
+        <tr><th><code>--lift-1</code></th><td>An edge. The sticky masthead once you leave the top.</td></tr>
+        <tr><th><code>--lift-2</code></th><td>Off the page. The door cards when their category is chosen.</td></tr>
+      </table>
+    </div>
+  </section>
+
+    <!-- PAGE ANATOMY -->
+  <section class="sg-section" id="anatomy">
+    <div class="shell">
+      <p class="sg-label">Page anatomy</p>
+      <p class="t-head" style="max-width:24ch">Every page is built the same way.</p>
+      <ol class="sg-steps" style="margin-top:var(--space-lg)">
+        <li><span><b>Head.</b> Title, description, the SVG favicon, <code>theme-color</code>, <code>og:title</code> and <code>og:description</code>. Google Fonts, then <code>brand.css</code>. No page carries its own <code>&lt;style&gt;</code> &mdash; this guide is the only exception.</span></li>
+        <li><span><b>Masthead.</b> The inline mark and the nav, identical markup on every page; <code>nav.js</code> marks the current page.</span></li>
+        <li><span><b>Hero.</b> <code>h1.t-display.lines.lines--load</code>, the word in <code>.liq-type.liq-type--filled</code>, then <code>p.lede.settle</code>. Home (the hero line, then the pour) and Origin (the rollcall) have their own.</span></li>
+        <li><span><b>Bands.</b> <code>.band</code> is light, <code>.band.band--dark</code> is dark. Every change of ground is a fracture &mdash; <code>.cleave--dark</code> going into dark, <code>.cleave--light</code> coming back out. Never a dark band cutting straight to light.</span></li>
+        <li><span><b>The ending.</b> <code>.cleave--dark</code> &rarr; <code>section.band.band--dark.join#waitlist</code> &rarr; <code>.cleave--light</code> &rarr; <code>.marquee</code> where the page has one &rarr; the dotmark.</span></li>
+        <li><span><b>Footer.</b> <code>footer.foot</code> with <code>nav.foot__nav</code>. The current page's link carries <code>aria-current="page"</code> and gets the teal dot.</span></li>
+        <li><span><b>Scripts.</b> <code>nav.js</code>, <code>site.js</code>, <code>dotmark.js</code>, all deferred. Every page reads and navigates without them.</span></li>
+      </ol>
+
+      <p class="sg-label" style="margin-top:var(--space-xl)">Component inventory</p>
+      <div style="overflow-x:auto">
+      <table class="sg-motion">
+        <tr><th style="width:9rem">Component</th><th>Classes</th><th>brand.css</th><th>site.js</th><th>Used on</th></tr>
+        <tr><th>Masthead + nav</th><td><code>.masthead .home .navgroup .capsule .morph .rise</code></td><td>&sect;nav</td><td>nav.js; sticky hairline</td><td>every page</td></tr>
+        <tr><th>The mark</th><td><code>.home__mark .mark .vessel .mark__art</code></td><td>&sect;the mark, &sect;liquid</td><td>&mdash;</td><td>every page</td></tr>
+        <tr><th>Fracture</th><td><code>.cleave .cleave--dark .cleave--light .cleave--elixir</code></td><td>&sect;cleave</td><td>reveal</td><td>every page</td></tr>
+        <tr><th>Liquid button</th><td><code>.btn .btn--secondary .btn--ghost .btn--sm</code></td><td>&sect;button, &sect;liquid</td><td>&mdash;</td><td>every page</td></tr>
+        <tr><th>Liquid type</th><td><code>.liq-type .liq-type--filled</code></td><td>&sect;liquid</td><td>load (is-ready), reveal</td><td>Wear, Fuel, Instruments, Elements, Origin</td></tr>
+        <tr><th>Vessel</th><td><code>.vessel .vessel__level .vessel__liquid .vessel__line</code></td><td>&sect;liquid</td><td>&mdash;</td><td>Home, Fuel, Origin, the mark</td></tr>
+        <tr><th>Join band</th><td><code>.join .signup .join__lede .join__note .join__label</code></td><td>&sect;liquid, &sect;waitlist</td><td>&mdash;</td><td>every page</td></tr>
+        <tr><th>Footer</th><td><code>.foot .foot__nav</code></td><td>&sect;foot</td><td>&mdash;</td><td>every page</td></tr>
+        <tr><th>Marquee</th><td><code>.marquee .marquee__track</code></td><td>&sect;marquee</td><td>marquee</td><td>most pages</td></tr>
+        <tr><th>Dotmark</th><td><code>.dotmark-canvas</code></td><td>&sect;dotmark</td><td>dotmark.js</td><td>every page</td></tr>
+        <tr><th>Pour</th><td><code>.pour .pour__stage .pour__vessel .pour__claim</code></td><td>&sect;pour</td><td>pour</td><td>Home</td></tr>
+        <tr><th>Doors</th><td><code>.doors .door .door__face .door-card</code></td><td>&sect;doors</td><td>doors</td><td>Home</td></tr>
+        <tr><th>Drop</th><td><code>.drop .piece .piece__frame .piece__state</code></td><td>&sect;drop</td><td>&mdash;</td><td>Home</td></tr>
+        <tr><th>Kit + flood</th><td><code>.kit .kit__item .kit__specs .kit__state</code></td><td>&sect;kit</td><td>&mdash;</td><td>Home</td></tr>
+        <tr><th>Viewer + views</th><td><code>.viewer .vtab .vpanel .vpanel__view .vview .sprite</code></td><td>&sect;viewer, &sect;views</td><td>viewer</td><td>Wear</td></tr>
+        <tr><th>Rollcall</th><td><code>.rollcall .rollcall__word .rollcall__note</code></td><td>&sect;rollcall, &sect;origin</td><td>rollcall</td><td>Origin</td></tr>
+        <tr><th>Facts</th><td><code>.facts .fact__n .fact__t</code></td><td>&sect;facts, &sect;origin</td><td>reveal</td><td>Origin</td></tr>
+        <tr><th>Lists</th><td><code>.refuse .refuse--make</code></td><td>&sect;refuse, &sect;origin</td><td>&mdash;</td><td>Origin</td></tr>
+        <tr><th>Two grams</th><td><code>.origin-name .two-grams</code></td><td>&sect;origin</td><td>reveal</td><td>Origin</td></tr>
+        <tr><th>Quote</th><td><code>.quote-band .quote .quote__text</code></td><td>&sect;quote, &sect;origin</td><td>reveal</td><td>Origin</td></tr>
+        <tr><th>Lab panel + tub</th><td><code>.lab-panel .purity-n .lab-table .fuel-split .fuel-tub</code></td><td>&sect;fuel, &sect;lab panel</td><td>&mdash;</td><td>Fuel</td></tr>
+        <tr><th>Door bands</th><td><code>.door-band .door-name .door-sub .plate</code></td><td>&sect;elements</td><td>&mdash;</td><td>Elements</td></tr>
+      </table>
+      </div>
+    </div>
+  </section>
+
+<section class="sg-section" id="quality" style="padding-bottom:var(--space-xl)">
     <div class="shell">
       <p class="sg-label">Quality floor</p>
       <p class="t-body">
@@ -287,8 +893,28 @@
         information. Contrast measured against the values above, not eyeballed.
         Readable and navigable before JavaScript loads.
       </p>
+      <p class="sg-label" style="margin-top:var(--space-xl)">How it is checked</p>
+      <ol class="sg-steps">
+        <li><span>Contrast is computed from token values, never eyeballed. A colour that fails on one ground gets a paired token (<code>--fail</code> / <code>--fail-lit</code>).</span></li>
+        <li><span>Interactions are verified on the real pages by forcing <code>:hover</code> through Chrome DevTools and reading computed values back &mdash; not by screenshot alone.</span></li>
+        <li><span>Sizes and levels are measured: the title level (.5) from the letterforms' ink height; crowding from text ink, not element boxes.</span></li>
+        <li><span>Every page: balanced tags, no duplicate ids, every <code>url(#&hellip;)</code> and <code>&lt;use&gt;</code> resolves, the same ending order, zero horizontal overflow at 390px with touch emulated.</span></li>
+        <li><span>Test through a server that sends <code>Cache-Control: no-store</code>. A plain static server lets the browser keep a stale stylesheet for minutes after an edit.</span></li>
+      </ol>
     </div>
   </section>
+
+  <footer class="shell foot t-meta">
+    <span>ZinStim &middot; Dhaka</span>
+    <nav class="foot__nav" aria-label="Footer">
+      <a href="origin.html">Origin</a>
+      <a href="wear.html">Wear</a>
+      <a href="fuel.html">Fuel</a>
+      <a href="instruments.html">Instruments</a>
+      <a href="elements.html">Elements</a>
+    </nav>
+    <span>&copy; 2026</span>
+  </footer>
 
 </main>
 

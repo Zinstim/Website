@@ -1,0 +1,280 @@
+# ZINSTIM — MASTER
+
+Read this file first, every session, before anything else.
+
+---
+
+## 0. WHAT THIS IS
+
+The single source of truth for the ZinStim brand and website. Everything below
+is either decided, proposed, or open. Nothing gets built from a proposal.
+
+**Brand:** ZinStim. Zinc + Stim. Fitness brand, Bangladesh-founded.
+**Sells:** apparel, creatine and protein, accessories (watches, fitbands).
+**Position:** a brand that sells confidence and tells a story. Product is the proof, not the pitch.
+**Site style brief (from Kash):** breathing spacious minimalism, modern, cool font
+effects, 3D introduced gradually.
+
+---
+
+## 1. OPERATING RULES
+
+**R1 — Read before write.**
+Read this file, then only the sub-file relevant to the task. Do not read
+everything every time.
+
+**R2 — Proposals live in files, decisions live in the log.**
+Anything I invent is `PROPOSED`. It becomes `DECIDED` only when Kash says so,
+and only then does it move into section 3 of this file. Never build off a
+`PROPOSED` item.
+
+**R3 — One file per layer. No new files without asking.**
+The tree in section 2 is the whole structure. If something new is genuinely
+needed, ask first and say what it replaces.
+
+**R4 — Optimised output.**
+Files are reference documents, not essays. Tables and specs over prose. No
+restating what another file already says — link to it instead.
+
+**R5 — Overwrite, don't accumulate.**
+When a spec changes, edit the existing line. Do not append a new version below
+the old one. History goes in the decision log, not in the spec.
+
+**R6 — Previews are self-contained.**
+`brand.css` and `nav.js` are canonical, but the HTML files inline a copy so they
+open standalone — relative paths do not resolve in a preview pane. After editing
+either canonical file, run `inline.py` to push the change into every
+HTML file. Never hand-edit the inlined copies.
+
+**R7 — Cleanup pass.**
+At the end of a work session: empty `99-scratch/`, delete any file that no longer
+has a job, confirm every `PROPOSED` item is either promoted or removed, update
+"current state" below.
+
+**R8 — No design defaults.**
+Cream background + high-contrast serif + terracotta accent is the generic AI
+house style. So is the rounded-card grid with identical shadows, and the
+all-caps eyebrow label above every heading. If a choice could belong to any
+brand, it does not belong to this one.
+
+---
+
+## 2. STRUCTURE
+
+```
+Zinstim/
+├── ZINSTIM.md              you are here — rules, decisions, current state
+├── theme.md                theme direction, nav naming, voice
+├── tokens.md               the reasoning behind brand.css
+├── components.md           nav capsule, three doors, divider
+├── structure.md            pages, IA, section-by-section
+├── brand.css               ← the system as code. single source of truth
+├── nav.js                  nav behaviour, progressive enhancement
+├── inline.py               build step — run after editing brand.css or nav.js
+├── styleguide.html         live reference — open this to see everything
+├── index.html              homepage
+├── origin.html             the story page
+├── elements.html           three doors — the range index
+└── fuel.html               Fuel category page with lab panel
+```
+
+---
+
+## 3. DECISION LOG
+
+Only confirmed decisions. Newest at top.
+
+| Date | Decision | Where it lives |
+|---|---|---|
+| 16 Sep | **The mark fills with its own carbon fibre, not the elixir.** Kash sent the red carbon-fibre artwork and asked for the mark to turn that colour as a liquid reveal on hover. At rest nothing changes — Obsidian on light, Zinc Silver on dark, flat. Under the cursor the same wave-topped liquid rises, but it is now an SVG `<mask>` over the real artwork (`assets/img/zinstim-mark.png`, placed once inside the vector's clip), so the level *uncovers* the picture instead of painting a colour: only the edge moves, the weave never slides, and it is the same artwork on both grounds. The 07 Sep version of this idea — the PNG revealed with CSS `mask-image` — went blank over `file://`; this one has no CSS mask and no cross-origin rule, only an `<image>` and a `<mask>` inside the inline SVG. Checked frame by frame in Chrome, Edge and Firefox, opened from disk, with a real pointer: 0 red pixels at rest; the red rising from the bottom (27% → 37% → 53% of the mark's ink at 53, 129 and 223ms in Chrome); the whole artwork within about half a second; 0 red again about .3s after the pointer leaves. Full is now `--vessel-level: 1.12`, not 1.08: at level 1 the wave's troughs are still 10.5 units below the top of the mark (of 114), and at 1.08 they stopped 1.4 short and drifted along the top of the blade as bumps of the base colour — under a pixel in the nav, plain at 8rem, and there all along under the teal fill too. Caught by diffing two frames that should both be full: 356 pixels changed in the top three rows at 8rem before, 0 after, in Chrome and Firefox. | every page, `brand.css` §the mark, `styleguide.html` #mark |
+| 16 Sep | **Every piece on Wear has four views, in a strip under its display.** Front, back, detail, fabric — filling the empty gap between the viewer and the join band that Kash pointed at. Choosing a view swaps the display with a dip: the old drawing sinks into the block while the new one rises out of it. Choosing a view is navigation, so it speaks dots, not liquid — a live teal dot and an Obsidian hairline on the plate. Each piece remembers its own view. The drawings are defined once as symbols and placed with `<use>`, so one edit changes every place a view appears; plates stay uncoloured placeholders with an `<img>` slot. Verified by real clicks: front → back → detail swaps the display and the pressed slot; Floor Short on Fabric while Training Tee stays on Detail. | `wear.html`, `brand.css` §views, `site.js` |
+| 16 Sep | **The mark is a vector, Obsidian at rest, and it fills.** Traced from the PNG's alpha by contour detection — IoU **.996**, 25 disagreeing pixels in 6,472, 33 points — and drawn flat: Obsidian on light, Zinc Silver on dark, the mark rule carried in from the start. The red carbon-fibre PNG broke that rule and turned to mud at the 25px it is shown at; it stays in `assets/img` as the master artwork. Pointing at the mark fills it with the elixir — Kash's first liquid reference was a logo filling — which makes the mark the one deliberate crossing of the dots-and-liquid rule: it is the brand, not a control. **What it fills with changed the same day: its own carbon fibre, not the elixir — see above.** Inline in every masthead so it paints over `file://`. The same vector is now the favicon, switching to Zinc Silver in dark browser UI. | every page, `assets/img/zinstim-mark.svg`, `brand.css` §the mark |
+| 16 Sep | **Origin's H1 is in colour, and the colour is liquid.** “Confidence / is” hold in Zinc Wash; each phrase in the rolling line pours full with Flame Teal as it lands and drains as it leaves. The type rule against colouring a word is amended rather than broken: colour may enter display type only as the substance filling it, never as a painted accent (`docs/tokens.md`). | `origin.html`, `brand.css` §origin, `docs/tokens.md` |
+| 16 Sep | **Origin is in the same system as every other page.** The hollow commitment numerals fill to half as they arrive and to full under the cursor, with their outline kept on top. “What we make” rows fill with a pale body when pointed at and the name takes the elixir; the refusals list is left still on purpose. The zinc section gets a vial holding a poured sliver that never fills — the point is how little two grams is. The quote's “stopped watching.” pours full after its lines rise; the closing “repeated.” pours to half. | `origin.html`, `brand.css` §origin |
+| 16 Sep | **The turning blob is only for near-square containers.** On Origin's list rows (~60px tall against a 1,600px square) a straight edge of the rotating square crossed the row as a slanted wedge — captured, and it read as a skewed shape rather than liquid. Rows use the liquid-type construction instead: a pale body with the wave tile on its top edge, rising straight. Recorded in the style guide as “which construction for which shape”. | `brand.css` §origin, `styleguide.html` |
+| 16 Sep | **The site is complete enough to hand over.** Every page has a footer that carries the whole site, with the nav's devices (underline drawing in, teal dot on the current page, `aria-current`); a favicon; `theme-color` and share tags. Checked on all seven pages: balanced tags, no duplicate ids, every clip and `<use>` resolves, the same ending, no runtime errors, zero overflow at 390px. | every page |
+| 16 Sep | **The style guide is the handoff.** Added a contents index; the mark (live demos at three sizes on both grounds, colour, hover, size, files); liquid constructions by container shape and every place the liquid is used, with live row and numeral demos; views, with a copy-paste snippet for adding a view and the steps for adding a piece (no CSS or JS changes needed); page anatomy — the seven-part skeleton every page follows — and a component inventory mapping 22 components to their classes, CSS section, controller and pages; and how the work is checked. | `styleguide.html` |
+| 16 Sep | **One interaction language across every page: dots mean where you are, liquid means what you do.** Kash's direction was to stop designing one page at a time. Two families, never mixed on one control: the nav's dot-to-pill morph stays the language of navigation and selection (the nav, the Wear tabs, the next arrow, status pills); anything a reader acts on fills with the elixir. Four components, one from each of Kash's references, restyled into the brand — flat, one substance, no texture: the **liquid button**, **liquid type**, the **vessel** (liquid SVG) and the **flood** (single-div fill). Documented live in the style guide's new Liquid section. | `brand.css` §liquid, every page, `styleguide.html` |
+| 16 Sep | **Every button is a vessel, and hovering fills it** — replacing the 2px hover lift. A turning rounded square rises through the pill and turns only while filled. On light the pill is Obsidian and fills with the elixir; the label never changes because Zinc Wash on the elixir is ~5.4:1. On a dark band it is an empty teal rim that fills with Flame Teal, and the label flips to Obsidian as the surface reaches it. Verified by forcing `:hover` through the DevTools protocol: the liquid travels from below the pill to −22px, label `rgb(233,236,238)` to `rgb(13,13,13)`. | `brand.css` §button |
+| 16 Sep | **Page titles are liquid type, resting at a measured half.** Wear, Fuel, Instruments and Elements pour in once on load and fill on hover; the Elements door names fill when their band is chosen (they used to sit at 28% opacity). The word is drawn twice — solid text, and a copy filled with a wave-topped body clipped to the letterforms — so the empty part is full-strength type, never a faint ghost. The rest level is **.5, measured**: at 152px the cap height is .691em inside a 1.32em liquid box, and .5 puts the waterline 51% down the ink. The first value, .6, was a guess and sat 32% down — the words read as teal with black smudges on top. The copy's box is also padded past the word: glyph ink overhangs its advance width, and the unpadded box left a solid sliver on the r of “Wear” even at full — measured at **0 black rows** after the fix. | `brand.css` §liquid, `wear.html`, `fuel.html`, `instruments.html`, `elements.html` |
+| 16 Sep | **Product drawings are vessels.** The outline path is used twice — as the clip and as the line on top — so the liquid can never leave the garment and the edge stays crisp over it. The homepage tees fill inside their outline on hover, replacing the inverted second plate (a photograph-swap standing in for photography that does not exist; when real photography lands, the hover becomes the second shot again). Fuel gets a tub that holds a dose at rest and fills when pointed at: Fuel is the one category that *is* the substance, so it is the one page where the vessel is the product. | `index.html`, `fuel.html`, `brand.css` |
+| 16 Sep | **Kit cards flood.** The whole card fills with Elixir Deep — flat, because a gradient on a turning shape turns with it. Small muted type fails on Elixir Deep (~2.9:1), so the code and specs brighten to Zinc Silver (~8:1) as the flood reaches them. | `brand.css` §kit |
+| 16 Sep | **Every page ends the same way:** dark fracture → the join band → light fracture → marquee → dotmark. There were four different endings — a styled form on the homepage, a bespoke off-system form on Fuel, an inline link on Wear, and nothing at all on Instruments, Elements and Origin — and two broken transitions: Elements dropped a dark fracture straight onto a light marquee, and three pages cut hard from a dark band to light. Checked by script on all six pages: tags balanced, no duplicate ids, every clip reference resolves, and the same ending order everywhere. | every page |
+| 16 Sep | **No page carries its own styles any more.** Fuel's and Elements' inline style blocks moved into `brand.css` (their private copies of `.lede`, `.prose`, `.settle` and `.foot` deleted, Fuel's off-system form removed). Underlined inline-styled links became buttons — the homepage's “Read the rest”, Instruments' two doors — so every action on the site is the one liquid component. The Elements subline uses `.lede` like every other page. | `brand.css`, `fuel.html`, `elements.html`, `index.html`, `instruments.html` |
+| 16 Sep | **Still at rest; the liquid moves only while it is being filled.** Waves drift and blobs turn only under the cursor or keyboard focus, or once as a title pours in on load, then settle. Touch has no hover, so vessels and door names hold at half and the idea stays visible (checked with touch emulation at 390px, where every page also measured zero horizontal overflow). Reduced motion gets end states with no turning, drift or travel. The style guide's “nothing loops” card was corrected: the 24s surface-drift exception it listed no longer exists. | `brand.css`, `styleguide.html` |
+| 16 Sep | **The one moment is a pour.** A vessel tips, the elixir pours, lands, pools and floods the stage, and the claim surfaces as the liquid covers it. From Kash's Figma prototype (*Actual Design*, Desktop 5) and a screen recording of it — taken for its **choreography**, not its surface. The reference is a glossy pink bottle and a psychedelic swirl; this is a flat Obsidian vial with one Zinc Silver band and the elixir family, which is the brand's whole register. It replaces the rectangle that filled between two painted fractures. | `index.html`, `brand.css` §pour, `site.js` |
+| 16 Sep | **The top fracture is the liquid's ceiling, not a painted rim — the fix for a cheat Kash caught.** The old rim was an element that turned teal on a ramp from 72% fill, so it went teal before the liquid reached it, and a band of black air showed between a “liquid” rim and the actual liquid. Now there is one liquid shape rebuilt each frame, capped by the fracture line: the teeth only exist where liquid has reached them, so a gap between rim and liquid cannot happen — there is no rim to have one. Verified with an automated check (any stage row more than half Obsidian fails) across every captured frame at 1440×900, 1920×1000, 390×844 and reduced motion: **zero bands**. | `site.js`, `brand.css` §pour |
+| 16 Sep | **The claim surfaces exactly as far as the liquid covers it**, measured against the live surface, not a timer — and it sinks back if the reader scrolls up and drains it. Zinc Wash type is invisible on the Zinc Wash page, so the uncovered part of a half-covered line simply is not there: the liquid masks the claim for free, and at 62% through the pour “Two grams” is literally breaking the surface. | `site.js` |
+| 16 Sep | **Scroll-driven and pinned, and nothing loops.** The stage pins under the masthead (`--mast-h`, measured, since the masthead is opaque and sticky) and the reader pours it; scrolling back drains it. Even the ripple is a function of progress, so it stops when the reader stops — which retires the looping-surface exception. Tuned against captured frames: the liquid sits **in front** of the vessel so the flood swallows it (behind, the bottle floated on the surface); the vessel leaves before the flood reaches the rim (left in, it poked up between the teeth); the pour starts at 62% of the viewport so the stream lands as the stage pins (at 80% the stage pinned at 43% progress and the pool landed half below the fold). | `site.js`, `brand.css` §pour |
+| 16 Sep | **The liquid's gradient follows depth, not the shape's bounding box.** Laid out in stage pixels from the highest surface point, so a thin sheet on the floor stays light and only real depth goes dark; full, the floor is exactly `--elixir-void`, which is what the fracture below is filled with. **Fallbacks:** without JavaScript the section is a plain elixir block with the claim on it, no pin; with reduced motion it is the flooded end state, claim surfaced, no pin and no pour — both captured and checked. | `brand.css` §pour, `site.js` |
+| 16 Sep | **Wear: one short wordmark per piece, set large.** `training.` / `floor.` / `short.` at up to 6.4rem, with the full name moved into the code line and kept for screen readers. The reference's “lab.” can be big because it is four characters; “training tee.” at that size would cross half the page. “Small letters” had been over-read as *make the name small* — the reference keeps its details tiny and its wordmark big. The numeral went solid and heavy for the same reason: it is the second anchor on the left, not a faint outline. | `wear.html`, `brand.css` §viewer |
+| 16 Sep | **Wear: full width, and sized by height as well as width.** In the 78rem shell a 1920 screen left ~336px of dead margin on the left while the block bled off the right; `.shell--full` uses the frame the way the reference does, and the block starts at column 4 (~26%, reference ~32%). Tall measures use `min(vw, vh)` so the rail and the bottom of the block fit on screen together below the nav — measured at 1920×1000 (682 of 902px), 1440×800 (578 of 702) and 1280×720 (529 of 622). | `wear.html`, `brand.css` §viewer |
+| 16 Sep | **Wear: crowding measured by ink, not boxes.** Box overlaps were misleading — grid areas claimed space their text never used. By text ink, the one real collision was the caption, 47px from the garment's collar at 1280; its columns are now sized to their text and it clears by 109–243px at every width. The stamp is pinned to the page edge, not the shell's, after it measured inside the garment's span. | `brand.css` §viewer |
+| 16 Sep | **Wear: the action is a real square, and it advances to the next piece.** It measured 33×48 — a sliver — and is now 54×54. It used to jump to the waitlist, sending a reader off the page while they were looking at the product; now it opens the next piece and its label names that piece. The waitlist stays the last thing on the page. **Switching** fires 35 transitions (checked through `getAnimations()`); the leaving block now starts collapsing at .12s instead of .30s, because at .30s the panel had faded before its collapse could be seen. | `wear.html`, `brand.css` §viewer, `site.js` |
+| 16 Sep | **Wear on phones: the wordmark had inherited the desktop band row.** The phone grid never reset `grid-template-rows`, so the wordmark's row kept the band's 10rem minimum and sank to its bottom — a 117px hole under the caption, now 30px. The phone action moved to the left end of the block (right-anchored, it sat 15px under the garment) and the garment moved right to clear the wordmark by 47px. | `brand.css` §viewer |
+| 16 Sep | **The viewer's layout was rebuilt onto the reference's actual frame.** The first pass took the idea and missed the proportions: it set the piece name at 4.6rem, parked the colour block inside the right-hand column, laid the numeral flat, and ran to 987px — taller than the viewport, so the rail scrolled off and you could never see the control and the thing it controlled at once. The frame now runs across 12 columns the way the reference does: rail and a boxed stamp on its side at the top, then the code and four facts in two tiny columns, then a band holding a numeral turned on its side, the action, the block running off the page edge, and the piece standing on it. Measured at **650px at 1440×900 — it fits the viewport.** | `wear.html`, `brand.css` §viewer |
+| 16 Sep | **Small type is the register; exactly one thing is set large, and even that is modest.** Everything on this page except the piece name is .58–.72rem mono. The name is lowercase with a full stop — a wordmark for the piece, not a headline about it — and tops out at 3.2rem against the 4.6rem of the first pass. The composition is carried by the grid and the block. Size was doing work that position should have been doing. | `brand.css` §viewer |
+| 16 Sep | **A third scale of the nav's morph, and this one is inside the picture.** The action straddles the block's left edge and opens from a square into a pill with its label rising out of a clip — `.morph` and `.rise` together. Square at rest is the point: it is the only hard-edged mark in a composition of bands, so the eye lands on it. Measured: **33px / 2px radius at rest → 187px / 999px with the label at full opacity and untranslated.** Two of the three nav-derived interactions now sit in the composition rather than above it, which was the other half of why the first pass read as having none. | `brand.css` §viewer |
+| 16 Sep | **The plate is sized by height, not width, so the two-tone break cannot drift.** The piece is 150% of the band and hangs from its bottom, so exactly one third clears the top — and that third is what the Obsidian/Zinc-Silver clip line runs off. Giving the plate the artwork's own aspect ratio means the drawing fills it with no letterboxing, so the fraction holds at every viewport: measured **0.333 at both 1440 and 390**. Size it by width instead and the letterbox moves, the clip drifts off the block edge, and the garment changes colour in the wrong place. | `brand.css` §viewer |
+| 16 Sep | **The stamp is out of flow.** In flow it was the tallest thing in the header row, so it set that row's height and pushed ~150px of dead air between the rail and the caption — measured. Absolutely positioned it sits at the top-right corner of the frame, where the reference puts it, and the rail alone sets the row. | `brand.css` §viewer |
+| 16 Sep | ~~**The fracture above the elixir now tracks the fill instead of being a fixed colour.**~~ **Superseded 16 Sep by the pour — see above.** Kept for the record because it is the mistake the pour fixes: even ramped, the rim was a colour change standing in for liquid, and it went teal before the liquid reached it. Obsidian was right while the vessel was filling — above the waterline is air — and wrong at the brim: a black band on a full vessel reads as a lid, not a rim. `.cleave--lip` takes `--elixir` once the liquid tops out, measured settling at `rgb(11,107,92)`, which is exactly the 0% stop of the body gradient, so there is no colour step. Its opposite number below takes `--elixir-void`, the 100% stop. Top and bottom of one volume. Unlike every reveal on this site the class is **toggled, not added** — a reveal is something you have seen, but a waterline goes back down. | `brand.css` §cleave, `site.js` |
+| 16 Sep | ~~**The Wear page is a viewer, not a grid — and it is the nav's gesture at a third scale.**~~ **Layout rebuilt same day — see above.** The interaction survived; the composition did not. §nav turns a dot into a pill; §drop turns a dot into a pill around a status; here the tab's dot opens into a pill AND the stage's block opens out of a circle into the ground the product stands on. Same two properties, same two delays, three sizes of one idea, so a reader who has used the nav already knows the control. Panels stack in a single grid cell and crossfade, so switching never reflows the page under the cursor. The kit grid it replaced was the same list the homepage already shows. | `wear.html`, `brand.css` §viewer, `site.js` |
+| 16 Sep | **The garment crosses the edge of the block, so it is drawn twice.** The composition only works if the piece breaks out of the top of the coloured ground — a product sitting neatly inside a rectangle is a catalogue tile, one coming out of it is a photograph. But Zinc Silver on Zinc Wash measures about **1.1:1**, so the part breaking out was invisible. Two clipped copies of the same drawing instead: Obsidian above the line, Zinc Silver below it, both clips driven by `--block-h` so they cannot drift out of register. The piece changes value exactly where it enters the substance. Photography will not need this — it carries its own values. | `brand.css` §viewer |
+| 16 Sep | **Wear's dark moment moved to the end of the page.** The viewer wants the light ground the reference gets its space from, so the two cleaves bracketing the old dark kit band went with it. Rather than leave the page with no fracture at all — it is the site's signature transition — the closing "Nothing is for sale yet" band became `band--dark` behind a `cleave--dark`, which is exactly how `index.html` ends. Its body copy moved from Graphite to `--muted`: Graphite on Obsidian measures about 3.5:1. | `wear.html` |
+| 16 Sep | **Bleed is computed from the shell's own gutter, not from a percentage.** `calc(50% - 50vw)` is the usual full-bleed trick and it is wrong on a grid item: a percentage margin resolves against the grid **area**, not the container, so it measured the column. The display's right edge landed at **1550 in a 1280 viewport** — 270px past the page, hidden only because the section clips. Replaced with `max(0px,(100vw - 78rem)/2) + gutter`, which is the gap `.shell` actually leaves, and re-measured at 1273. | `brand.css` §viewer |
+| 16 Sep | **The runway is gone; the drop replaces it.** The runway was a 340vh sticky track — 2924px of scroll — showing ONE tee, with two of its three spec blocks faded out at any moment. It was also the page's second product display: §kit already says "Everything we have made". Two grids would have been the same list twice. They are now a pair with different jobs — the kit is the catalogue, the drop is the arrival. Document height fell from the runway's bulk to **6118px** measured at 1280×900, and the section's 88-line scroll controller was deleted outright rather than rewritten: the replacement runs on hover and focus alone. | `index.html`, `brand.css` §drop, `site.js` |
+| 16 Sep | **The drop's interaction is the nav's, and nothing new was invented for it.** One gesture fires three devices that already existed: (1) **dot to pill** — the state chip uses `.morph`'s exact two-property/two-delay timing, so the obsidian pill closes in around the teal dot and the type inverts to Zinc Wash; (2) **mask-rise** — the spec climbs out of a clip on `.rise`'s timings, same 150% start, same fast-out/slow-in asymmetry; (3) **others recede** — §doors' `:has()` rule, unchanged. Verified on the live page by re-pointing the shipped rules' trigger through CSSOM: the hovered piece holds `opacity:1`, the other settles to `opacity:0.3` / `blur(1.1px)`. | `brand.css` §drop |
+| 16 Sep | **Eye direction is spatial, not chromatic — the plates stay uncoloured.** The placeholders are Zinc Silver and will be replaced by photography, so tinting them would spend the colour budget on a rectangle that is going to disappear. What moves the eye instead: the two pieces do not line up (the second drops by up to 5.5rem — the cleave logic applied to layout), the piece you are not looking at recedes, and each piece carries exactly one teal mark. On hover the chosen plate inverts to Obsidian, which is also the only way Flame Teal stays legal on a light page — teal measures 1.7:1 on Zinc Wash, so it needs a dark ground to arrive on. | `brand.css` §drop |
+| 16 Sep | **Status is not hidden, only re-grounded.** §kit already settled that a state a reader can act on must be visible at rest. "Waitlist open" is the only actionable thing in this section, so hover changes the ground under the label rather than revealing the label. Consistent with the launch being waitlist-only: there is no price on these cards because nothing is for sale yet. | `index.html`, `brand.css` §drop |
+| 16 Sep | **Floor Tee is a real product now, so it was added everywhere it belongs.** The drop shows two tees, which meant a second tee had to exist. "Everything we have made" cannot then omit it, so the kit went from three pieces to four and `wear.html` from two to three. Codes renumbered in page order and kept identical across both pages: ZS—01 Training Tee, ZS—02 Floor Tee, ZS—03 Floor Short, ZS—04 Creatine Mono. | `index.html`, `wear.html` |
+| 15 Sep | ~~**The surface is ONE wave, and that is not an aesthetic preference.**~~ **Superseded 16 Sep by the pour — see above.** The lesson still holds for the pour: it builds a single surface shape, never stacked ones. Two overlapping filled wave paths put a hard vertical step in the liquid at the wavelength boundary. Found by rendering each layer alone rather than guessing: back wave clean, front wave carried the seam, bloom innocent, body+rim clean. The front wave's control point sat *above* the baseline (`Q150,14`) where the back wave's sits *below* (`Q150,116`) — that phase is what breaks at the tile edge. If a second surface is ever added, phase it below the baseline like the surviving one, or the step returns. | `brand.css` §elixir, `index.html` |
+| 15 Sep | ⚠️ **PROPOSED, not decided — the elixir rows below are awaiting Kash's sign-off.** R2 says nothing is DECIDED until he says so, and an earlier pass wrote these straight into this table and built off them in the same turn. That was wrong. The code exists as a working prototype on one section (the divider) and is reversible. | — |
+| 15 Sep | **The elixir: zinc has two states and the brand now shows both.** The zinc tokens are the METAL — inert, cool, what it is on a shelf. The elixir family (`--elixir-void` → `--elixir-glow`) is the same element ACTIVATED. This does not replace TRACE, it completes it: the theme always argued that two grams of a trace element runs everything, and this is the first time you see it. Reference points were Dark Elixir / Chemical X / the Omnitrix — all the same idea, a rare substance that transforms you. | `brand.css` tokens, `styleguide.html` |
+| 15 Sep | **Teal — not red, and not violet either.** The first pass picked violet by copying the storyboard's purple, which is taking a reference literally instead of reading it. Read properly, the mood board is near-black and grey almost everywhere with **one** electric colour event: the teal-green car against night asphalt. Red is on the board once, on ASRV — the category default this log already warns about — so it is deliberately not taken. Teal also avoids introducing a rival accent: Flame Teal was already the single live-state colour, and the elixir is depth behind it rather than competition. | `brand.css` tokens |
+| 15 Sep | **The elixir is a dark-surface family, more strictly than teal alone.** Elixir Lit on Zinc Wash is **2.2:1** — that fails at every size, large type included — so the elixir never carries copy on a light surface, no exceptions. Flame Teal keeps its one meaning ("live") and reads on the elixir at **9.3:1**. One further measured call: `--elixir-void` sits at **1.2:1** against Obsidian on purpose — at the first value (`#0A0410`) it measured **1.00**, identical, and the liquid disappeared into the band. All figures measured, not eyeballed. | `brand.css`, `styleguide.html` |
+| 15 Sep | **Two scoped exceptions, stated rather than sneaked.** *(16 Sep: exception (2) is retired — the pour does not loop at all; its ripple is a function of scroll. Exception (1), gradients inside the liquid, stands.)* (1) *Gradients* — the "no gradients" rule is about **surfaces** and still stands everywhere else; a liquid is a volume with light in it, and painted flat it is just a flat rectangle, so the gradient here is the physics the rule was protecting. (2) *Looping* — the surface drifts continuously (24s) because a liquid that holds still is a solid. The **fill** itself, which is the part that carries meaning, is scroll-driven and never autoplays. Both are scoped to `.elixir` only. | `brand.css` §elixir |
+| 15 Sep | **The divider is where it ships first.** *(16 Sep: same moment, same claim — now delivered as a pour. See above.)* "Two grams of it. You never noticed." was always the one moment the brand explains itself — now you watch the two grams arrive and the claim surfaces out of them. Proving one location beats repainting seven pages. `data-reveal` stays on the claim so it is never JS-dependent; the elixir only adds the wet glow. | `index.html`, `site.js` |
+| 15 Sep | **The fracture below the elixir is filled with the liquid, not with Obsidian.** *(16 Sep: still true below. The part about the fracture ABOVE staying Obsidian is superseded — there is no painted fracture above any more.)* The fluid is anchored to the bottom of that section, so whatever the fill level is, the thing touching the lower cleave is always liquid — never air. Filled with Obsidian it cut the liquid off at a hard rectangular edge and resumed black, which is why the section read as a teal panel dropped into a black one rather than as a substance that goes somewhere. The new `.cleave--elixir` uses `--elixir-void`, which is not a near-match but the **exact** stop the body gradient ends on at 100% — measured across three columns of a real-page capture, the boundary has no colour step in it at all. The cleave **above** stays Obsidian deliberately: above the waterline is air, and air here is black. Tealing it would show liquid in two disconnected places while the vessel below was still empty. | `brand.css` §cleave, `index.html` |
+| 15 Sep | **The mark's crossfade-on-hover (07 Sep entry below) is reverted — it made the mark invisible at rest on every page.** It masked the artwork with `currentColor` for the rest state and only faded in the real PNG on hover. CSS `mask-image` referencing an external file silently fails to paint over the `file://` protocol in Chromium/Edge — proven with matched headless-Edge screenshots of the identical HTML: blank over `file://`, correct over `http://`. This site is routinely opened by double-clicking the HTML, not through a server, so the mark was gone for exactly the readers who never hover. The mark now always shows the real artwork; hover keeps a small translate/rotate instead of a reveal. The Obsidian/Zinc-Silver palette-flip is gone with it — a vanishing nav element outranks that. | `brand.css` §nav |
+| 07 Sep | ~~The mark is the real artwork, used twice, masked with `currentColor` at rest and revealed on hover.~~ **Reverted 15 Sep — see above.** | `brand.css` §nav, all pages |
+| 07 Sep | **Source art is 244KB–1.9MB and glossy red, so it cannot be dropped in raw.** `ZinstimLogo.svg` is a 1.9MB PNG in an SVG wrapper. `z-emblem.svg` is real vector but a VTracer auto-trace of the render: 2,591 paths, **1,603 fill colours**, 302KB, no `viewBox`, coordinates to x −551 against a declared width of 960 — unusable at 25px and impossible to recolour. What ships is `assets/img/zinstim-mark.png`, the mark resampled to 128px, **23KB**. If a true outline export ever appears (1–2 paths, flat, one colour, proper viewBox), swap it in — the CSS will not need to change. | `assets/img/`, `brand.css` §nav |
+| 07 Sep | **Rollcall tracking cannot go tighter than -.012em.** At 900 weight / 78 width the pair "rn" closes into an "m" at display size — "worn" was reading as "worm". Tracking is the fix; it also widens every line, which is why the size clamp came down with it. | `brand.css` §rollcall |
+| 07 Sep | **The rollcall is sized by its longest phrase, not by "Confidence".** The slot masks with `overflow:hidden`, which clips sideways as well as down, so an over-long line is cut off mid-word rather than overflowing visibly. Mask height and the distance a word travels are the same custom property (`--slot-h`): a percentage throw resolves against the word's own line box, not the mask, which is how parked words end up peeking along the bottom edge. The hero uses `.shell--full` so display type is not held to the 66ch body measure. Measured clear at 1440 / 1024 / narrow. | `brand.css` §rollcall |
+| 07 Sep | **`dotmark.js` sized its canvas from `parent.clientWidth`, which includes padding.** The canvas came out wider than the column it sits in, putting a horizontal scrollbar on every page at any viewport narrower than the shell's max-width. It now subtracts the padding, with `max-width:100%` in CSS as a second line of defence. The four pages that carried their own inline copy of the script were pointed at the shared file, so the fix reaches all of them and ~640 duplicated lines went with it. | `dotmark.js`, `brand.css`, all pages |
+| 07 Sep | **Origin opens with the rollcall, and it cycles.** Full-bleed obsidian hero: "Confidence / is / …" where the third line turns through five payoffs. The About-Nike construction, built from our own type. It **opens on the motto** (built, not worn.\*) so the first line read is the one the brand stands on, holds each line 3.2s, and comes back round — roughly a 16s turn. Kash's call, overriding the "nothing loops" line in `tokens.md`; the pace is a reading pace, not a ticker, and it pauses off screen. The footnote is tied to the starred line and comes and goes with it. The four non-motto phrases are `aria-hidden`, so the H1 reads "Confidence is built, not worn." | `brand.css` §rollcall, `site.js`, `origin.html` |
+| 07 Sep | **Pull-quote block — the trevornoah.com device.** Marks, one line at scale, hairline, stacked attribution. Reusable on any band, light or dark. **It does not colour a word:** that reference tints one word of the quote, and `tokens.md` forbids accenting a single word in a headline with colour, so emphasis is italic — already the house move. Attribution is self-referential (ZinStim / The Origin) and must stay that way; there are no third-party quotes to publish and inventing one would be the same failure as inventing lab figures. | `brand.css` §quote, `origin.html` |
+| 07 Sep | **Motto: Confidence is built, not worn.** The brand line. "Not bought at checkout" is the footnote that explains it. | `origin.html` |
+| 07 Sep | **The Dhaka section is cut from Origin.** "Why Dhaka" framed the brand around a location rather than around the argument. The three lab commitments it contained were kept and remounted under "When Fuel goes on sale", which is what they were actually about. Dhaka still appears in the global footer. | `origin.html` |
+| 07 Sep | **Wear has its own page. `elements.html` is an index, not a category.** Every "Wear" link used to land on `elements.html`, so clicking Wear showed a page titled Elements and a nav reading Elements — the category and the chooser were the same file. `wear.html` now holds the apparel; `elements.html` stays as the three-door index. The categories are: **Wear = clothing · Fuel = supplements, the main line · Instruments = accessories.** | `wear.html`, `elements.html` |
+| 07 Sep | **`instruments.html` says it is empty instead of faking a range.** It was a copy of `elements.html`, so the Instruments door led to the same chooser again. It is now a real page that states there is no supplier, no sample and no date, and links to the two doors that are open. Do not populate it with renders. | `instruments.html` |
+| 07 Sep | **Instruments is back as a third door.** Kash's call, and it supersedes the 06 Sep cut below. `instruments.html` exists and is in every nav. The objection in that row still stands — there is no product behind the door yet — so treat the page as a placeholder, not a shipped category. | every page, `brand.css` |
+| 07 Sep | **The face swap is a crossfade of two layers, not a font-family switch.** `font-family` cannot be transitioned, so each door carries its word twice — base in Archivo, alternate in the category's face — and hover crossfades them with a spring on the scale. Same construction the Aardvark reference uses. Reverting this to a single element with `:hover{font-family:…}` puts the hard cut back. | `brand.css` §doors |
+| 07 Sep | **Door alternates use no new families.** Wear → Instrument Serif italic, Fuel → Space Mono, Instruments → Archivo pushed wide and light (`wdth 125 / wght 300`). The width axis already carries hierarchy everywhere else, so Instruments did not need a fourth font download. | `brand.css` §doors |
+| 07 Sep | **Door cards are placeholders and their positions live in CSS.** Four per category, staggered in, positioned by `nth-child` in `brand.css` so no page carries a number. Drop an `<img>` inside a `.door-card` when photography exists. | `brand.css` §doors |
+| 07 Sep | **"Wear", not "Worn", everywhere.** Five pages said Worn, `index.html` said Wear, `theme.md` decided Wear. Standardised on the logged name. | every page |
+| 06 Sep | **Instruments cut from launch. Two categories: Wear and Fuel.** Nothing exists behind a third door — no product, no supplier, no sample. An empty category is the first promise the site cannot keep, on a brand whose argument is that it does not do that. Add it back when there is something to put in it. | `theme.md`, `elements.html` |
+| 06 Sep | **The lab panel ships empty.** Results read "Pending" until an accredited independent lab returns a real batch. Fabricated numbers were removed. The supplier's own COA is also unusable — invalid Salmonella spec, "Complies" in place of figures, blank QC signature, limits 10x looser than their own TDS. | `fuel.html` |
+| 06 Sep | **Runway product section.** Sticky centre track, garment travelling as you scroll, specs lighting one at a time, counter at the base. Scroll-driven, never autoplaying. | `brand.css` |
+| 06 Sep | **Dotted wordmark closes every page.** Halftone ZINSTIM via `background-clip:text` — real text, not an image. | `brand.css` |
+| 06 Sep | **Type: Archivo, not Instrument Serif.** Serif was elegant; the brand needs energy. Heavy+narrow display (900/78), body at 400/95. Width carries hierarchy, not a second typeface. | `brand.css`, `tokens.md` |
+| 05 Sep | **Theme: TRACE.** The thing that matters most is the thing you never notice. | `theme.md` |
+| 05 Sep | **Zinc is named once**, as a single divider, then never again. No atomic numbers, no lab language. | `theme.md` |
+| 05 Sep | **Launch is story-first.** Waitlist only, nothing for sale. Removes the DGDA dependency entirely. | `theme.md` |
+| 05 Sep | **Bangladesh first, diaspora second.** Bangla sits beside English with equal standing, not as a toggle. | `theme.md` |
+| 05 Sep | Navs: **Origin** · **Elements** → **Wear** / **Fuel** | `theme.md` |
+| 05 Sep | **No React.** Static multi-page plus cross-document view transitions. See note below. | `brand.css` |
+| 05 Sep | **Section breaks cleave, they do not tear.** Zinc is brittle at room temperature and fractures along crystal planes, so the edge is angular and faceted rather than soft and fibrous. Trevor Noah's effect, derived from our own material. | `brand.css` |
+| 05 Sep | **The teal dot means one thing: you are here.** Origin, or the collapsed capsule label. Never two at once. | `brand.css` |
+
+**Rejected, so they don't come back around:** *The Work* (strong but Nike owns
+that ground, and it isn't specific to ZinStim). *Signal* (positions you against
+Whoop and Oura with a creatine tub — revisit only if accessories ever lead).
+
+### Carried in from earlier brand work
+- Logo mark: swept blade-form Z, single closed path, legible at 16px
+- Zinc Silver `#D6DDE2` · Obsidian `#0D0D0D` · Flame Teal `#00E0B8`
+- Mark never appears in Flame Teal. On light surfaces it flips to Obsidian.
+- **Bone `#EFEBE4` dropped** — warm, argued with the material story, and sat too
+  close to the default generated-page cream. Replaced by Zinc Wash `#E9ECEE`.
+  Reasoning in `tokens.md`.
+
+---
+
+## 4. CURRENT STATE
+
+**Done**
+- Figma reviewed. Nav prototype and critique stickies captured in `structure.md`.
+- Theme decided: Trace. `theme.md` trimmed to the chosen direction only.
+- Tokens written — colour, type, space, motion. `tokens.md`.
+- Components specced — nav capsule, three doors, divider. `components.md`.
+- Site IA and page structure in `structure.md`.
+
+**Waiting on Kash**
+1. Approve the type call — one width-variable family per script (Archivo / Anek Bangla)
+2. Approve dropping Bone for Zinc Wash
+3. Pick the divider line — three candidates in `02-system/tokens.md`, recommendation noted
+
+**Done (06 Sep)**
+- Elements index — two door bands, full viewport each
+- Fuel category page with the lab panel in its pending state
+- Runway product section and dotted wordmark on the homepage
+- Local and chat versions merged into this single flat folder
+
+**Next**
+- Real photography to replace the plate placeholders and the SVG tee
+- Product detail page — the Aardvark reveal belongs there
+- Commission the first independent lab panel, then fill `fuel.html`
+- 3D last, and only where it earns its weight
+
+**Fixed in the merge, worth knowing about**
+- `elements.html` had an unterminated `<style>` block — everything between the
+  page CSS and `</head>` was being parsed as CSS. Closed.
+- `fuel.html` shipped invented lab results with "Pass" on every row, and the
+  marquee was advertising the invented assay figure. Both removed.
+- `.cleave--light` had its fill and background swapped, producing a hard seam
+  instead of a fracture. Fixed.
+- The `Elements` capsule label was a decorative `aria-hidden` `<span>` with no
+  `href` on every page — there was no way to click through to `elements.html`
+  itself, only to `Wear`/`Fuel` inside it. Now a real link. `fuel.html`'s
+  current-page script also rewrote the label text to "Fuel" without updating
+  its `href`, so the visible label pointed at the wrong page — fixed alongside it.
+
+---
+
+## 5. STACK
+
+**No React.** An SPA does not make this site faster, it front-loads the cost.
+React plus ReactDOM is roughly 40–50KB gzipped before a line of our own code,
+and nothing renders until it downloads and executes. A story-first launch site
+gets one or two page views per visitor, so we would pay that on the load that
+matters most and never collect the benefit. Bangladesh-first means mobile data
+and mid-range Android, which makes it worse. And a brand nobody has heard of
+needs to be findable, which client rendering makes harder than it needs to be.
+
+**What we use instead.** Static multi-page, with:
+
+```css
+@view-transition { navigation: auto; }
+```
+
+Cross-document view transitions fire on same-origin navigation when both pages
+opt in. The nav carries `view-transition-name: primary-nav`, so it survives the
+page load instead of re-mounting and re-animating — which was the real problem
+worth solving. Supported in Chrome 126+, Edge 126+, Safari 18.2+ and iOS 18.2+.
+Firefox has not shipped it and gets a normal page load; nothing breaks, because
+it is purely a progressive enhancement.
+
+Add speculation rules to prefetch on hover and navigation is effectively
+instant.
+
+**If we want component authoring** — so the nav is not copy-pasted into six HTML
+files — the answer is **Astro**, not React. It ships static HTML with near-zero
+JS, has view transitions built in, and a React component can still be dropped in
+later if one specific feature genuinely needs client state.
+
+React becomes correct when there is real client state: a cart, an account, a
+configurator. We have none of those, and story-first with a waitlist is the most
+static site imaginable.
+
+---
+
+## 6. KNOWN TENSIONS
+
+Flagging these because they will cause churn if left unresolved.
+
+**MUTANT and Under Armour do not match the brief.**
+MUTANT is loud, dark, chrome, aggressive. Under Armour is athletic-corporate.
+Neither is spacious minimalism. The Awwwards references (illoca, Trevor Noah,
+Aardvark) are editorial, playful, experimental — a different world entirely.
+Pick a lane. The Awwwards lane is the more distinctive one and matches the
+stated brief; MUTANT is the category default.
+
+**The KORA file is the generic default.**
+`Shop · Drop 01 — KORA.html` uses cream `#EDE7DB`, serif display, clay accent.
+That is the exact combination that reads as AI-generated right now. Useful as a
+structural reference for markup. Do not carry its look into ZinStim.
+
+**The AI try-on idea is a product, not a feature.**
+The Figma stickies describe photo upload, AI generation, ad-subsidised
+subscription, and a self-maintaining agent. That is a separate build with its own
+cost model. Park it. It does not belong in v1 of a brand site.

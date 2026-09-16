@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Instruments — ZinStim</title>
 <meta name="description" content="Accessories. Nothing is behind this door yet — no watch, no fitband, no sample.">
+<link rel="icon" type="image/svg+xml" href="assets/img/zinstim-mark.svg">
+<meta name="theme-color" content="#E9ECEE">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Instruments — ZinStim">
+<meta property="og:description" content="Accessories. Nothing is behind this door yet — no watch, no fitband, no sample.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -15,8 +20,7 @@
 <header class="masthead">
   <a class="home" href="index.html" aria-label="ZinStim — home">
     <span class="home__mark">
-      <img class="home__mark-real" src="assets/img/zinstim-mark.png"
-           width="128" height="114" alt="" aria-hidden="true">
+      <svg class="vessel mark" viewBox="0 0 128 114" aria-hidden="true" focusable="false"><defs><clipPath id="mark-clip"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="mark-fill" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#mark-clip)" mask="url(#mark-fill)"><image class="mark__art" href="assets/img/zinstim-mark.png" width="128" height="114"/></g></svg>
     </span>
   </a>
   <nav class="navgroup" aria-label="Primary" data-group>
@@ -37,7 +41,7 @@
   <section class="band" style="padding-top:var(--space-xl)">
     <div class="shell">
       <h1 class="t-display lines lines--load">
-        <span class="ln"><span>Instruments</span></span>
+        <span class="ln"><span class="liq-type liq-type--filled" data-liq="Instruments">Instruments</span></span>
       </h1>
       <p class="lede settle" style="margin-top:var(--space-md)">What you use.</p>
     </div>
@@ -55,34 +59,51 @@
     </div>
   </section>
 
+  <section class="band">
+    <div class="shell">
+      <p class="t-head lines" data-reveal style="max-width:22ch">
+        <span class="ln"><span>Two doors are open.</span></span>
+      </p>
+      <p class="t-body doors-open__lede">Everything that exists today is behind one of these.</p>
+      <p class="doors-open__actions">
+        <a class="btn" href="wear.html">Wear</a>
+        <a class="btn" href="fuel.html">Fuel</a>
+      </p>
+    </div>
+  </section>
+ 
   <div class="cleave cleave--dark" data-reveal aria-hidden="true">
     <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
       <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
     </svg>
   </div>
-
-  <section class="band band--dark">
+ 
+  <!-- JOIN — the only conversion on the site, and every page ends on it. -->
+  <section class="band band--dark join" id="waitlist">
     <div class="shell">
-      <p class="t-head lines" data-reveal style="max-width:22ch">
-        <span class="ln"><span>Two doors are open.</span></span>
+      <p class="t-head lines" data-reveal>
+        <span class="ln"><span>Nothing is</span></span>
+        <span class="ln"><span>for sale yet.</span></span>
       </p>
-      <p class="t-body" style="margin-top:var(--space-md);color:var(--muted)">
-        Everything that exists today is behind one of these.
+      <p class="t-body join__lede">
+        One email when the first drop is ready. Pricing, sizing, early access.
+        Nothing else, ever.
       </p>
-      <p class="t-ui" style="margin-top:var(--space-lg)">
-        <a href="wear.html" style="text-decoration:underline;text-underline-offset:.3em">Wear &rarr;</a>
-        <span style="display:inline-block;width:var(--space-lg)"></span>
-        <a href="fuel.html" style="text-decoration:underline;text-underline-offset:.3em">Fuel &rarr;</a>
-      </p>
+      <div class="signup">
+        <label class="join__label" for="email">Email address</label>
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@email.com">
+        <button class="btn" type="button" data-join>Join the list</button>
+      </div>
+      <p class="t-meta join__note">Static preview &mdash; this form does not send anything yet.</p>
     </div>
   </section>
-
+ 
   <div class="cleave cleave--light" data-reveal aria-hidden="true">
     <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
       <path d="M0,0 L0,118 L84,146 L158,104 L246,138 L318,96 L404,128 L486,88 L570,120 L654,78 L740,112 L822,70 L910,102 L992,62 L1078,94 L1148,54 L1200,84 L1200,0 Z"/>
     </svg>
   </div>
-
+ 
   <section class="marquee" data-marquee aria-hidden="true">
     <div class="marquee__track">
       <span>Wear</span><span>Fuel</span><span>Wear</span><span>Fuel</span><span>Wear</span><span>Fuel</span>
@@ -93,8 +114,15 @@
   </div>
 
   <footer class="shell foot t-meta">
-    <span>ZinStim · Dhaka</span>
-    <span>© 2026</span>
+    <span>ZinStim &middot; Dhaka</span>
+    <nav class="foot__nav" aria-label="Footer">
+      <a href="origin.html">Origin</a>
+      <a href="wear.html">Wear</a>
+      <a href="fuel.html">Fuel</a>
+      <a href="instruments.html" aria-current="page">Instruments</a>
+      <a href="elements.html">Elements</a>
+    </nav>
+    <span>&copy; 2026</span>
   </footer>
 
 </main>

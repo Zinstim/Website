@@ -32,6 +32,11 @@
     width = parent.clientWidth
           - (parseFloat(pad.paddingLeft) || 0)
           - (parseFloat(pad.paddingRight) || 0);
+    // A parent that is hidden, or not laid out yet, gives 0 or negative
+    // here — and getImageData throws IndexSizeError on a zero-width
+    // source, which killed the whole script. Bail quietly instead; the
+    // resize handler calls init again once the layout settles.
+    if (width < 1) { particles = []; return; }
     height = Math.min(200, width * 0.2);
     canvas.width = width * devicePixelRatio;
     canvas.height = height * devicePixelRatio;

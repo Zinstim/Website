@@ -31,6 +31,103 @@
      flame-teal on obsidian   ~12.1:1   safe
      flame-teal on zinc-wash   ~1.7:1   NEVER. teal is dark-surface only. */
 
+  /* ── the elixir ─────────────────────────────────────────────
+     Zinc has two states and the brand needs both. The zinc tokens
+     above are the METAL: inert, cool, solid — what the thing is on
+     a shelf. These are the same element ACTIVATED — what two grams
+     of a trace element actually does once it is inside you.
+
+     The hue comes from the MOOD BOARD, not from the storyboard. An
+     earlier pass took the storyboard's purple literally; that was
+     copying a reference instead of reading it. Read properly, the
+     board is near-black and concrete grey almost everywhere, with
+     exactly one electric colour event in it: the teal-green car
+     against night asphalt. That is the note to hit.
+
+     Red appears on the board too — once, on ASRV — and that is the
+     competitor the decision log already calls the category default.
+     Taking it would make us look like everyone else.
+
+     So the elixir is teal, which means it does not introduce a rival
+     accent: Flame Teal was already the brand's one live-state colour
+     and this gives it depth rather than competition. One accent,
+     deepened. The concept is untouched — a potent fluid that
+     transforms you, exactly the dark-elixir / Chemical X / Omnitrix
+     idea — only now it is our colour doing it.
+
+     Measured off the board rather than eyeballed. Filtering each
+     reference for saturated pixels only:
+       saturation across the board   0.3%-5.6% of frame — it is
+                                     95%+ monochrome, so colour is a
+                                     rare event, not a scheme
+       the car (ref4)                #1C4C43 at hue 169°
+       --elixir-void                 hue 168° — a one-degree match,
+                                     which is why this hue and not
+                                     another teal
+       ASRV (ref3)                   hue 2°, and 96% of its saturated
+                                     pixels are that one red
+       gym light (ref1/ref2)         hue 15-18°, warm — that is
+                                     tungsten and skin in a photo,
+                                     NOT permission for warm UI greys.
+                                     Zinc Wash stays cool.
+
+     A DARK-SURFACE family, more strictly than teal alone. Measured:
+       zinc-wash on elixir-void   13.3:1   safe at any size
+       zinc-wash on elixir-deep    8.6:1   safe at any size
+       zinc-wash on elixir core    5.4:1   body text and above
+       elixir-glow on elixir-void 11.6:1   safe at any size
+       flame-teal on elixir-void   9.3:1   the charge still reads
+       elixir-lit on obsidian      7.3:1   safe at any size
+       elixir-lit on zinc-wash     2.2:1   FAILS. the elixir never
+                                           carries copy on a light
+                                           surface — no exceptions.
+       elixir-void vs obsidian     1.2:1   deliberate: enough to give
+                                           the fluid a body, little
+                                           enough to stay abyssal.
+                                           At #0A0410 it was 1.00 —
+                                           identical — and the liquid
+                                           vanished into the band.    */
+
+  --elixir-void: #062821;   /* the substance at depth              */
+  --elixir-deep: #0A4A3F;   /* its body                            */
+  --elixir:      #0B6B5C;   /* the core                            */
+  --elixir-lit:  #12B394;   /* where light enters it               */
+  --elixir-glow: #5BF5D6;   /* the specular rim. rarest, use least  */
+
+  /* ── signals ────────────────────────────────────────────────
+     State colours. These are NOT brand colour and they are not
+     part of the "colour is a rare event" argument — a red error
+     message does not make this a red brand. They earn their place
+     by doing a job: telling someone what happened.
+
+     There are two of each because the measurements left no choice.
+     Every value that passes on Zinc Wash fails on Obsidian, and
+     every value that passes on Obsidian is unreadable on Zinc Wash.
+     One value per state would be wrong on half the site:
+
+                    on wash   on obsidian
+       fail  light    5.28       3.10   <- use on light only
+       fail  dark     2.15       7.63   <- use on dark only
+       warn  light    4.94       3.32
+       warn  dark     1.57      10.43
+       pass  light    5.13       3.19
+       pass  dark     1.52      10.79
+       info  light    4.82       3.40
+       info  dark     1.68       9.77
+
+     Info is hue 200°, which is not invented — it is the window and
+     screen light measured out of the gym references on the mood
+     board, so even the functional colours come from the material.
+
+     Pass is deliberately NOT Flame Teal. Teal already means one
+     thing ("live / you are here") and giving it a second meaning
+     would blunt the only signal the nav has.                      */
+
+  --fail:         #B0332B;  --fail-lit: #FF7A6B;
+  --warn:         #8A5B12;  --warn-lit: #F0B429;
+  --pass:         #2C6E4F;  --pass-lit: #52D89B;
+  --info:         #256D91;  --info-lit: #6BC2EC;
+
   /* ── type ───────────────────────────────────────────────────
      One family, pushed to its extremes. Display is heavy and
      narrow: two grams of zinc is concentrated, not spread out, and
@@ -89,8 +186,16 @@
                                                     as a swap rather than a
                                                     rendering glitch        */
 
-  /* ── form ───────────────────────────────────────────────────  */
+  /* ── form ───────────────────────────────────────────────────
+     Two radii and two lifts, no more. 2px was already hardcoded in
+     four places before it was a token; a scale stops that drifting.
+     Elevation is shadow only — never a gradient, which stays banned
+     on surfaces.                                                   */
+  --radius-sm:   2px;
   --radius-pill: 999px;
+
+  --lift-1: 0 1px 0 rgba(13,13,13,.10);              /* an edge      */
+  --lift-2: 0 18px 34px -12px rgba(13,13,13,.22);    /* off the page */
 }
 
 /* cross-document view transitions — the nav survives navigation
@@ -240,32 +345,10 @@ img,svg{display:block;max-width:100%}
 }
 .home:hover{background:rgba(13,13,13,.06)}
 
-/* The mark. Always the real artwork — the crossfade-on-hover version
-   that used to live here is GONE. It masked the artwork with
-   currentColor for the rest state and only faded in the real image on
-   hover. That relies on CSS mask-image, and mask-image referencing an
-   external file silently fails to paint anything over the file://
-   protocol in Chromium/Edge — confirmed by screenshotting the exact
-   same HTML headless over file:// (blank) and http:// (renders).
-   Since this site is routinely opened by double-clicking the HTML —
-   not through a server — that made the mark invisible at rest on
-   every page, always, for exactly the readers who never hover. A
-   nav element that vanishes for most visitors is a worse defect than
-   losing the palette-flip trick, so the mark now just always shows,
-   the way a plain <img> always does regardless of protocol. Hover
-   keeps a small, honest motion cue instead of a reveal. */
-.home__mark{
-  position:relative;display:block;
-  width:1.55rem;height:1.55rem;
-  transition:transform var(--dur-base) var(--ease-out);
-}
-.home:hover .home__mark{transform:translateX(1px) rotate(-3deg)}
-
-.home__mark-real{
-  display:block;
-  width:100%;height:100%;
-  object-fit:contain;
-}
+/* The mark is an inline vector — see §the mark near the end of this
+   file. The old PNG hover-mask (CSS mask-image) failed silently over
+   file://; the carbon fibre now comes in through an image element
+   inside the inline SVG, which has no cross-origin rule to fail.    */
 
 .navgroup{
   --cap-h:3.1rem;
@@ -461,101 +544,824 @@ img,svg{display:block;max-width:100%}
 .cleave--light svg{transform:translateY(-38%)}
 .cleave--light.is-in svg{transform:translateY(0)}
 
+/* facing up out of the ELIXIR. The liquid is anchored to the bottom of
+   that section, so whatever the fill level is, the thing touching this
+   fracture is always liquid — never air. Filled with Obsidian it cut
+   the liquid off at a hard rectangular edge and resumed black, which
+   is why the section read as a teal panel dropped into a black one
+   rather than as a substance that goes somewhere.
+
+   --elixir-void is not a near-match, it is the exact stop the body
+   gradient ends on at 100%, which is the section's bottom edge. So
+   the boundary has no colour step in it at all and the fracture reads
+   as the liquid draining out of the band.
+
+   The cleave ABOVE the elixir stays Obsidian and that is deliberate:
+   above the waterline is air, and air in this section is black.
+   Fill level when this fracture first enters the viewport measures
+   ~52%, so it is never teal-against-nothing.
+
+   Same specificity as .cleave--light path, so this must stay BELOW it
+   in source order to win. Do not move it up. */
+.cleave--elixir path{fill:var(--elixir-void)}
+
+
 @media (prefers-reduced-motion:reduce){
   .cleave svg{transform:none !important}
   .ln > span{transform:none !important;opacity:1 !important}
 }
 
 
-/* ═══ runway ═════════════════════════════════════════════════
-   Sticky centre track with the product travelling down it while
-   specs light up either side. Everything is driven by how far the
-   reader has scrolled — nothing plays on its own.               */
+/* ═══ liquid ═════════════════════════════════════════════════
+   The substance, as an interaction language — one system, every page.
 
-.runway{position:relative;height:340vh}
-.runway__sticky{
-  position:sticky;top:0;height:100vh;
-  display:grid;grid-template-columns:1fr clamp(13rem,21vw,19rem) 1fr;
-  align-items:center;gap:clamp(1.5rem,4vw,4rem);padding:0 var(--space-lg);
-}
-.runway__track{position:relative;height:100vh;background:var(--obsidian);overflow:hidden}
-.runway__lane{
-  position:absolute;left:50%;top:-20%;bottom:-20%;width:2px;
-  transform:translateX(-50%);opacity:.4;
-  background:repeating-linear-gradient(to bottom,var(--muted) 0 26px,transparent 26px 70px);
-}
-.runway__item{
-  position:absolute;left:50%;top:50%;width:62%;
-  transform:translate(-50%,-50%);will-change:transform,opacity;
-  opacity:0;transition:opacity .45s ease;
-  pointer-events:none;
-}
-.runway__item.is-visible{
-  opacity:1;
-  pointer-events:auto;
-}
-.runway__item svg{width:100%;height:auto;overflow:visible;filter:drop-shadow(0 12px 32px rgba(0,224,184,.1))}
+   THE RULE: dots mean where you are; liquid means what you do.
+   The nav's dot-to-pill morph stays the language of NAVIGATION and
+   SELECTION (the nav, the Wear tabs, the next arrow, status pills).
+   Everything a reader ACTS on fills with the elixir instead. Two
+   families, never mixed on one control.
 
-.runway__drift{position:absolute;border-radius:2px;background:var(--muted);
-  opacity:.16;will-change:transform}
-.runway__drift--a{width:22%;height:9%;left:6%;top:18%}
-.runway__drift--b{width:16%;height:6%;right:8%;top:56%}
-.runway__drift--c{width:28%;height:5%;left:14%;top:78%}
+   Four components, each from one of Kash's references, restyled
+   into the brand — flat, one substance, no texture:
+     .btn        the liquid button     rising blob inside a pill
+     .liq-type   liquid type           a wave inside the letterforms
+     .vessel     the liquid SVG        a drawing fills inside its line
+     .kit__item  the single-div fill   a whole card floods
 
-/* gradient depth fades on track */
-.runway__fade{position:absolute;left:0;right:0;z-index:2;pointer-events:none}
-.runway__fade--top{top:0;height:22%;background:linear-gradient(to bottom,var(--obsidian) 0%,rgba(13,13,13,.7) 40%,transparent 100%)}
-.runway__fade--bot{bottom:0;height:22%;background:linear-gradient(to top,var(--obsidian) 0%,rgba(13,13,13,.7) 40%,transparent 100%)}
+   MOTION RULE, same for all four: still at rest. The liquid moves
+   only under the cursor or keyboard focus, or once, as a page title
+   fills on load — and when the cursor leaves it settles and stops.
+   Nothing ambient, nothing looping at an idle reader. Reduced motion
+   gets the end states without the travel.                          */
 
-/* progress bar at track bottom */
-.runway__progress{
-  position:absolute;left:0;bottom:0;height:3px;z-index:4;
-  background:linear-gradient(to right,var(--flame-teal),#00F5C8);
-  box-shadow:0 0 12px rgba(0,224,184,.65);
-  width:0%;transition:width .08s linear;
+/* Registered so they can TRANSITION. An unregistered custom property
+   jumps; registered, the level pours. Where @property is unsupported
+   the level simply arrives without travelling. */
+@property --liq-level{syntax:'<number>';inherits:true;initial-value:0}
+@property --liq-drift{syntax:'<length>';inherits:true;initial-value:0px}
+
+:root{
+  /* one wave tile, two substances. Data URIs cannot read tokens, so
+     these are the only hard-coded colours in the system: #0B6B5C is
+     --elixir, #00E0B8 is --flame-teal. Change them together. */
+  --wave-elixir:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230B6B5C'/%3E%3C/svg%3E");
+  --wave-teal:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%2300E0B8'/%3E%3C/svg%3E");
+  /* the elixir at 10% — a substance you can read type through */
+  --wave-pale:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230B6B5C' fill-opacity='.1'/%3E%3C/svg%3E");
 }
 
-.runway__count{position:absolute;left:50%;bottom:var(--space-md);
-  transform:translateX(-50%);z-index:3;
-  font-variation-settings:"wdth" 88,"wght" 700;
-  font-size:var(--step--1);letter-spacing:.14em;color:var(--muted);
-  transition:opacity .3s ease}
+@keyframes liq-turn{to{rotate:360deg}}
+@keyframes liq-drift{to{--liq-drift:.9em}}
+@keyframes liq-drift-b{to{--liq-drift:.9em}}
+@keyframes vessel-drift{to{transform:translateX(-100px)}}
 
-.runway__side{display:flex;flex-direction:column;gap:var(--space-xl);position:relative}
-.runway__side--r{align-items:flex-start}
+/* ── liquid type ─────────────────────────────────────────────
+   The word twice: the real text, solid, readable at every level —
+   and a copy laid over it whose fill is a wave-topped body of the
+   elixir, clipped to the letterforms. Below the waterline the word
+   is liquid; above it, it is the word. Nothing is ever a faint ghost:
+   the empty part is full-strength type, so it reads at level 0.
 
-/* step headings on left side */
-.runway__step{
-  opacity:0;transform:translateY(.8rem);position:absolute;top:0;left:0;
-  transition:opacity .5s ease,transform .5s var(--ease-out);
-  pointer-events:none;
+   Usage: <span class="liq-type" data-liq="Wear">Wear</span>
+   The copy comes from data-liq, so it must match the text.       */
+.liq-type{
+  position:relative;display:inline-block;
+  --liq-level:0;
+  --liq-c:var(--elixir);
+  --liq-wave:var(--wave-elixir);
+  --liq-lh:.82em;                       /* the parent's line-height */
+  --liq-h:calc(var(--liq-lh) + .5em);    /* the copy's box, padded */
+  transition:--liq-level .9s var(--ease-out);
 }
-.runway__step.is-active{
-  opacity:1;transform:translateY(0);position:relative;
-  pointer-events:auto;
+.ln > .liq-type{display:inline-block}
+.band--dark .liq-type{--liq-c:var(--flame-teal);--liq-wave:var(--wave-teal)}
+
+.liq-type::after{
+  content:attr(data-liq);
+  /* padded past the word on every side, with the padding put back so
+     the copy still sits exactly on the text. Glyph ink overhangs its
+     advance width — the r in "Wear" does — and background-clip:text
+     only paints inside the box, so an unpadded box left a solid black
+     sliver on the r even at full. */
+  position:absolute;left:-.12em;right:-.12em;top:-.25em;bottom:-.25em;
+  padding:.25em .12em 0;
+  white-space:nowrap;pointer-events:none;
+  color:transparent;-webkit-text-fill-color:transparent;
+  background-image:var(--liq-wave),linear-gradient(var(--liq-c),var(--liq-c));
+  background-repeat:repeat-x,no-repeat;
+  background-size:.9em .15em,100% calc(var(--liq-h) * var(--liq-level));
+  background-position:
+    var(--liq-drift) calc(var(--liq-h) * (1 - var(--liq-level)) - .14em),
+    0 100%;
+  -webkit-background-clip:text;background-clip:text;
+  /* settles: two slow passes, then still. Replays after a hover ends,
+     which reads as the surface calming down once the cursor leaves. */
+  animation:liq-drift 1.4s linear 2;
 }
 
-.spec{max-width:30ch;opacity:.22;transform:translateY(.6rem);
-  transition:opacity .55s ease,transform .55s var(--ease-out)}
-.spec.is-active{opacity:1;transform:none}
-.spec__i{width:2.6rem;height:2.6rem;margin-bottom:var(--space-sm)}
-.spec__i svg{width:100%;height:100%;display:block}
-.spec__h{font-family:var(--face-display);
-  font-variation-settings:"wdth" 80,"wght" 800;
-  font-size:var(--step-2);line-height:1;letter-spacing:-.02em;
-  margin-bottom:var(--space-sm)}
+/* a page title pours in once, on load, to a resting level.
+   .5, MEASURED: at 152px the cap height is .691em inside a 1.32em
+   liquid box, and .5 puts the waterline 51% of the way down the ink —
+   a real half. .6 was a guess; it sat 32% down, so the words read as
+   teal with black smudges on top rather than half full. */
+.is-ready .liq-type--filled{
+  --liq-level:.5;
+  transition:--liq-level 2.2s var(--ease-out) .55s;
+}
 
-@media (max-width:980px){
-  .runway{height:auto}
-  .runway__sticky{position:static;height:auto;grid-template-columns:1fr;
-    padding:var(--space-xl) var(--space-md);gap:var(--space-xl)}
-  .runway__track{height:56vh}
-  .runway__item{position:absolute;opacity:0}
-  .runway__item.is-visible{opacity:1}
-  .runway__step{position:relative;opacity:1;transform:none}
-  .runway__step:not(.is-active){display:none}
-  .spec{opacity:1;transform:none;max-width:none}
-  .runway__side{gap:var(--space-lg)}
+@media (hover:hover){
+  .liq-type:hover{--liq-level:1;transition:--liq-level .8s var(--ease-out)}
+  .liq-type:hover::after{animation:liq-drift-b 1.1s linear infinite}
+}
+
+/* ── vessel ──────────────────────────────────────────────────
+   A product drawing that fills inside its own outline. The outline
+   path is used twice: once as the clip, once as the visible line on
+   top, so the liquid can never leave the garment and the edge stays
+   crisp over it. The level is a translate of a wave-topped body; the
+   wave drifts only while the vessel is being filled.
+
+   Usage: see .piece__plate in index.html. Each clipPath id must be
+   unique on its page.                                              */
+.vessel{display:block;overflow:visible;--vessel-level:0}
+.vessel__line{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linejoin:round}
+.vessel__line--soft{opacity:.55}
+.vessel__level{
+  transform-box:view-box;
+  transform:translateY(calc((1 - var(--vessel-level)) * 100%));
+  transition:transform 1.05s var(--ease-out);
+}
+.vessel__liquid{
+  fill:var(--vessel-c,var(--elixir));
+  animation:vessel-drift 1.6s linear infinite paused;
+}
+
+/* ── the join band ───────────────────────────────────────────
+   Every page ends the same way: one fracture in, the only
+   conversion on the site, one fracture out. It used to be four
+   different endings — a styled form on the homepage, a bespoke
+   unstyled form on Fuel, an inline link on Wear, and nothing at all
+   on Instruments, Elements and Origin. */
+.join .t-head{max-width:20ch}
+.join__lede{margin-top:var(--space-md);color:var(--muted);max-width:52ch}
+.join__note{margin-top:var(--space-sm);color:var(--muted)}
+.join__label{
+  position:absolute;width:1px;height:1px;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .liq-type,.is-ready .liq-type--filled{transition:none}
+  .liq-type::after,.liq-type:hover::after{animation:none}
+  .vessel__level{transition:none}
+  .vessel__liquid{animation:none}
+}
+
+
+/* ═══ drop ═══════════════════════════════════════════════════
+   What is new. Two pieces, editorial, on light.
+
+   REPLACES THE RUNWAY. That was a 340vh sticky track spending
+   2924px of scroll on ONE tee, with two thirds of its spec column
+   faded out at any given moment. The page already carries a
+   product grid — §kit, "Everything we have made" — so a second
+   grid would have been the same list twice. These are now two
+   halves of a pair: the kit is the catalogue, this is the arrival.
+
+   It also needs no JavaScript. The runway had an 88-line scroll
+   controller; that IIFE is gone from site.js and nothing replaced
+   it. Hover and focus are the only inputs.
+
+   THE INTERACTION IS THE NAV'S, ON PURPOSE. One gesture fires
+   three devices, and all three already existed:
+
+     1. dot to pill   the state chip, same two properties and two
+                      delays as .morph in §nav
+     2. mask-rise     the spec climbs out of a clip — same 150%
+                      start and same fast-out/slow-in asymmetry
+                      as .rise in §nav and .ln in §lines
+     3. others recede borrowed from §doors, unchanged
+
+   Nothing was invented here. That is the point: the page should
+   read as though one hand made it.
+
+   EYE DIRECTION IS SPATIAL, NOT CHROMATIC. The plates stay
+   uncoloured. What moves the eye is where things sit (the two
+   pieces do not line up), what recedes (the piece you are not
+   looking at), and exactly one teal mark per piece.              */
+
+.drop{position:relative;padding:var(--space-xl) 0}
+
+/* ── the rail ─────────────────────────────────────────────────
+   The entire section header: two facts with a hairline holding
+   them apart. A heading plus a subheading plus a badge is three
+   elements saying one thing. */
+.drop__rail{
+  display:flex;align-items:center;gap:var(--space-md);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.7rem;letter-spacing:.14em;
+  color:var(--graphite);
+}
+.drop__rule{flex:1;height:1px;background:currentColor;opacity:.3}
+
+/* Its own clamp rather than --step-4. step-4 tops out at 7rem,
+   which puts "thing we made." at roughly 780px — near enough to
+   the 1152px content box to read as a wall rather than a claim.
+   This tops out at 5.6rem: still the largest thing in the
+   section, with the air around it left intact. */
+.drop__claim{
+  margin-top:var(--space-lg);
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-display),"wght" var(--wght-display);
+  font-size:clamp(2.6rem,1.4rem + 5.4vw,5.6rem);
+  line-height:1.02;letter-spacing:-.022em;
+}
+.drop__note{margin-top:var(--space-md);max-width:44ch}
+
+/* ── the two pieces ───────────────────────────────────────────
+   Not a row. The second piece drops below the first, which is the
+   cleave logic applied to layout: zinc fractures along a plane and
+   the two faces never line up again. It also puts the white space
+   somewhere deliberate instead of splitting it evenly down the
+   middle. Column 12 stays empty for the same reason. */
+.drop__pieces{
+  margin-top:var(--space-xl);
+  display:grid;grid-template-columns:repeat(12,1fr);
+  gap:var(--space-md);
+}
+.piece{
+  display:block;grid-column:1 / span 5;
+  transition:opacity .45s ease,filter .45s ease;
+}
+.piece:nth-child(2){
+  grid-column:7 / span 5;
+  margin-top:clamp(2rem,7vw,5.5rem);
+}
+
+/* §doors' device, unchanged. :has() rather than a hover on the
+   container, so crossing the gutter does not dim both pieces with
+   nothing actually chosen. */
+.drop__pieces:has(.piece:hover) .piece,
+.drop__pieces:has(.piece:focus-visible) .piece{opacity:.3;filter:blur(1.1px)}
+.drop__pieces:has(.piece:hover) .piece:hover,
+.drop__pieces:has(.piece:focus-visible) .piece:focus-visible{opacity:1;filter:none}
+
+.piece__frame{
+  position:relative;aspect-ratio:4 / 5;
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+  box-shadow:var(--lift-1);
+  transition:transform .8s var(--ease-out),box-shadow .8s var(--ease-out);
+}
+.piece:hover .piece__frame,
+.piece:focus-visible .piece__frame{
+  transform:translateY(-.6rem);box-shadow:var(--lift-2);
+}
+
+/* The plate is the photograph that does not exist yet, and it
+   stays UNCOLOURED. Zinc Silver is the neutral in the palette;
+   tinting these would spend the colour budget on a rectangle that
+   is going to be replaced by a photograph anyway. When there is
+   photography, drop an <img> in and it fills the plate:
+     <div class="piece__plate"><img src="…" alt=""></div>        */
+.piece__plate{
+  position:absolute;inset:0;
+  background:var(--zinc-silver);
+  display:grid;place-items:center;
+}
+.piece__plate img{width:100%;height:100%;object-fit:cover;display:block}
+.piece__plate .vessel{width:58%;height:auto;color:var(--obsidian)}
+.piece__plate .vessel__line{opacity:.4;transition:opacity .6s ease}
+
+/* THE DRAWING FILLS. It used to be a second, inverted plate sliding up
+   — a photograph-swap standing in for photography that does not exist.
+   Now the piece itself takes on the substance: the garment fills inside
+   its own outline, and the outline sharpens around the liquid. When
+   real photography lands, the hover becomes the second shot again. */
+.piece:hover .vessel,.piece:focus-visible .vessel{--vessel-level:.94}
+.piece:hover .vessel__line,.piece:focus-visible .vessel__line{opacity:1}
+.piece:hover .vessel__liquid,.piece:focus-visible .vessel__liquid{animation-play-state:running}
+@media (hover:none){
+  .piece .vessel{--vessel-level:.5}             /* no hover: show the idea */
+  .piece .vessel__line{opacity:1}
+}
+
+.piece__meta{margin-top:var(--space-md)}
+.piece__code{
+  display:block;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.68rem;letter-spacing:.14em;color:var(--graphite);
+}
+.piece__name{
+  margin-top:.35rem;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
+  font-size:var(--step-2);line-height:1;letter-spacing:-.022em;
+}
+
+/* ── mask-rise ────────────────────────────────────────────────
+   The house move at component scale. Same clip, same 150% start,
+   same asymmetry: leaves fast (.28s), arrives slow and late
+   (--dur-slow after .28s). Holding specs behind hover is already
+   the established pattern in §kit. */
+.piece__slot{display:block;overflow:hidden;height:1.5rem;margin-top:.5rem}
+.piece__spec{
+  display:block;line-height:1.5rem;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.68rem;letter-spacing:.06em;color:var(--graphite);
+  opacity:0;transform:translateY(150%);
+  transition:transform .28s var(--ease-move),opacity .16s ease;
+}
+.piece:hover .piece__spec,
+.piece:focus-visible .piece__spec{
+  opacity:1;transform:translateY(0);
+  transition:transform var(--dur-slow) var(--ease-out) .28s,
+             opacity .34s ease .28s;
+}
+
+/* ── dot to pill ──────────────────────────────────────────────
+   §nav's .morph, same two properties and two delays: opening, the
+   circle appears fast and the width opens slow; closing, the order
+   reverses. One element, no JS.
+
+   THE LABEL IS NEVER HIDDEN. §kit already settled that status is
+   not a hover reward, and "Waitlist open" is the only thing a
+   reader can act on in this section. What hover changes is the
+   GROUND beneath it — the pill closes in and the type inverts.
+   That is also what keeps Flame Teal legal: teal is a dark-surface
+   colour (1.7:1 on Zinc Wash), and this is the one place on a
+   light page where a dark surface arrives to carry it. The dot
+   itself is a mark rather than type, so it reads fine at rest. */
+.piece__state{
+  position:relative;display:inline-flex;align-items:center;gap:.5rem;
+  height:2.15rem;padding:0 1rem 0 .9rem;
+  margin-top:var(--space-sm);margin-left:-.9rem;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.68rem;letter-spacing:.1em;
+  color:var(--graphite);
+  transition:color .35s ease .12s;
+}
+.piece__pill{
+  position:absolute;z-index:0;left:0;top:0;
+  height:2.15rem;width:2.15rem;
+  border-radius:var(--radius-pill);
+  background:var(--obsidian);
+  opacity:0;transform:scale(.24);
+  transition:
+    width .38s var(--ease-out) .14s,
+    transform .28s var(--ease-out) .40s,
+    opacity .26s ease .40s;
+}
+.piece__dot{
+  position:relative;z-index:2;flex:none;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--flame-teal);
+}
+.piece__word{position:relative;z-index:2;white-space:nowrap}
+
+.piece:hover .piece__state,
+.piece:focus-visible .piece__state{color:var(--zinc-wash)}
+.piece:hover .piece__pill,
+.piece:focus-visible .piece__pill{
+  opacity:1;transform:scale(1);width:100%;
+  transition:
+    transform .30s var(--ease-out) .04s,
+    opacity .20s ease .04s,
+    width .46s var(--ease-out) .24s;
+}
+
+.piece:focus-visible{outline-offset:10px}
+
+@media (max-width:860px){
+  .drop__pieces{grid-template-columns:1fr;gap:var(--space-xl)}
+  .piece,.piece:nth-child(2){grid-column:1 / -1;margin-top:0}
+  /* nothing to recede FROM without a cursor */
+  .drop__pieces:has(.piece:hover) .piece{opacity:1;filter:none}
+  .piece__spec{opacity:1;transform:none}
+}
+
+/* movement removed, information kept — the spec stops climbing and
+   is simply there. The second plate still arrives on hover, it
+   just arrives instantly. */
+@media (prefers-reduced-motion:reduce){
+  .piece__spec{opacity:1;transform:none}
+}
+
+
+/* ═══ viewer ══════════════════════════════════════════════════
+   The product display on Wear. Pick a piece, the piece opens.
+
+   THE LAYOUT IS A STRICT 12-COLUMN FRAME, and everything sits on
+   it. The first build did not: it blew the name up to 4.6rem,
+   boxed the block into the right-hand column and left the rail
+   scrolled off above the fold, so you could never see the control
+   and the thing it controlled at the same time. This one fits a
+   viewport, and the reading order runs across the frame the way
+   the reference does —
+
+     row 1   the rail, and a stamp turned on its side at the edge
+     row 2   the code, four facts in two tiny columns, the name
+     row 3   the band: a numeral on its side, the action straddling
+             the block's edge, the block running off the page, and
+             the piece standing on it and breaking out of the top
+
+   SMALL TYPE IS THE WHOLE REGISTER. One thing is set large — the
+   name — and even that is modest and lowercase. Everything else is
+   .62–.68rem mono. The composition is carried by the grid and the
+   block, not by size.
+
+   THE INTERACTION IS THE NAV'S, AT THREE SCALES, and two of them
+   are now inside the picture rather than above it:
+     1. the tab's dot opens into a pill                  (§nav .morph)
+     2. the block opens out of a circle into the ground  (same timing)
+     3. the action opens from a square into a pill with its label
+        rising out of a clip                    (§nav .morph + .rise)
+   Nothing here was invented. A reader who has used the nav already
+   knows all three.                                                */
+
+.viewer{
+  position:relative;padding:var(--space-lg) 0 var(--space-xl);
+  overflow:hidden;
+  /* one number, three users: the height of the piece above the
+     block, and the two clips that split it at that line. The plate
+     is 150% of the band and hangs from its bottom, so exactly one
+     third of it is above the edge. Change these together. */
+  --plate-h:170%;
+  --break:41.18%;
+}
+
+/* ── the rail ─────────────────────────────────────────────────
+   Sits where the reference puts its top bar. No underline on the
+   active tab: the dot opening into a pill IS the selected state,
+   exactly as in the nav. */
+/* The stamp is TAKEN OUT OF FLOW. In flow it is the tallest thing
+   in this row, so it set the header's height and pushed ~150px of
+   dead air between the rail and the caption — measured. Out of
+   flow it sits at the top-right corner of the frame, which is
+   where the reference puts it, and the rail alone sets the row. */
+.viewer__head{
+  display:flex;align-items:flex-start;
+  margin-bottom:clamp(var(--space-lg),min(5vw,7vh),var(--space-xl));
+  padding-right:3.5rem;                /* keeps the rail clear of it */
+}
+.viewer__rail{display:flex;flex-wrap:wrap;gap:.35rem}
+
+.vtab{
+  position:relative;display:inline-flex;align-items:center;gap:.5rem;
+  height:2.2rem;padding:0 .95rem 0 .85rem;
+  border:0;background:none;cursor:pointer;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.64rem;letter-spacing:.12em;
+  color:var(--graphite);
+  transition:color .35s ease .12s;
+}
+.vtab__pill{
+  position:absolute;z-index:0;left:0;top:0;
+  height:2.2rem;width:2.2rem;
+  border-radius:var(--radius-pill);
+  background:var(--obsidian);
+  opacity:0;transform:scale(.24);
+  transition:
+    width .38s var(--ease-out) .14s,
+    transform .28s var(--ease-out) .40s,
+    opacity .26s ease .40s;
+}
+.vtab__dot{
+  position:relative;z-index:2;flex:none;
+  width:5px;height:5px;border-radius:50%;
+  background:currentColor;
+  transition:background .35s ease .12s;
+}
+.vtab__code,.vtab__name{position:relative;z-index:2;white-space:nowrap}
+.vtab__name{font-family:var(--face-text);letter-spacing:.01em;font-size:.72rem}
+.vtab:hover{color:var(--obsidian)}
+
+.vtab[aria-selected="true"]{color:var(--zinc-wash)}
+.vtab[aria-selected="true"] .vtab__dot{background:var(--flame-teal)}
+.vtab[aria-selected="true"] .vtab__pill{
+  opacity:1;transform:scale(1);width:100%;
+  transition:
+    transform .30s var(--ease-out) .04s,
+    opacity .20s ease .04s,
+    width .46s var(--ease-out) .24s;
+}
+.vtab:focus-visible{outline-offset:8px;border-radius:var(--radius-pill)}
+
+/* the stamp, on its side against the right edge — the reference's
+   boxed vertical label */
+.viewer__stamp{
+  /* pinned to the PAGE edge, not the shell's. Against the shell it
+     landed inside the piece's span on wide viewports, because the
+     band bleeds past the shell and the piece rides the band. */
+  position:absolute;top:0;right:clamp(1rem,3vw,3.5rem);z-index:3;
+  writing-mode:vertical-rl;
+  border:1px solid currentColor;
+  padding:.75rem .4rem;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.58rem;letter-spacing:.2em;
+  color:var(--graphite);
+}
+
+/* ── the stage ────────────────────────────────────────────────
+   Panels stack in one grid cell and crossfade, so switching never
+   reflows the page under the cursor. */
+.viewer__stage{display:grid}
+
+.vpanel{
+  grid-area:1 / 1;
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-rows:auto auto minmax(clamp(10rem,min(24vw,36vh),22rem),auto);
+  column-gap:var(--space-md);
+  row-gap:0;
+  /* The outgoing panel used to be gone in .4s while its block was
+     still collapsing for another .24s, so the morph never read on
+     the way out — it just blinked. It now holds long enough to be
+     seen closing, and the incoming one starts after it, so the two
+     do not overlap into mush. */
+  opacity:0;visibility:hidden;
+  transition:opacity .42s var(--ease-move) .06s,visibility 0s linear .48s;
+}
+.vpanel.is-open{
+  opacity:1;visibility:visible;
+  transition:opacity .46s var(--ease-out) .20s,visibility 0s;
+}
+
+.vpanel__code{
+  grid-column:1 / 4;grid-row:1;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.62rem;letter-spacing:.2em;color:var(--graphite);
+}
+
+/* four facts, two columns, tiny. everything a reader needs and
+   nothing they have to read. */
+.vpanel__caption{
+  /* Columns sized to their TEXT, not stretched across a grid span.
+     Stretched, the second column's ink ended 47px from the garment's
+     collar at 1280 wide while sitting at the same height — measured
+     by text ink, not by boxes — and that is exactly where this read
+     as crowded. max-content keeps the pair together the way the
+     reference's two caption blocks are, and leaves the air on the
+     garment's side. */
+  grid-column:4 / 9;grid-row:1;justify-self:start;
+  display:grid;grid-template-columns:repeat(2,max-content);
+  gap:.3rem var(--space-lg);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.62rem;letter-spacing:.09em;line-height:1.55;
+  color:var(--graphite);
+}
+
+/* THE ONE LARGE THING, and it is still modest. Lowercase, with the
+   full stop the reference uses — it is a wordmark for the piece,
+   not a headline about it. */
+/* BIG, SHORT, AND SITTING ON THE BLOCK.
+   The previous pass read "small letters" as "make the name small"
+   and set it at 3.2rem, about 6.7% of the section's height. The
+   reference keeps its DETAILS tiny and its wordmark large — "lab."
+   runs at roughly 13% of the frame. It can be that large because it
+   is four characters. "training tee." at that size would cross half
+   the page, so each piece gets one short lowercase word instead, and
+   the full name moves into the code line where it is still read
+   first and in full — and into .vpanel__full for screen readers.
+
+   The air goes above it and almost none below: the reference sets
+   its wordmark nearly touching the colour block, so the name and the
+   ground read as one unit rather than as a caption above a panel. */
+.vpanel__word{
+  grid-column:1 / 7;grid-row:2;align-self:end;
+  margin:clamp(var(--space-lg),min(6vw,9vh),var(--space-xl)) 0 .3rem;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-display),"wght" var(--wght-display);
+  font-size:clamp(3rem,1.4rem + 5vw,6.4rem);
+  line-height:.86;letter-spacing:-.032em;
+}
+.vpanel__full{
+  position:absolute;width:1px;height:1px;
+  overflow:hidden;clip-path:inset(50%);white-space:nowrap;
+}
+.vpanel .ln > span{transform:translateY(115%);opacity:0;
+  transition:transform .72s var(--ease-out),opacity .45s ease}
+.vpanel.is-open .ln > span{transform:translateY(0);opacity:1;transition-delay:.18s}
+
+/* on its side, up the left edge, hugging the bottom of the frame.
+   SOLID, and large — the reference's "001" is the second heavy anchor
+   on the left, a counterweight to the wordmark above it. It was a
+   faint outline at 55% opacity, which left the lower-left corner
+   empty and pushed all the visual weight into the top-left.
+   Drawn rather than set — hollow at this size reads as structure
+   and cannot compete with the name above it. */
+.vpanel__num{
+  grid-column:1 / 2;grid-row:3;
+  justify-self:start;align-self:end;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 62,"wght" 900;
+  font-size:clamp(3.2rem,1.6rem + 5vw,7rem);
+  line-height:.9;letter-spacing:.02em;
+  color:var(--obsidian);
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.vpanel.is-open .vpanel__num{opacity:1;transition-delay:.34s}
+
+/* ── the band ─────────────────────────────────────────────────
+   Starts a third of the way across and runs off the right edge of
+   the page, the way the reference's does — it is a band cutting
+   across the frame, not a panel parked in a column. */
+.vpanel__band{
+  position:relative;
+  /* Column 4, not 3. Full width put column 3 at ~18% of the frame,
+     so the block crowded the numeral's corner; the reference starts
+     its block at ~32%. Column 4 lands at ~26% and gives the wordmark
+     and the numeral a zone of their own. */
+  grid-column:4 / 13;grid-row:3;
+  /* Reach the right edge of the page from inside the shell. NOT
+     calc(50% - 50vw): a percentage margin on a GRID ITEM resolves
+     against the grid AREA, not the container, so 50% measures this
+     column and overshoots — it landed 270px off the page when this
+     component was first built.
+
+     The viewer runs in .shell--full, so there is no 78rem cap to
+     escape any more — only the gutter. The composition uses the
+     whole frame the way the reference does: inside the capped shell
+     a 1920 screen left ~336px of dead margin on the left while the
+     block bled off the right, which read as lopsided rather than
+     spacious. */
+  margin-right:calc(-1 * var(--space-lg));
+}
+
+/* THE ESCALATION — opens out of a circle into the ground the piece
+   stands on. Same two properties and two delays as §nav's .morph,
+   at the scale of a display rather than a label. */
+.vpanel__block{
+  position:absolute;inset:0;
+  background:var(--elixir-deep);
+  border-radius:50%;
+  opacity:0;transform:scale(.1);
+  transform-origin:6% 50%;
+  /* Closing order is still the nav's — round first, then shrink — but
+     the shrink starts at .12s, not .30s. At .30s it ran 300–640ms while
+     the leaving panel was gone by 480ms, so the collapse back into a
+     dot was mostly invisible and the switch read as a blink. Measured
+     through getAnimations(). Now it finishes as the panel does. */
+  transition:
+    border-radius .4s var(--ease-out),
+    transform .34s var(--ease-out) .12s,
+    opacity .3s ease .12s;
+}
+.vpanel.is-open .vpanel__block{
+  opacity:1;transform:scale(1);border-radius:var(--radius-sm);
+  transition:
+    transform .34s var(--ease-out) .06s,
+    opacity .24s ease .06s,
+    border-radius .52s var(--ease-out) .22s;
+}
+
+/* the piece stands on the block and breaks out of the top of it.
+   A product sitting neatly inside a coloured rectangle is a
+   catalogue tile; one coming out of it is a photograph. */
+.vpanel__plate{
+  position:absolute;z-index:2;
+  /* 13% put the piece's right edge at x1651 while the stamp sat at
+     x1488 — measured, and they overlapped, which is what made this
+     read as crowded. The piece now stops well short of the stamp. */
+  right:21%;bottom:0;
+  /* Height drives width, not the other way round. The plate is
+     150% of the band and hangs from its bottom, so exactly one
+     third of it clears the top — which is what --break is. Giving
+     it the ARTWORK'S aspect means the drawing fills the plate with
+     no letterboxing, so that third is the same third of the
+     drawing at every viewport. Size it by width instead and the
+     letterbox moves, the clip line drifts off the block edge, and
+     the garment changes colour in the wrong place. */
+  height:var(--plate-h);
+  aspect-ratio:200 / 226;
+  width:auto;
+  opacity:0;transform:translateY(1.4rem);
+  transition:opacity .45s ease,transform .8s var(--ease-out);
+}
+.vpanel.is-open .vpanel__plate{opacity:1;transform:none;transition-delay:.34s}
+/* photography goes here and fills the plate — drop the two spans:
+     <div class="vpanel__plate"><img src="…" alt=""></div>        */
+.vpanel__plate img{
+  width:100%;height:100%;object-fit:contain;
+  object-position:center bottom;display:block;
+}
+
+/* THE PIECE CROSSES THE EDGE OF THE BLOCK, so one colour cannot
+   carry it: Zinc Silver on Zinc Wash measures about 1.1:1, and the
+   part breaking out above the block was invisible. Two clipped
+   copies of the same drawing — Obsidian above the line, Zinc Silver
+   below — so the piece changes value exactly where it meets the
+   substance. Both clips run off --break, so they cannot drift. */
+.vpanel__art{position:absolute;inset:0;display:grid;place-items:center}
+.vpanel__art svg{width:100%;height:100%}
+.vpanel__art--out{color:var(--obsidian);
+  clip-path:inset(0 0 calc(100% - var(--break)) 0)}
+.vpanel__art--in{color:var(--zinc-silver);
+  clip-path:inset(var(--break) 0 0 0)}
+
+/* ── the action ───────────────────────────────────────────────
+   Straddles the block's left edge, where the reference puts it.
+
+   §nav's morph again, third scale: a square opens into a pill and
+   the label rises out of a clip behind it. Square at rest is the
+   whole point — it is the one hard-edged mark in a composition of
+   bands, so the eye lands on it.
+
+   IT ADVANCES TO THE NEXT PIECE. It used to jump to the waitlist,
+   which sent a reader off the page at the exact moment they were
+   looking at the product. The label is the name of the piece it
+   will open, so the control says where it goes before you take it.
+   The waitlist is still the last thing on the page, which is the
+   right place for it. */
+.vpanel__next{
+  position:absolute;z-index:3;
+  left:0;bottom:18%;transform:translateX(-50%);
+  display:inline-flex;align-items:center;justify-content:center;
+  /* A SQUARE at rest — it measured 33x48 before, a sliver, because
+     only the left padding and the mark gave it width. min-width equal
+     to the height makes it the hard-edged block the reference has,
+     and the pill still grows out of it on hover. */
+  height:3.4rem;min-width:3.4rem;padding:0 1.15rem;
+  border:0;cursor:pointer;
+  background:var(--obsidian);color:var(--zinc-wash);
+  border-radius:var(--radius-sm);
+  transition:border-radius .42s var(--ease-out),
+             transform var(--dur-base) var(--ease-out);
+}
+.vpanel__next-mark{
+  flex:none;width:1.1rem;text-align:center;
+  font-size:1rem;line-height:1;
+}
+.vpanel__next-slot{
+  display:block;overflow:hidden;
+  max-width:0;
+  transition:max-width .46s var(--ease-out);
+}
+.vpanel__next-word{
+  display:block;white-space:nowrap;
+  padding:0 0 0 .75rem;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.64rem;letter-spacing:.12em;line-height:3.4rem;
+  opacity:0;transform:translateY(150%);
+  transition:transform .28s var(--ease-move),opacity .16s ease;
+}
+.vpanel__next:hover,.vpanel__next:focus-visible{
+  border-radius:var(--radius-pill);
+  transform:translateX(-50%) translateY(-.15rem);
+}
+.vpanel__next:hover .vpanel__next-slot,
+.vpanel__next:focus-visible .vpanel__next-slot{max-width:14rem}
+.vpanel__next:hover .vpanel__next-word,
+.vpanel__next:focus-visible .vpanel__next-word{
+  opacity:1;transform:translateY(0);
+  transition:transform var(--dur-slow) var(--ease-out) .22s,
+             opacity .34s ease .22s;
+}
+
+@media (max-width:860px){
+  .viewer__head{flex-direction:column;align-items:stretch;padding-right:0;
+    margin-bottom:var(--space-md)}
+  .viewer__stamp{position:static;writing-mode:horizontal-tb;
+    align-self:flex-start;margin-bottom:var(--space-md);padding:.35rem .6rem}
+  .vtab__name{display:none}          /* the code carries it at this width */
+
+  .vpanel{grid-template-columns:repeat(6,minmax(0,1fr));row-gap:var(--space-sm)}
+  .vpanel__code{grid-column:1 / 7}
+  .vpanel__caption{grid-column:1 / 7;grid-row:2}
+  /* the air above the wordmark belongs to the desktop spread, where
+     it separates two zones side by side. Stacked, it measured 117px
+     of hole between the caption and the name at 390 wide — and the
+     margin was not the cause: this block never reset the desktop
+     grid-template-rows, so row 3 (the WORDMARK's row here) inherited
+     the desktop BAND row's 10rem minimum and the name sank to the
+     bottom of it. Rows are auto now; the band carries its own
+     min-height below. */
+  .vpanel{grid-template-rows:none}
+  .vpanel__word{grid-column:1 / 7;grid-row:3;margin-top:var(--space-md)}
+  .vpanel__band{grid-column:1 / 7;grid-row:4;min-height:14rem;
+    /* .shell drops to --space-md below 860, so the bleed follows */
+    margin-right:calc(-1 * var(--space-md));
+    margin-left:calc(-1 * var(--space-md));
+  }
+  .vpanel__num{grid-column:1 / 7;grid-row:5;
+    writing-mode:horizontal-tb;transform:none;justify-self:start}
+  /* left end of the block: right-anchored, it sat 15px under the
+     garment's hem, which is also right-anchored at this width */
+  .vpanel__next{left:var(--space-md);right:auto;transform:none}
+  .vpanel__next:hover,.vpanel__next:focus-visible{transform:translateY(-.15rem)}
+  /* 8% left the collar 32px from the wordmark's full stop at 390 */
+  .vpanel__plate{right:4%;width:min(42%,12rem)}
+}
+
+/* movement removed, information kept: the piece is simply open. */
+@media (prefers-reduced-motion:reduce){
+  .vpanel .ln > span{transform:none;opacity:1}
+  .vpanel__num{opacity:1}
+  .vpanel__plate{opacity:1;transform:none}
+  .vpanel__block{opacity:1;transform:none;border-radius:var(--radius-sm)}
+  .vpanel__next-word{opacity:1;transform:none}
 }
 
 
@@ -598,7 +1404,9 @@ img,svg{display:block;max-width:100%}
    One line, one settling gesture on load, and nothing else that
    moves. The whole job is: what is this, and why keep scrolling. */
 
-.hero{min-height:78vh;display:flex;align-items:center}
+/* 78vh left 417px of measured dead space around 253px of content.
+   Still generous, no longer a void. */
+.hero{min-height:62vh;display:flex;align-items:center}
 .hero__bn{font-size:var(--step-4);color:var(--graphite);margin-top:var(--space-md)}
 
 /* the one page-load moment. nothing else on the site does this. */
@@ -626,7 +1434,10 @@ img,svg{display:block;max-width:100%}
 /* ═══ waitlist ═══════════════════════════════════════════════
    The only conversion on the site, so the only button on it.    */
 
-.signup{display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-top:var(--space-lg)}
+/* capped: uncapped this stretched to the full shell and produced a
+   1150px underline with a button marooned at the far end */
+.signup{display:flex;gap:var(--space-sm);flex-wrap:wrap;
+  margin-top:var(--space-lg);max-width:34rem}
 .signup input{
   flex:1 1 18rem;min-width:0;
   background:transparent;
@@ -637,14 +1448,135 @@ img,svg{display:block;max-width:100%}
 .signup input::placeholder{color:rgba(233,236,238,.4)}
 .signup input:focus{outline:0;border-bottom-color:var(--flame-teal)}
 
+
+/* ═══ button ═════════════════════════════════════════════════
+   The button flips with its surface, and it has to. Flame Teal on
+   Zinc Wash measures 1.7:1 — unreadable — so a teal button is only
+   ever correct on a dark band. On light the primary is Obsidian.
+   Same component, two grounds, both legible.
+
+   States are not decoration here: disabled and busy are the two
+   that actually get skipped, and a waitlist form needs both.      */
+
+/* THE LIQUID BUTTON. The pill is a vessel: hovering fills it. A large
+   rounded square sits under the pill and rises through it, and it
+   turns while it rises, so its top edge reads as a moving surface —
+   the rotating-blob technique from the reference, turned into one
+   substance. It turns only while it is being filled.
+
+   On light the pill is Obsidian and fills with the elixir; zinc wash
+   on --elixir measures ~5.4:1, so the label never has to change. On a
+   dark band the pill is an EMPTY vessel — a teal rim — and fills with
+   Flame Teal, and the label flips to Obsidian as the surface passes
+   it. The old 2px hover lift is gone: the fill is the hover. */
 .btn{
-  border:0;cursor:pointer;
-  background:var(--flame-teal);color:var(--obsidian);
+  position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  border:1px solid transparent;cursor:pointer;text-decoration:none;
+  background:var(--obsidian);color:var(--zinc-wash);
+  --liq:var(--elixir);
   font:inherit;font-variation-settings:"wdth" 92,"wght" 600;
   padding:.7rem 1.6rem;border-radius:var(--radius-pill);
-  transition:transform .3s var(--ease-out),opacity .3s ease;
+  transition:transform var(--dur-base) var(--ease-out),
+             opacity var(--dur-base) ease,
+             color .3s ease;
 }
-.btn:hover{transform:translateY(-2px)}
+.btn::before{
+  content:"";position:absolute;z-index:-1;
+  left:50%;top:118%;
+  width:max(240%,14rem);aspect-ratio:1;
+  border-radius:42%;
+  background:var(--liq);
+  translate:-50% 0;
+  transition:top .75s var(--ease-out);
+  animation:liq-turn 5s linear infinite paused;
+  pointer-events:none;
+}
+@media (hover:hover){
+  .btn:hover::before{top:-46%;animation-play-state:running}
+}
+.btn:focus-visible::before{top:-46%;animation-play-state:running}
+.btn:active{transform:scale(.985)}
+
+.band--dark .btn{
+  background:transparent;border-color:var(--flame-teal);
+  color:var(--zinc-wash);--liq:var(--flame-teal);
+}
+@media (hover:hover){
+  .band--dark .btn:hover{color:var(--obsidian);transition-delay:0s,0s,.2s}
+}
+.band--dark .btn:focus-visible{color:var(--obsidian)}
+
+/* secondary: the same vessel, a thinner substance */
+.btn--secondary{background:transparent;color:inherit;border-color:currentColor;
+  --liq:var(--zinc-silver)}
+.band--dark .btn--secondary{border-color:rgba(233,236,238,.5);
+  --liq:rgba(233,236,238,.16)}
+@media (hover:hover){
+  .band--dark .btn--secondary:hover{color:var(--zinc-wash)}
+}
+.band--dark .btn--secondary:focus-visible{color:var(--zinc-wash)}
+
+/* ghost: a link that happens to sit in a row of buttons — no vessel */
+.btn--ghost{background:transparent;color:inherit;border-color:transparent;
+  padding-left:.6rem;padding-right:.6rem}
+.btn--ghost::before{display:none}
+.btn--ghost:hover{text-decoration:underline;text-underline-offset:.3em}
+
+.btn--sm{padding:.45rem 1.05rem;font-size:var(--step--1)}
+
+.btn:disabled,.btn[aria-disabled="true"]{
+  opacity:.45;cursor:not-allowed;transform:none;
+}
+.btn:disabled:hover,.btn[aria-disabled="true"]:hover{transform:none}
+.btn:disabled::before,.btn[aria-disabled="true"]::before{display:none}
+
+/* busy: the click landed, the work has not finished */
+.btn.is-busy{pointer-events:none;opacity:.72}
+.btn.is-busy::after{
+  content:"";width:.7em;height:.7em;border-radius:50%;
+  border:2px solid currentColor;border-top-color:transparent;
+  animation:btn-spin .7s linear infinite;
+}
+@keyframes btn-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){
+  .btn.is-busy::after{animation:none;border-top-color:currentColor;opacity:.5}
+  .btn::before{transition:none;animation:none}
+}
+
+
+/* ═══ field ══════════════════════════════════════════════════
+   One input pattern with the states that actually occur: rest,
+   focus, error, disabled. The error colour is paired — --fail on
+   light, --fail-lit on dark — because neither value is readable on
+   both surfaces.                                                  */
+
+.field{display:grid;gap:.4rem;max-width:26rem;text-align:left}
+.field__label{font-size:var(--step--1);color:var(--graphite)}
+.band--dark .field__label{color:var(--muted)}
+
+.field__input{
+  width:100%;font:inherit;color:inherit;
+  background:transparent;
+  border:1px solid rgba(13,13,13,.22);
+  border-radius:var(--radius-sm);
+  padding:.7rem .9rem;
+  transition:border-color var(--dur-base) ease;
+}
+.band--dark .field__input{border-color:rgba(214,221,226,.28)}
+.field__input::placeholder{color:var(--graphite);opacity:.7}
+.field__input:focus{outline:0;border-color:var(--obsidian)}
+.band--dark .field__input:focus{border-color:var(--flame-teal)}
+
+.field__help{font-size:var(--step--1);color:var(--graphite)}
+.band--dark .field__help{color:var(--muted)}
+
+.field--error .field__input{border-color:var(--fail)}
+.field--error .field__help{color:var(--fail)}
+.band--dark .field--error .field__input{border-color:var(--fail-lit)}
+.band--dark .field--error .field__help{color:var(--fail-lit)}
+
+.field__input:disabled{opacity:.5;cursor:not-allowed}
 
 .foot{padding:var(--space-lg) 0;display:flex;justify-content:space-between;
   flex-wrap:wrap;gap:var(--space-md)}
@@ -738,6 +1670,8 @@ img,svg{display:block;max-width:100%}
    accenting a single word in a headline in a different colour;
    if the line needs help, rewrite the line" — so emphasis here is
    italic, which is already the house move for a stressed word.
+   (16 Sep: the stressed phrase now also FILLS with the substance —
+   see §origin. Colour arrives as liquid, never as a static accent.)
 
    Reusable: drop it on any dark band. Keep the quote under about
    eighteen words or it stops being a quote and becomes a
@@ -818,6 +1752,147 @@ img,svg{display:block;max-width:100%}
 .band--dark .refuse li:last-child{border-bottom-color:rgba(214,221,226,.16)}
 
 
+/* ═══ pour ═══════════════════════════════════════════════════
+   The one moment. A vessel tips, the elixir pours, lands, pools,
+   rises, floods the frame — and the claim surfaces out of it exactly
+   as the liquid covers it.
+
+   REPLACES THE RISING RECTANGLE and the painted rim above it. That
+   version had a fill between two fractures, and the top fracture was
+   a coloured shape that turned teal on a ramp — so it went teal
+   before the liquid had physically reached it, and a band of black
+   air showed between a "liquid" rim and the actual liquid. A colour
+   trick standing in for a substance.
+
+   HERE NOTHING IS PAINTED TO LOOK LIKE LIQUID. There is one liquid
+   shape, built each frame from where the pour has got to. The top
+   fracture is not an element: it is the limit the liquid rises to.
+   The teeth only exist where liquid has reached them, so a gap
+   between rim and liquid cannot happen — there is no rim to have a
+   gap from.
+
+   Reference: a storyboard of a bottle pouring into a flood with the
+   words emerging (Figma "Actual Design", Desktop - 5, and a screen
+   recording of the prototype). Taken for its CHOREOGRAPHY, not its
+   surface — the reference is a glossy pink bottle and a psychedelic
+   swirl texture. This is a flat Obsidian vial and the elixir family,
+   which is the whole brand's register: one substance, no texture,
+   light where the surface is and dark where it is deep.
+
+   SCROLL-DRIVEN, NOT PLAYED. The stage pins while the reader scrolls
+   through the section, so the reader pours it, and scrolling back up
+   drains it. That keeps the site's one rule about this moment: it
+   carries meaning, so the reader moves it.                          */
+
+.pour{
+  position:relative;
+  /* the pin runs for the section's height less one stage: long
+     enough to read the pour, short enough that it never feels like a
+     scroll-jack. 180 was tuned against the captured frames. */
+  height:180vh;height:180svh;
+  background:var(--zinc-wash);
+  --mast-h:0px;                          /* written by site.js */
+}
+
+/* pinned under the masthead, not under the viewport top — the
+   masthead is opaque and sticky, and a stage pinned at top:0 would
+   pour its fracture teeth straight behind it */
+.pour__stage{
+  position:sticky;top:var(--mast-h);
+  height:calc(100vh - var(--mast-h));
+  height:calc(100svh - var(--mast-h));
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.pour__liquid{
+  /* IN FRONT of the vessel. Behind it, the vessel sat on top of the
+     rising flood like a bottle floating on a surface; in front, the
+     flood swallows it, which is what the reference does. */
+  position:absolute;inset:0;z-index:1;
+  width:100%;height:100%;display:block;
+}
+/* the stream is thin, so it is all surface: the light end of the
+   family. the body's gradient is laid out in stage pixels by the
+   controller — light at the surface, dark with DEPTH, so a thin
+   sheet on the floor stays light and only real depth goes dark. */
+.pour__stream{fill:var(--elixir)}
+.pour__g0{stop-color:var(--elixir)}
+.pour__g1{stop-color:var(--elixir-deep)}
+.pour__g2{stop-color:var(--elixir-void)}
+
+/* ── the vessel ──────────────────────────────────────────────
+   Flat Obsidian with one Zinc Silver band. No gloss, no highlight,
+   no shadow: the surfaces rule holds for the container even though
+   the liquid inside it gets its gradient. The controller writes its
+   pose — how far in, how far tipped — and reads the mouth back off
+   .pour__mouth so the stream always leaves from the real lip. */
+.pour__vessel{
+  position:absolute;z-index:0;
+  left:clamp(.5rem,4vw,6rem);
+  top:clamp(1.25rem,8vh,6rem);
+  /* the reference's bottle takes about a third of the frame; at 19vw
+     this read as a prop rather than the source of the whole moment */
+  width:clamp(10rem,25vw,23rem);
+  opacity:var(--v-o,0);
+  transform-origin:40% 50%;
+  transform:
+    translate(calc(var(--v-x,-130) * 1%), calc(var(--v-y,-160) * 1%))
+    rotate(calc(var(--v-r,-24) * 1deg));
+  will-change:transform;
+}
+.pour__vessel svg{display:block;width:100%;height:auto;overflow:visible}
+.pour__body{fill:var(--obsidian)}
+.pour__band{fill:var(--zinc-silver)}
+.pour__mouth{position:absolute;left:96.43%;top:50%;width:0;height:0}
+
+/* ── the claim ───────────────────────────────────────────────
+   --c is how much of the claim the liquid currently covers, 0 to 1,
+   measured against the live surface. It surfaces with the liquid and
+   sinks back if the liquid drains — it is IN the liquid, so without
+   the liquid there is nothing to see it by. */
+.pour__content{
+  position:absolute;inset:0;z-index:2;
+  display:grid;align-content:center;
+  pointer-events:none;
+}
+.pour__claim{
+  color:var(--zinc-wash);
+  opacity:var(--c,1);
+  transform:translateY(calc((1 - var(--c,1)) * 1.75rem));
+  filter:blur(calc((1 - var(--c,1)) * 6px));
+  transition:text-shadow .9s var(--ease-out);
+}
+.pour__line{display:block}
+/* the claim goes wet once it is fully under */
+.pour__claim.is-lit{
+  text-shadow:
+    0 0 28px rgba(91,245,214,.45),
+    0 0 70px rgba(11,107,92,.35);
+}
+
+/* ── without the controller ──────────────────────────────────
+   No JS, no liquid shape — so no pin, and a plain elixir ground the
+   claim can always be read on. site.js adds is-live when it takes
+   over, so this can never flash on a working page. */
+.pour:not(.is-live){height:auto}
+.pour:not(.is-live) .pour__stage{
+  position:relative;top:0;height:auto;min-height:26rem;
+  background:var(--elixir-deep);
+}
+.pour:not(.is-live) .pour__vessel{display:none}
+
+/* ── reduced motion ──────────────────────────────────────────
+   Movement removed, information kept: no pin and no pour, just the
+   flooded state with the claim already surfaced. */
+.pour.is-still{height:auto}
+.pour.is-still .pour__stage{
+  position:relative;top:0;
+  height:min(80vh,44rem);height:min(80svh,44rem);
+}
+.pour.is-still .pour__vessel{display:none}
+
+
 /* ═══ doors ══════════════════════════════════════════════════
    The homepage choice. Three words, and the cards that belong to
    each one arriving around them on hover.
@@ -844,7 +1919,9 @@ img,svg{display:block;max-width:100%}
    on hover AND focus. The :hover fallbacks below mean the swap
    still works before site.js loads.                              */
 
-.doors{position:relative;padding:var(--space-2xl) 0;overflow:hidden}
+/* 2xl measured 358px dead. The cards need room to scatter, not 179px
+   of empty band above and below them. */
+.doors{position:relative;padding:var(--space-xl) 0;overflow:hidden}
 .doors__inner{position:relative;z-index:2;text-align:center}
 
 .door{
@@ -964,6 +2041,15 @@ img,svg{display:block;max-width:100%}
 
 /* position and rotation are what differ per category, so the
    field re-composes rather than fading one set into another */
+/* Each category's cards carry its own material, so the colour means
+   something: Wear is cloth and steel, Fuel is the substance itself,
+   Instruments is the blue measured out of the gym screens on the mood
+   board. They only exist while a category is chosen — a colour event,
+   one set at a time, which is exactly the budget the board allows. */
+.doors__set[data-set="0"] .door-card{background:var(--zinc-silver)}
+.doors__set[data-set="1"] .door-card{background:var(--elixir-deep)}
+.doors__set[data-set="2"] .door-card{background:var(--info)}
+
 .doors__set[data-set="0"] .door-card:nth-child(1){left:4%;top:7%;--r:-4deg}
 .doors__set[data-set="0"] .door-card:nth-child(2){right:6%;top:16%;--r:3deg}
 .doors__set[data-set="0"] .door-card:nth-child(3){left:13%;bottom:6%;--r:2deg}
@@ -1009,6 +2095,34 @@ img,svg{display:block;max-width:100%}
 }
 .band--dark .kit__item{background:var(--obsidian)}
 
+/* THE CARD FLOODS. A turning rounded square rises through the whole
+   card — the single-div liquid fill from the reference. Flat
+   --elixir-deep, not a gradient: a gradient on a rotating shape turns
+   with it. Small muted type fails on --elixir-deep (~2.9:1), so it
+   brightens to Zinc Silver (~8:1) as the flood reaches it. */
+.kit__item{isolation:isolate}
+.band--dark .kit__item::before{
+  content:"";position:absolute;z-index:-1;
+  left:50%;top:104%;width:280%;aspect-ratio:1;
+  border-radius:43%;
+  background:var(--elixir-deep);
+  translate:-50% 0;
+  transition:top 1.1s var(--ease-out);
+  animation:liq-turn 12s linear infinite paused;
+  pointer-events:none;
+}
+@media (hover:hover){
+  .band--dark .kit__item:hover::before{top:-18%;animation-play-state:running}
+  .band--dark .kit__item:hover .kit__code,
+  .band--dark .kit__item:hover .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
+}
+.band--dark .kit__item:focus-visible::before{top:-18%;animation-play-state:running}
+.band--dark .kit__item:focus-visible .kit__code,
+.band--dark .kit__item:focus-visible .kit__spec{color:var(--zinc-silver)}
+@media (prefers-reduced-motion:reduce){
+  .band--dark .kit__item::before{transition:none;animation:none}
+}
+
 .kit__code{
   font-family:"Space Mono",ui-monospace,monospace;
   font-size:.7rem;letter-spacing:.14em;
@@ -1052,14 +2166,29 @@ img,svg{display:block;max-width:100%}
 .kit__spec b{font-weight:400;color:var(--obsidian)}
 .band--dark .kit__spec b{color:var(--zinc-silver)}
 
+/* Status is not a hover reward. "AWAITING DGDA" means this cannot
+   legally be sold yet — hiding that behind a hover was wrong, so the
+   chip is always visible and carries a signal colour. The dot is the
+   nav's own device: one small mark that means a state. */
 .kit__state{
   position:absolute;top:var(--space-md);right:var(--space-md);
+  display:inline-flex;align-items:center;gap:.45rem;
   font-family:"Space Mono",ui-monospace,monospace;
   font-size:.66rem;letter-spacing:.12em;
-  color:var(--flame-teal);opacity:0;
-  transition:opacity .4s ease;
+  color:var(--muted);
+  /* declared, not assumed: this chip used to be opacity:0 and a stale
+     cached stylesheet will keep it invisible unless we say otherwise */
+  opacity:1;
+  transition:color var(--dur-base) ease;
 }
-.band--dark .kit__item:hover .kit__state{opacity:1}
+.kit__state::before{
+  content:"";width:5px;height:5px;border-radius:50%;
+  background:currentColor;flex:none;
+}
+.kit__state--pass{color:var(--pass)}
+.kit__state--warn{color:var(--warn)}
+.band--dark .kit__state--pass{color:var(--pass-lit)}
+.band--dark .kit__state--warn{color:var(--warn-lit)}
 
 @media (max-width:640px){
   .kit__item{min-height:20rem}
@@ -1078,3 +2207,348 @@ img,svg{display:block;max-width:100%}
   }
   @view-transition{navigation:none}
 }
+
+
+/* ═══ elements ═══════════════════════════════════════════════
+   Three doors, one per screen. Moved here from an inline style block
+   in elements.html; its private copies of .settle and .foot are gone.
+
+   The door name is liquid type now. It used to sit at 28% opacity
+   and snap to full on hover — the word is always full strength now,
+   and choosing a door FILLS it, from anywhere in the band.          */
+.door-band{
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;position:relative;overflow:hidden;
+  text-decoration:none;color:inherit;
+  padding:var(--space-2xl) 0;
+}
+.door-name{line-height:1}
+.door-name .liq-type{--liq-lh:1em}
+@media (hover:hover){
+  .door-band:hover .liq-type{--liq-level:1;transition:--liq-level .9s var(--ease-out)}
+  .door-band:hover .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
+}
+.door-band:focus-visible .liq-type{--liq-level:1}
+@media (hover:none){ .door-band .liq-type{--liq-level:.5} }
+
+.door-sub{
+  margin-top:var(--space-md);
+  color:var(--graphite);font-size:var(--step-1);
+  opacity:0;transform:translateY(1rem);
+  transition:opacity .45s ease,transform .45s ease;
+}
+.band--dark .door-sub{color:var(--muted)}
+.door-band:hover .door-sub,.door-band:focus-visible .door-sub{opacity:1;transform:translateY(0)}
+
+.plate{
+  position:absolute;z-index:1;border-radius:2px;
+  background:var(--zinc-silver);opacity:.5;
+  transition:transform .9s var(--ease-out),opacity .6s ease,background .6s ease;
+  will-change:transform;
+}
+.band--dark .plate{background:var(--graphite);opacity:.32}
+.door-band .plate--a{width:15vw;height:20vw;max-width:15rem;max-height:20rem;top:10%;left:5%}
+.door-band .plate--b{width:11vw;height:11vw;max-width:11rem;max-height:11rem;top:55%;right:8%}
+.door-band .plate--c{width:9vw;height:12vw;max-width:9rem;max-height:12rem;bottom:8%;left:22%}
+.door-band[data-door="0"]:hover .plate--a{transform:translate(1.5rem,2rem) rotate(-3deg)}
+.door-band[data-door="0"]:hover .plate--b{transform:translate(-2rem,-3rem)}
+.door-band[data-door="0"]:hover .plate--c{transform:translate(3rem,-1rem) rotate(2deg)}
+.door-band[data-door="1"]:hover .plate--a{transform:translate(4rem,-3rem) rotate(4deg)}
+.door-band[data-door="1"]:hover .plate--b{transform:translate(-4rem,3rem) rotate(-2deg)}
+.door-band[data-door="1"]:hover .plate--c{transform:translate(-2rem,-4rem)}
+.door-band[data-door="2"]:hover .plate--a{transform:translate(-1rem,5rem) rotate(-6deg)}
+.door-band[data-door="2"]:hover .plate--b{transform:translate(2rem,-6rem) rotate(3deg)}
+.door-band[data-door="2"]:hover .plate--c{transform:translate(6rem,2rem)}
+
+@media (max-width:860px){
+  .plate{display:none}
+  .door-sub{opacity:1;transform:none}
+}
+
+
+/* ═══ fuel ═══════════════════════════════════════════════════
+   The lab panel's own rules, moved here from an inline style block in
+   fuel.html (with its bespoke, off-system waitlist form, which is gone
+   — Fuel ends on the same join band as every other page now).       */
+.lab-panel{margin-top:var(--space-xl)}
+.purity-large{display:flex;align-items:baseline;gap:var(--space-xs)}
+.purity-n{
+  font-family:var(--face-display);font-variation-settings:"wdth" 70,"wght" 900;
+  font-size:var(--step-4);line-height:.8;
+  color:transparent;-webkit-text-stroke:1.5px var(--zinc-silver);
+}
+.purity-unit{
+  font-family:var(--face-display);font-variation-settings:"wdth" 70,"wght" 900;
+  font-size:var(--step-3);color:var(--zinc-wash);
+}
+.lab-table{width:100%;max-width:var(--measure);border-collapse:collapse;margin-top:var(--space-lg)}
+.lab-table th,.lab-table td{padding:var(--space-md) var(--space-xs);text-align:left;
+  border-bottom:1px solid rgba(214,221,226,.22)}
+.lab-table th{color:var(--zinc-silver);font-weight:normal}
+.lab-table td{color:var(--muted)}
+.lab-table td:nth-child(2),.lab-table td:nth-child(3){
+  font-family:"Space Mono",ui-monospace,monospace;letter-spacing:-.02em}
+.lab-table td:last-child{color:var(--flame-teal)}
+
+/* the product, as a vessel: a dose sits in the tub at rest, and
+   pointing at it fills it — Fuel is the one category that IS the
+   substance, so it is the one page where the vessel is the product */
+.fuel-split{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.7fr);
+  gap:var(--space-xl);align-items:center;
+}
+.fuel-tub{margin:0;display:grid;justify-items:center;gap:var(--space-sm);
+  cursor:default;border-radius:var(--radius-sm)}
+.fuel-tub .vessel{width:min(100%,21rem);height:auto;color:var(--obsidian);--vessel-level:.16}
+.fuel-tub figcaption{
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.68rem;letter-spacing:.12em;color:var(--graphite);
+}
+@media (hover:hover){
+  .fuel-tub:hover .vessel{--vessel-level:.9}
+  .fuel-tub:hover .vessel__liquid{animation-play-state:running}
+}
+.fuel-tub:focus-visible .vessel{--vessel-level:.9}
+.fuel-tub:focus-visible .vessel__liquid{animation-play-state:running}
+@media (hover:none){ .fuel-tub .vessel{--vessel-level:.5} }
+@media (max-width:860px){ .fuel-split{grid-template-columns:1fr} }
+
+
+/* ═══ page actions ═══════════════════════════════════════════
+   Links that were underlined inline styles are buttons now, so every
+   action on the site uses the one liquid component.                */
+.teaser__action{margin-top:var(--space-lg)}
+.doors-open__lede{margin-top:var(--space-md);color:var(--graphite)}
+.doors-open__actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
+
+
+/* ═══ views ══════════════════════════════════════════════════
+   Every piece on Wear has four views — front, back, detail, fabric —
+   in a strip under its display. Choosing a view swaps the display:
+   the old drawing sinks into the block and the new one rises out of
+   it, the same dip the substance makes everywhere else.
+
+   Choosing a view is NAVIGATION, so it speaks the dot language, not
+   the liquid one: the selected slot's dot goes live and its plate
+   takes a hairline. Hover only lifts.
+
+   The drawings live once, as <symbol>s in a sprite at the top of the
+   viewer, and are placed with <use> — in the display (twice, for the
+   two-tone split) and in the slot. One edit to a symbol changes every
+   place it appears. When photography exists, put an <img> in
+   .vview__plate and in the matching .vpanel__view.                 */
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+
+.vpanel__view{
+  position:absolute;inset:0;
+  opacity:0;transform:translateY(1.4rem);
+  transition:opacity .35s ease,transform .6s var(--ease-out);
+}
+.vpanel__view.is-on{
+  opacity:1;transform:none;
+  transition:opacity .5s ease .12s,transform .8s var(--ease-out) .12s;
+}
+
+.vpanel__views{
+  grid-column:4 / 13;grid-row:4;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:var(--space-md);
+  margin-top:var(--space-lg);
+  max-width:44rem;
+}
+.vview{
+  display:grid;gap:.6rem;align-content:start;
+  padding:0;border:0;background:none;cursor:pointer;text-align:left;
+  color:var(--graphite);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.62rem;letter-spacing:.12em;
+}
+.vview__plate{
+  position:relative;display:grid;place-items:center;
+  aspect-ratio:4 / 5;border-radius:var(--radius-sm);
+  background:var(--zinc-silver);overflow:hidden;
+  transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out);
+}
+.vview__plate svg{width:62%;height:auto;color:var(--obsidian);opacity:.5;
+  transition:opacity .4s ease}
+.vview__plate img{width:100%;height:100%;object-fit:cover;display:block}
+.vview__label{display:inline-flex;align-items:center;gap:.45rem}
+.vview__dot{
+  flex:none;width:5px;height:5px;border-radius:50%;
+  background:currentColor;opacity:.45;
+  transition:background .3s ease,opacity .3s ease;
+}
+@media (hover:hover){
+  .vview:hover .vview__plate{transform:translateY(-3px)}
+  .vview:hover .vview__plate svg{opacity:.85}
+}
+.vview[aria-pressed="true"]{color:var(--obsidian)}
+.vview[aria-pressed="true"] .vview__plate{box-shadow:inset 0 0 0 1.5px var(--obsidian)}
+.vview[aria-pressed="true"] .vview__plate svg{opacity:1}
+.vview[aria-pressed="true"] .vview__dot{background:var(--flame-teal);opacity:1}
+.vview:focus-visible{outline-offset:6px}
+
+@media (max-width:860px){
+  .vpanel__views{grid-column:1 / 7;grid-row:6;max-width:none;
+    gap:var(--space-sm);margin-top:var(--space-md)}
+  .vview{font-size:.54rem;letter-spacing:.06em}
+}
+@media (prefers-reduced-motion:reduce){
+  .vpanel__view,.vpanel__view.is-on,.vview__plate{transition:none}
+}
+
+
+/* ═══ the mark ═══════════════════════════════════════════════
+   A vector trace of the carbon-fibre mark (IoU .996 against the PNG,
+   19 and 14 points), flat at rest: Obsidian on light, Zinc Silver on
+   dark — the mark rule carried in from the start.
+
+   Pointing at it fills it with its own artwork. The red carbon fibre
+   (assets/img/zinstim-mark.png) sits still inside the vector's clip,
+   and the liquid is the MASK that uncovers it — the same wave-topped
+   body as every vessel, rising inside an SVG mask instead of being
+   painted a colour. Only the wave edge moves; the weave never slides.
+   It drains back to Obsidian when the cursor leaves. The mark is the
+   brand rather than a control, so it holds the substance; it is the
+   one crossing of the dots-and-liquid line, on purpose.
+
+   All of it lives in the inline SVG (an image element and a mask
+   element, no CSS mask-image), so it paints over file:// — the 07 Sep
+   mask-image version went blank there. Clip and mask ids must be
+   unique on the page: mark-clip and mark-fill in the masthead.     */
+.home__mark{position:relative;display:block;width:1.7rem;height:1.7rem}
+.home__mark .mark{width:100%;height:100%}
+.mark__body{fill:var(--obsidian)}
+.band--dark .mark__body{fill:var(--zinc-silver)}
+.mark .vessel__liquid{fill:#fff}      /* in the mask: white = the art shows */
+.home .vessel__level{transition-duration:.75s}
+/* full is 1.12, not 1: at level 1 the wave's troughs are still 10.5
+   units below the top of the mark (of 114), so the level has to lift
+   them past the edge — 1.092 at least, 1.12 with a margin. At 1.08
+   the troughs stopped 1.4 short and drifted along the top of the
+   blade as bumps of the base colour.                              */
+@media (hover:hover){
+  .home:hover .mark{--vessel-level:1.12}
+  .home:hover .vessel__liquid{animation-play-state:running}
+}
+.home:focus-visible .mark{--vessel-level:1.12}
+
+
+/* ═══ origin ═════════════════════════════════════════════════
+   The story page, in the same system as every other page.         */
+
+/* THE ROLLING LINE POURS. "Confidence / is" hold in Zinc Wash; each
+   phrase that lands fills with Flame Teal as it arrives and drains as
+   it leaves. Colour arrives as the substance, never as a painted
+   accent — the one way colour enters display type on this site. The
+   rollcall's own transition has to be restated here with the level
+   added, or its transform transition would override the pour. */
+.rollcall .liq-type{--liq-lh:.86em}
+.rollcall__word{
+  --liq-level:0;
+  transition:transform .52s var(--ease-out),--liq-level .45s ease;
+}
+.rollcall__word.is-on{
+  --liq-level:1;
+  transition:transform .52s var(--ease-out),--liq-level 1.4s var(--ease-out) .3s;
+}
+.rollcall__word.is-on::after{animation:liq-drift-b 1.4s linear 3}
+
+/* THE COMMITMENTS FILL. Hollow numerals — the promise, not yet kept —
+   fill to half as each one comes into view and to full under the
+   cursor. The outline is inherited by the liquid copy, so the numeral
+   keeps its edge over the fill. */
+.fact__n .liq-type{--liq-lh:.8em}
+.facts [data-reveal].is-in .liq-type{
+  --liq-level:.5;transition:--liq-level 1.8s var(--ease-out) .35s;
+}
+@media (hover:hover){
+  .facts [data-reveal].is-in:hover .liq-type{--liq-level:1;transition:--liq-level .8s var(--ease-out)}
+  .facts [data-reveal].is-in:hover .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
+}
+@media (hover:none){ .facts .liq-type{--liq-level:.5} }
+
+/* WHAT WE MAKE FLOODS. The four things the company makes are rows a
+   pale substance rises through on hover, and the name takes the
+   elixir (5.8:1 on Zinc Wash). The refusals list below is left still,
+   on purpose — it reads like a specification, and not everything on a
+   page should move. */
+/* NOT the turning blob. A row is ~60px tall against a 1,600px square,
+   so mid-rotation a straight edge of the square crossed the row as a
+   slanted wedge — it read as a skewed shape, not liquid (captured).
+   The blob only works in containers near square, like a button or a
+   card. A thin row gets the liquid-type construction instead: a pale
+   body with the wave tile on its top edge, rising straight up. */
+.refuse--make li{position:relative;isolation:isolate;overflow:hidden}
+.refuse--make li::before{
+  content:"";position:absolute;z-index:-1;left:0;right:0;top:0;
+  height:calc(100% + .7rem);
+  background:
+    var(--wave-pale) 0 0 / 5rem .7rem repeat-x,
+    linear-gradient(rgba(11,107,92,.1),rgba(11,107,92,.1)) 0 .7rem / 100% calc(100% - .7rem) no-repeat;
+  transform:translateY(102%);
+  transition:transform .8s var(--ease-out);
+  pointer-events:none;
+}
+.refuse--make .refuse__k{transition:color .4s ease .15s}
+@keyframes row-drift{to{background-position:5rem 0,0 .7rem}}
+@media (hover:hover){
+  .refuse--make li:hover::before{transform:translateY(-.7rem);animation:row-drift 1.8s linear infinite}
+  .refuse--make li:hover .refuse__k{color:var(--elixir)}
+}
+
+/* TWO GRAMS. The one place zinc is explained gets a vessel that holds
+   almost nothing — a sliver, poured once as the section arrives, and
+   it does not fill on hover. The point is how little it is. */
+.origin-name{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.5fr);
+  gap:var(--space-xl);align-items:center;
+}
+.two-grams{margin:0;display:grid;justify-items:center;gap:var(--space-sm)}
+.two-grams .vessel{
+  width:min(100%,11rem);height:auto;color:var(--zinc-silver);
+  --vessel-c:var(--flame-teal);--vessel-level:0;
+}
+.two-grams.is-in .vessel{--vessel-level:.08}
+.two-grams .vessel__level{transition-duration:2.4s;transition-delay:.5s}
+.two-grams figcaption{
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.68rem;letter-spacing:.12em;color:var(--muted);
+}
+@media (max-width:860px){ .origin-name{grid-template-columns:1fr} }
+
+/* THE PHRASE THE LINE TURNS ON FILLS. In the pull quote ("stopped
+   watching.") it pours full after the lines have risen; in the closing
+   divider ("repeated.") it pours to half, like a title, and fills
+   under the cursor. */
+.quote__text .liq-type{--liq-lh:1.02em}
+.quote__text.is-in .liq-type{--liq-level:1;transition:--liq-level 2.2s var(--ease-out) 1s}
+.t-divider .liq-type{--liq-lh:.82em}
+.band--divider .t-divider.is-in .liq-type{--liq-level:.5;transition:--liq-level 2s var(--ease-out) .8s}
+@media (hover:hover){
+  .band--divider .t-divider.is-in:hover .liq-type{--liq-level:1;transition:--liq-level .8s var(--ease-out)}
+  .band--divider .t-divider.is-in:hover .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
+}
+@media (hover:none){ .band--divider .t-divider .liq-type{--liq-level:.5} }
+
+
+/* ═══ foot ═══════════════════════════════════════════════════
+   Every page's footer carries the whole site. The links are
+   navigation, so they use the nav's devices: an underline that draws
+   in from the left, and the teal dot for the page you are on.     */
+.foot{align-items:center}
+.foot__nav{display:flex;flex-wrap:wrap;gap:.25rem var(--space-md)}
+.foot__nav a{position:relative;padding:.2rem 0;color:var(--graphite);transition:color .3s ease}
+.foot__nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:left;
+  transition:transform .5s var(--ease-out);
+}
+.foot__nav a:hover,.foot__nav a:focus-visible{color:var(--obsidian)}
+.foot__nav a:hover::after,.foot__nav a:focus-visible::after{transform:scaleX(1)}
+.foot__nav a[aria-current="page"]{color:var(--obsidian)}
+.foot__nav a[aria-current="page"]::before{
+  content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--flame-teal);margin-right:.45rem;vertical-align:.12em;
+}
+.foot__nav a[aria-current="page"]::after{display:none}
