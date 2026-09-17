@@ -170,6 +170,43 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
 .btn:hover,.btn:focus-visible{color:var(--wash); transition-delay:0s}
 .btn:hover::before,.btn:focus-visible::before{top:-46%}
 .demo-row{display:flex; flex-wrap:wrap; gap:14px; align-items:center}
+
+/* states, drawn side by side because paper cannot hover */
+.states{display:grid; gap:16px}
+.state-row{display:grid; gap:10px; padding-top:14px; border-top:1px solid var(--rule-dark)}
+.state-row:first-of-type{border-top:0; padding-top:0}
+.state-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 14px}
+.state-head b{font-variation-settings:"wdth" 88,"wght" 700; font-size:1rem}
+.state-head span{font-family:var(--mono); font-size:.66rem; letter-spacing:.06em; color:#B7BEC2}
+.state-cells{display:grid; grid-template-columns:repeat(auto-fit,minmax(8.5rem,1fr)); gap:10px}
+.cell-demo{display:grid; gap:10px; justify-items:start; align-content:start; padding:14px; border-radius:2px; background:rgba(233,236,238,.04); box-shadow:inset 0 0 0 1px rgba(233,236,238,.10)}
+.cell-demo .cap{font-family:var(--mono); font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color:#B7BEC2}
+.btn--night{background:var(--crimson); color:var(--wash); border-color:var(--crimson)}
+.btn--night::before{background:#F29BA1}
+.btn--ghost{background:transparent; color:var(--wash); border-color:rgba(233,236,238,.45)}
+.btn--ghost::before{background:rgba(233,236,238,.16)}
+.btn--ghost.is-hover{color:var(--wash); border-color:var(--wash)}
+.btn.is-hover{color:var(--obsidian); transition-delay:0s}
+.btn.is-hover::before{top:-46%}
+.btn.is-focus{outline:2px solid var(--flame); outline-offset:3px}
+.btn.is-off{background:transparent; color:#7C8488; border-color:rgba(233,236,238,.22)}
+.btn.is-off::before{display:none}
+.nav-demo{display:inline-flex; align-items:center; gap:.5rem; color:var(--wash); font-variation-settings:"wdth" 92,"wght" 600}
+.nav-demo i{width:5px; height:5px; border-radius:50%; background:var(--flame)}
+.nav-demo.is-quiet{color:#B7BEC2}
+.nav-demo.is-hover{text-decoration:underline; text-decoration-color:var(--flame); text-decoration-thickness:1.5px; text-underline-offset:5px}
+.field-demo{width:100%; padding:.6rem .85rem; border-radius:999px; background:#161618; color:var(--wash); border:1px solid rgba(233,236,238,.16); font:inherit; font-size:.85rem}
+.field-demo.is-focus{outline:2px solid var(--flame); outline-offset:2px}
+.field-demo.is-bad{border-color:#FF7A6B}
+.msg-demo{display:inline-flex; align-items:center; gap:.4rem; font-size:.78rem; color:#FF7A6B}
+.msg-demo i{width:6px; height:6px; border-radius:50%; background:currentColor}
+.tile-demo{display:grid; gap:6px; width:100%; padding:12px; border-radius:2px; background:#161618; color:var(--wash)}
+.tile-demo.is-on{background:#480F15}
+.tile-demo b{font-variation-settings:"wdth" 82,"wght" 800; font-size:1.05rem}
+.tile-demo em{font-style:normal; font-family:var(--mono); font-size:.6rem; letter-spacing:.06em; display:inline-flex; align-items:center; gap:.4rem}
+.tile-demo em i{width:8px; height:8px; border-radius:50%; background:var(--crimson)}
+.glass-demo{width:3.2rem; height:4rem; border-radius:2px; position:relative; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(233,236,238,.25)}
+.glass-demo i{position:absolute; left:0; right:0; bottom:0; background:var(--crimson)}
 .hint{font-family:var(--mono); font-size:.66rem; letter-spacing:.08em; color:var(--muted); text-transform:uppercase}
 
 /* ── levels diagram ── */
@@ -193,8 +230,10 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
   .rail{display:none}
   .shell{grid-template-columns:minmax(0,1fr)}
   .plate,.chip__well,.ratio__bar i,.bars__fill,.swatch-cell i,.cvd__pair i,.level__fill,.wheel{-webkit-print-color-adjust:exact; print-color-adjust:exact}
-  .sec{break-before:page}
-  .sec__head,h3,h4,.specimen__meta{break-after:avoid}
+  .sections{gap:0}
+  .sec{break-before:page; gap:14px}
+  .mixer,.quickcard,.mission{break-before:page}
+  h3,h4,.specimen__meta{break-after:avoid}
   .panel,.tablewrap,figure,.dd__col,.specimen,.level,.build__draw,.mix-critic{break-inside:avoid}
   .tablewrap{overflow:visible}
   table.spec{min-width:0; font-size:.72rem}
@@ -265,8 +304,9 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
       <li><b>Quiet is the position.</b> Every rival sells the shout. We sell the small correct input, repeated after anyone stopped watching.</li>
       <li><b>Night for the brand, Day for the proof.</b> Obsidian carries the story; Zinc Wash carries sizes, doses, lab panels and policy.</li>
       <li><b>One live colour.</b> The elixir teal means alive, measured, recovering, correct. Under 8% of any screen.</li>
-      <li><b>The red belongs to the object, not to the page.</b> It is the mark's own carbon fibre. Never a button, a band, a headline or a warning.</li>
-      <li><b>Colour is an event.</b> If two coloured things fight for attention on one screen, one of them is wrong.</li>
+      <li><b>Red acts, and only in the dark.</b> Crimson leads the things you touch on Night. On a light surface red means failure, so nothing there is crimson but the mark.</li>
+      <li><b>Structure is silver.</b> The stripes, plates and rules are the jar lid's own metal &mdash; that is what keeps black-and-red from becoming the supplement aisle.</li>
+      <li><b>Colour is an event.</b> One crimson action per screen, teal under 3%. If two coloured things fight for attention, one of them is wrong.</li>
       <li><b>Dots mean where you are. Liquid means what you do.</b> Those are the only two motion grammars.</li>
       <li><b>Gradients live inside liquid only.</b> Zinc is a solid; a gradient on a surface would be the first dishonest thing on the page.</li>
       <li><b>One type family, pushed to both extremes.</b> Archivo narrow and heavy for display, normal for reading. Bangla sits beside English, never beneath it.</li>
@@ -486,29 +526,32 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
           <p class="eyebrow">05</p>
           <h2>Colour</h2>
         </div>
-        <p class="lede">The system is called <b>Deep Zinc</b>: night, metal, one live colour &mdash; and a red that belongs to the object rather than to the page.</p>
+        <p class="lede">The system is called <b>Carbon steel</b>: a night ground, the product&rsquo;s own metal as structure, crimson where you act, and one live teal.</p>
 
         <div class="cols cols--2">
           <div class="sub">
             <h3>The four materials</h3>
             <p class="small"><b>Night.</b> Obsidian <span class="code" style="font-family:var(--mono); font-size:.8rem">#0D0D0D</span> is the ground the brand speaks from. Not pure black: black is a hole, obsidian is a surface, and it keeps the mark's edge.</p>
-            <p class="small"><b>Metal.</b> Zinc Wash, Zinc Silver and Graphite are the element itself — cool and bluish, never warm. They carry every word and every surface.</p>
-            <p class="small"><b>One live colour.</b> The elixir, a teal. It means alive, measured, recovering, correct. It is the only colour allowed to mean something.</p>
-            <p class="small"><b>The mark's own red.</b> Crimson carbon fibre. It is a finish on an object, the way a taillight lens or an anodised edge is red. It is not a colour we paint with.</p>
+            <p class="small"><b>Metal.</b> Zinc Wash and Zinc Silver carry the words; <b>Lid Silver <span class="code" style="font-family:var(--mono); font-size:.8rem">#80878D</span></b> carries the structure — the diagonal stripes, rules and plates. It is the jar lid's own value, measured at L 62% and set in the brand's cool band.</p>
+            <p class="small"><b>Crimson, where you act.</b> The mark's red leads the buttons, the drop and the product fill — on Night only. It is the brand's energy, spent on the things a person touches.</p>
+            <p class="small"><b>One live colour.</b> The elixir teal means alive, measured, recovering, correct: you are here, success, the pour. It never competes with crimson because it never does crimson's job.</p>
           </div>
           <div class="ratio sub">
-            <h3>The ratio: 90 / 8 / 2</h3>
+            <h3>The ratio: 90 / 7 / 3</h3>
             <div class="ratio__bar" aria-hidden="true">
-              <i style="flex:90; background:linear-gradient(90deg,#0D0D0D 0 62%,#E9ECEE 62% 88%,#D6DDE2 88% 100%)"></i>
-              <i style="flex:8; background:#12B394"></i>
-              <i style="flex:2; background:#AE4047"></i>
+              <i style="flex:60; background:#0D0D0D"></i>
+              <i style="flex:18; background:#80878D"></i>
+              <i style="flex:12; background:#E9ECEE"></i>
+              <i style="flex:7; background:#AE4047"></i>
+              <i style="flex:3; background:#00E0B8"></i>
             </div>
             <div class="ratio__key">
-              <span><b style="background:#0D0D0D"></b>90% night and metal</span>
-              <span><b style="background:#12B394"></b>8% the live colour</span>
-              <span><b style="background:#AE4047"></b>2% the mark's red</span>
+              <span><b style="background:#0D0D0D"></b>Night</span>
+              <span><b style="background:#80878D"></b>Metal</span>
+              <span><b style="background:#AE4047"></b>7% crimson</span>
+              <span><b style="background:#00E0B8"></b>3% teal</span>
             </div>
-            <p class="small">Measured across a whole screen, not per element. If you can see two red things at once, one of them is wrong. If the teal is the first thing you notice, there is too much of it.</p>
+            <p class="small">Measured across a whole screen, not per element. Crimson belongs to what you act on — one primary button, the drop, a product fill. If a screen has crimson in two places that are not actions, one of them is wrong.</p>
           </div>
         </div>
 
@@ -529,22 +572,24 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
 
         <div class="plate sub">
           <p class="eyebrow">The decision this edition settles</p>
-          <h3 style="font-size:clamp(1.3rem,1rem + 1.4vw,1.9rem); max-width:26ch">Red is the material the mark is made of. It is not the brand's colour.</h3>
-          <p class="small" style="max-width:66ch">An earlier experiment led with crimson: crimson buttons, a crimson band, a crimson glow. It looked strong in isolation and wrong as a system. Five reasons, in the order they matter.</p>
+          <h3 style="font-size:clamp(1.3rem,1rem + 1.4vw,1.9rem); max-width:26ch">Red acts &mdash; but only in the dark.</h3>
+          <p class="small" style="max-width:66ch">Crimson leads the things a person touches: the primary button, the drop, the product filling. That was rejected while the brand was on a light ground, and the ground is what changed. Five measurements, and the four rules they force.</p>
           <div class="cols cols--2" style="margin-top:6px">
             <div class="sub">
-              <h4>1 &middot; It contradicts the argument</h4>
-              <p class="small">Red is the colour of alarm and appetite — that is why it works in fast food and clearance sales. A brand whose whole thesis is the quiet, unnoticed, correct input cannot lead with the loudest colour in the spectrum. Shouting is insecurity at volume.</p>
-              <h4>2 &middot; The system already spent red</h4>
-              <p class="small">Failure is red. Our fail token <span class="code" style="font-family:var(--mono)">#B0332B</span> sits <b>0.033</b> from the mark's crimson in OKLab — roughly a step and a half apart. Make crimson the action colour and &ldquo;join the list&rdquo; looks like &ldquo;this went wrong&rdquo;. For a brand whose third category is instruments, that is a systems error, not a matter of taste.</p>
-              <h4>3 &middot; It is the category uniform</h4>
-              <p class="small">Black and red is the default of the supplement aisle and the training-apparel shelf. Standing next to it in a louder version of the same colour is not differentiation.</p>
+              <h4>1 &middot; The collision was a light-surface problem</h4>
+              <p class="small">On Day, the failure colour <span class="code" style="font-family:var(--mono)">#B0332B</span> sits <b>0.033</b> from the mark's crimson — the same colour at a glance, so &ldquo;join the list&rdquo; would read like &ldquo;this went wrong&rdquo;. On Night the failure colour is <span class="code" style="font-family:var(--mono)">#FF7A6B</span>, <b>0.208</b> away: two steps lighter and visibly different. Red can lead here because the ground moved.</p>
+              <h4>2 &middot; It fills, it does not letter</h4>
+              <p class="small">Crimson on Obsidian is <b>3.35:1</b>, which fails at every size. So crimson is a <b>fill</b> carrying Zinc Wash at <b>4.9:1</b>, and crimson type appears only at display size in the lighter tint <span class="code" style="font-family:var(--mono)">#E87A82</span> (<b>7:1</b>).</p>
+              <h4>3 &middot; Silver is what keeps us out of the aisle</h4>
+              <p class="small">Black and red is the supplement aisle's uniform, and the diagonal stripes were the part that read as ASRV. In the lid's own silver they read as metal instead, and our crimson already carries a third less chroma than the shelf (<b>0.144</b> against <b>0.213</b>).</p>
             </div>
             <div class="sub">
-              <h4>4 &middot; It cannot carry a word</h4>
-              <p class="small">Mark crimson on Obsidian measures <b>3.35:1</b> (APCA Lc 23). That fails for text at every size. A colour that cannot hold a sentence on our own ground is a finish, not a system colour.</p>
-              <h4>5 &middot; Red and green is the common blindness</h4>
-              <p class="small">About one man in twelve. Simulated for deuteranopia, our pass and fail colours land <b>0.076</b> apart, and crimson against the elixir core lands <b>0.091</b> — near enough to the same colour. So no state may be carried by hue alone, and adding red to the action layer doubles a risk we already manage.</p>
+              <h4>4 &middot; Red means act, never wrong</h4>
+              <p class="small">One man in twelve is red-green blind: simulated, our pass and fail land <b>0.076</b> apart. Since red now means &ldquo;act&rdquo;, every error carries a word and a shape, and failure never relies on being red.</p>
+              <h4>5 &middot; On Day, red stands down</h4>
+              <p class="small">Specification surfaces keep red for the mark and for failure only. Their actions are Obsidian filling with the elixir, as today's site already does. <b>Red works where it glows.</b></p>
+              <h4>The four rules</h4>
+              <p class="small">One crimson action per screen. Crimson never carries small text. Every error carries a word. The mark's reveal stays the only place red is the material rather than the action.</p>
             </div>
           </div>
         </div>
@@ -580,21 +625,23 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
             <div class="dd__col dd--do">
               <h4>Allowed</h4>
               <ul>
-                <li>The mark's artwork, uncovered by the reveal.</li>
-                <li>The tab icon and the app icon.</li>
-                <li>Physical finishes: a crimson thread in a woven label, anodised edges, print on black.</li>
-                <li>Photography of the object, where the red is the thing's own surface.</li>
-                <li>The fail token, at interface scale, where something genuinely failed.</li>
+                <li>The primary button on Night &mdash; one per screen.</li>
+                <li>The product filling: a tee, a tub, the drop's key moment.</li>
+                <li>The headline's liquid, at display size, in the lighter tint <span class="code" style="font-family:var(--mono)">#E87A82</span>.</li>
+                <li>The mark's artwork, uncovered by the reveal, and the tab icon.</li>
+                <li>Physical finishes: crimson thread, anodised edges, print on black.</li>
+                <li>The fail token, at interface scale, always beside a word.</li>
               </ul>
             </div>
             <div class="dd__col dd--no">
               <h4>Not allowed</h4>
               <ul>
-                <li>Buttons, links, hovers, focus rings, badges.</li>
-                <li>Bands, panels, packaging fields, category colours.</li>
-                <li>Headlines, painted words, underlines.</li>
-                <li>Charts, data marks, progress.</li>
-                <li>Anything meaning &ldquo;act now&rdquo; or &ldquo;hurry&rdquo;.</li>
+                <li>Any action on a Day surface &mdash; there red means failure only.</li>
+                <li>Small text, labels, captions, links in running copy.</li>
+                <li>Full-bleed red panels or packaging fields. Crimson fills controls, not rooms.</li>
+                <li>A second crimson element on a screen that is not an action.</li>
+                <li>Charts and data marks, where hue would be the only cue.</li>
+                <li>Anything meaning &ldquo;hurry&rdquo;: sale flags, countdowns, urgency.</li>
               </ul>
             </div>
           </div>
@@ -640,6 +687,8 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
                 <tr><td><span class="swatch-cell"><i style="background:#D6DDE2"></i>Zinc Silver</span></td><td class="code">#D6DDE2</td><td class="code">89% 0.010 239&deg;</td><td class="num">14.2:1</td><td class="num">1.2:1</td><td>The mark on Night. Rules, dividers, metal surfaces.</td></tr>
                 <tr><td><span class="swatch-cell"><i style="background:#6E7679"></i>Graphite</span></td><td class="code">#6E7679</td><td class="code">56% 0.011 222&deg;</td><td class="num">4.2:1</td><td class="num">3.9:1</td><td>Captions and meta at 14 px and up. Never body copy.</td></tr>
                 <tr><td><span class="swatch-cell"><i style="background:#828C90"></i>Muted</span></td><td class="code">#828C90</td><td class="code">63% 0.013 224&deg;</td><td class="num">5.7:1</td><td class="num">2.9:1</td><td>Secondary text on Night only.</td></tr>
+                <tr><td><span class="swatch-cell"><i style="background:#80878D"></i>Lid Silver</span></td><td class="code">#80878D</td><td class="code">62% 0.010 236&deg;</td><td class="num">5.3:1</td><td class="num">3.1:1</td><td><b>Structure:</b> the diagonal stripes, plates, instrument marks. Read off the jar lid.</td></tr>
+                <tr><td><span class="swatch-cell"><i style="background:#494E51"></i>Steel deep</span></td><td class="code">#494E51</td><td class="code">42% 0.009 236&deg;</td><td class="num">2.3:1</td><td class="num">7.2:1</td><td>The stripe's shadow, and rules on Night. Never type.</td></tr>
               </tbody>
             </table>
           </div>
@@ -694,11 +743,13 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
                 <tr><td>Secondary copy on Night</td><td class="code">#B7BEC2</td><td class="num">14 px</td><td class="num">10.3:1</td></tr>
                 <tr><td>Body copy on Day</td><td class="code">#0D0D0D</td><td class="num">16 px</td><td class="num">16.4:1</td></tr>
                 <tr><td>Caption and meta on Day</td><td class="code">#6E7679</td><td class="num">14 px &middot; never body copy</td><td class="num">3.9:1 &middot; Lc 61</td></tr>
-                <tr><td>Liquid headline on Night</td><td class="code">#00E0B8</td><td class="num">40 px and up</td><td class="num">11.4:1</td></tr>
+                <tr><td>Liquid headline on Night</td><td class="code">#E87A82</td><td class="num">40 px and up</td><td class="num">7:1 &middot; display only</td></tr>
                 <tr><td>Live text and links on Day</td><td class="code">#0B6B5C</td><td class="num">14 px</td><td class="num">5.4:1</td></tr>
                 <tr><td>&ldquo;You are here&rdquo; dot</td><td class="code">#00E0B8</td><td class="num">5 px, always with its label</td><td class="num">11.4:1</td></tr>
-                <tr><td>Button at rest on Night</td><td class="code">#E9ECEE on a #00E0B8 rim</td><td class="num">15 px label &middot; 44 px tap target</td><td class="num">16.4:1</td></tr>
-                <tr><td>Button once filled</td><td class="code">#0D0D0D on #00E0B8</td><td class="num">15 px</td><td class="num">11.4:1</td></tr>
+                <tr><td>Primary button on Night</td><td class="code">#E9ECEE on #AE4047</td><td class="num">15 px label &middot; 44 px tap target</td><td class="num">4.9:1</td></tr>
+                <tr><td>Primary button, filled</td><td class="code">#0D0D0D on #F29BA1</td><td class="num">15 px</td><td class="num">9.2:1</td></tr>
+                <tr><td>Primary button on Day</td><td class="code">#E9ECEE on #0D0D0D, fills #0B6B5C</td><td class="num">15 px</td><td class="num">16.4:1</td></tr>
+                <tr><td>Diagonal stripes</td><td class="code">#80878D and #494E51</td><td class="num">one set per page</td><td class="num">5.3:1 / 2.3:1 &middot; never behind copy</td></tr>
                 <tr><td>Rules and dividers</td><td class="code">rgba(233,236,238,.12)</td><td class="num">1 px</td><td>Decorative: never the only cue</td></tr>
                 <tr><td>The mark</td><td class="code">#D6DDE2 on Night</td><td class="num">16 px &middot; 32 px for the reveal &middot; 6 mm print</td><td class="num">14.2:1</td></tr>
                 <tr><td>The mark&rsquo;s red</td><td class="code">artwork only</td><td class="num">64 px tab icon</td><td class="num">3.35:1 &mdash; never type</td></tr>
@@ -706,7 +757,7 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
               </tbody>
             </table>
           </div>
-          <p class="small"><b>How much.</b> The live colour stays under 8% of a screen: in practice no more than three teal things visible at once, and one button per page — the waitlist. The mark's red is the only red in the frame.</p>
+          <p class="small"><b>How much.</b> One crimson action per screen — on the brand pages that is the waitlist. Teal stays under 3%: no more than three teal things visible at once. Silver structure is unlimited but takes one shape per page: a stripe set, or plates, not both.</p>
         </div>
 
         <div class="cols cols--2">
@@ -813,7 +864,7 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
       <section class="sec" id="s7">
         <div class="sec__head">
           <p class="eyebrow">07</p>
-          <h2>Motion, and why everything fills</h2>
+          <h2>Motion and states</h2>
         </div>
         <p class="lede">Everything fills because a body fills: blood moving, a dose landing, a level rising toward ready.</p>
         <div class="cols cols--2">
@@ -885,6 +936,89 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+
+        <div class="plate sub">
+          <p class="eyebrow">Every state, side by side</p>
+          <h3 style="font-size:1.4rem">What each thing does when you touch it</h3>
+          <p class="small" style="max-width:62ch">Paper cannot hover, so each control is drawn in all of its states at once. On screen these are one control moving between them.</p>
+          <div class="states">
+            <div class="state-row">
+              <div class="state-head"><b>Primary button</b><span>crimson fills to #F29BA1 &middot; 750 ms</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span><span class="btn btn--night">Join the list</span></div>
+                <div class="cell-demo"><span class="cap">Hover</span><span class="btn btn--night is-hover">Join the list</span></div>
+                <div class="cell-demo"><span class="cap">Keyboard focus</span><span class="btn btn--night is-hover is-focus">Join the list</span></div>
+                <div class="cell-demo"><span class="cap">Disabled</span><span class="btn btn--night is-off">Join the list</span></div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>Secondary button</b><span>outline fills with 12% Zinc Wash</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span><span class="btn btn--ghost">See the drop</span></div>
+                <div class="cell-demo"><span class="cap">Hover</span><span class="btn btn--ghost is-hover">See the drop</span></div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>The mark</b><span>liquid rises to 1.12 and uncovers the artwork &middot; 750 ms</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span>
+                  <span class="markbtn"><svg class="mark" viewBox="0 0 128 114" width="44" aria-hidden="true" focusable="false"><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></svg></span>
+                </div>
+                <div class="cell-demo"><span class="cap">Pointed at</span>
+                  <span class="markbtn is-lit"><svg class="mark" viewBox="0 0 128 114" width="44" aria-hidden="true" focusable="false"><defs><clipPath id="bb-mark-clip3"><path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/><path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/></clipPath><mask id="bb-mark-fill3" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="114"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></mask></defs><path class="mark__body" d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/><g clip-path="url(#bb-mark-clip3)" mask="url(#bb-mark-fill3)"><use href="#bb-mark-img"/></g></svg></span>
+                </div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>Navigation</b><span>dots mean where you are</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Another page</span><span class="nav-demo is-quiet">Elements</span></div>
+                <div class="cell-demo"><span class="cap">Hover</span><span class="nav-demo is-hover">Elements</span></div>
+                <div class="cell-demo"><span class="cap">Current page</span><span class="nav-demo"><i></i>Origin</span></div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>Product</b><span>the piece fills from 0.10 to 0.94 &middot; 1000 ms</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span><span class="glass-demo"><i style="height:10%"></i></span></div>
+                <div class="cell-demo"><span class="cap">Pointed at</span><span class="glass-demo"><i style="height:94%"></i></span></div>
+                <div class="cell-demo"><span class="cap">Pending</span><span class="glass-demo"><i style="height:50%"></i></span></div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>Category</b><span>the tile floods with Deep crimson &middot; 1000 ms</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span><span class="tile-demo"><em><i></i>WHAT YOU PUT ON</em><b>Wear</b></span></div>
+                <div class="cell-demo"><span class="cap">Pointed at</span><span class="tile-demo is-on"><em><i></i>WHAT YOU PUT ON</em><b>Wear</b></span></div>
+              </div>
+            </div>
+            <div class="state-row">
+              <div class="state-head"><b>Field</b><span>focus ring in Flame Teal &middot; errors carry a word</span></div>
+              <div class="state-cells">
+                <div class="cell-demo"><span class="cap">Rest</span><span class="field-demo">you@email.com</span></div>
+                <div class="cell-demo"><span class="cap">Focus</span><span class="field-demo is-focus">you@email.com</span></div>
+                <div class="cell-demo"><span class="cap">Error</span><span class="field-demo is-bad">you@email</span><span class="msg-demo"><i></i>That email looks incomplete.</span></div>
+                <div class="cell-demo"><span class="cap">Done</span><span class="field-demo">you@email.com</span><span class="msg-demo" style="color:var(--flame)"><i></i>You&rsquo;re on the list.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tablewrap" style="margin-top:6px">
+            <table class="spec">
+              <thead><tr><th>State</th><th>What changes</th><th>Timing</th></tr></thead>
+              <tbody>
+                <tr><td>Hover</td><td>The liquid rises inside the control; the label flips as the surface reaches it</td><td class="num">750 ms fill, label at 120 ms</td></tr>
+                <tr><td>Keyboard focus</td><td>The same fill, plus a 2 px Flame Teal ring at 3 px offset. Focus is never invisible.</td><td class="num">ring is instant</td></tr>
+                <tr><td>Pressed</td><td>The fill completes and holds while the finger or mouse is down</td><td class="num">180 ms</td></tr>
+                <tr><td>Current page</td><td>A 5 px teal dot before the name, plus <span class="code" style="font-family:var(--mono); font-size:.72rem">aria-current</span></td><td class="num">&mdash;</td></tr>
+                <tr><td>Pending</td><td>The level rises to half and holds. Never a spinner: the brand measures, it does not entertain.</td><td class="num">1000 ms</td></tr>
+                <tr><td>Error</td><td>Salmon border, and a word beside it. Colour is never the only cue.</td><td class="num">180 ms</td></tr>
+                <tr><td>Disabled</td><td>No fill, dimmed label, not focusable, and a reason given nearby</td><td class="num">&mdash;</td></tr>
+                <tr><td>On touch</td><td>There is no hover: whatever crosses the middle line of the screen takes the pointed state</td><td class="num">follows the scroll</td></tr>
+                <tr><td>Reduced motion</td><td>Every control shows its finished state with no travel</td><td class="num">&mdash;</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -1058,8 +1192,8 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
           <table class="spec">
             <thead><tr><th>Surface</th><th>Ground</th><th>The mark</th><th>Live colour</th><th>Notes</th></tr></thead>
             <tbody>
-              <tr><td>Site, brand pages</td><td>Obsidian</td><td>Zinc Silver, reveal on pointer</td><td>Flame Teal</td><td>One button on the page, and it is the waitlist.</td></tr>
-              <tr><td>Site, spec pages</td><td>Zinc Wash</td><td>Obsidian</td><td>Elixir</td><td>Size charts, lab panels, policy, dose tables.</td></tr>
+              <tr><td>Site, brand pages</td><td>Obsidian, silver stripes</td><td>Zinc Silver, reveal on pointer</td><td>Crimson acts, teal signals</td><td>One crimson button on the page, and it is the waitlist.</td></tr>
+              <tr><td>Site, spec pages</td><td>Zinc Wash</td><td>Obsidian</td><td>Elixir</td><td>No crimson actions here: on Day, red means failure.</td></tr>
               <tr><td>Fuel tub</td><td>Obsidian</td><td>Zinc Silver</td><td>One teal level line marking the dose</td><td>Batch, date and lab printed in Space Mono. Crimson only in the printed artwork.</td></tr>
               <tr><td>Wear label</td><td>Black woven</td><td>Silver thread</td><td>&mdash;</td><td>One crimson thread is allowed: it is the mark's own colour, not a decoration.</td></tr>
               <tr><td>Instrument face</td><td>Obsidian</td><td>Zinc Silver at 16 px</td><td>Teal readout, Info blue ticks</td><td>Numbers in Space Mono, tabular.</td></tr>
@@ -1085,7 +1219,7 @@ table.spec td.num,table.spec td.code{font-family:var(--mono); font-size:.78rem; 
           </div>
           <div class="sub">
             <h3>Settled in this edition</h3>
-            <p class="small"><b>Red is the mark's material, not the brand's colour.</b> The crimson-led direction is rejected, for the five measured reasons in section 05.</p>
+            <p class="small"><b>Carbon steel is the system.</b> Crimson acts on Night; the diagonal stripes are cut in the jar lid's own silver (#80878D) rather than red; teal stays the live signal. On Day surfaces red means failure only, so no crimson actions there.</p>
             <p class="small"><b>The elixir rule is refined.</b> &ldquo;Never on light&rdquo; was written for Elixir Lit and above (2.2:1 and worse). The Elixir core measures 5.4:1 on Zinc Wash and may carry small type there.</p>
             <p class="small"><b>Uppercase is allowed in Space Mono only</b>, at small sizes, where it reads as instrument lettering.</p>
             <p class="small"><b>No glow behind type.</b> The lab's crimson bloom is not adopted: surfaces stay flat, and light stays inside liquid.</p>

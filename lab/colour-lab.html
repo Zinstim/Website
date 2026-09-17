@@ -153,7 +153,36 @@ p{margin:0}
   --ok:#52D89B; --mid:#F0B429; --bad:#FF7A6B; --field:#161618; --field-t:#E9ECEE;
   --deco:radial-gradient(42% 58% at 16% 42%,rgba(174,64,71,.42),rgba(174,64,71,0) 70%),radial-gradient(28% 40% at 92% 92%,rgba(0,224,184,.10),rgba(0,224,184,0) 70%);
 }
-/* the decision: night ground, zinc metal, one live teal, the red kept inside the mark */
+/* the cuts: deep carbon exactly as it is — glow, crimson buttons, teal states —
+   with Taskin's diagonal added. Only the stripe colour changes between the three. */
+.stage[data-dir="cut-silver"],.stage[data-dir="cut-crimson"],.stage[data-dir="cut-split"]{
+  --g:#0D0D0D; --g-read:#0D0D0D; --g2:#161618; --t:#E9ECEE; --t2:#B7BEC2; --rule:rgba(233,236,238,.12);
+  --mark-rest:#D6DDE2; --disc:rgba(233,236,238,.07);
+  --btn:#AE4047; --btn-t:#E9ECEE; --btn-rim:#AE4047; --btn-liq:#F29BA1; --btn-liq-t:#0D0D0D;
+  --btn-glow:0 0 0 1px rgba(227,111,120,.35),0 10px 40px -8px rgba(174,64,71,.75);
+  --btn2-t:#E9ECEE; --btn2-rim:rgba(233,236,238,.45); --btn2-liq:rgba(233,236,238,.12);
+  --accent-t:#E87A82; --wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%23E87A82'/%3E%3C/svg%3E");
+  --live:#00E0B8; --live-on-band:#00E0B8;
+  --drop-bg:transparent; --drop-t:#E9ECEE; --drop-t2:#A9B1B5; --plate:#161618; --tee-line:#D6DDE2; --tee-liq:#AE4047;
+  --pill:#E9ECEE; --pill-t:#0D0D0D; --pill-dot:#00E0B8;
+  --band:#0A0A0B; --band-t:#E9ECEE; --pour:#12B394; --pour-deep:#062821; --pour-wave:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%2312B394'/%3E%3C/svg%3E");
+  --flood:#480F15; --flood-t:#E9ECEE; --cat-1:#AE4047; --cat-2:#00E0B8; --cat-3:#6BC2EC;
+  --ok:#52D89B; --mid:#F0B429; --bad:#FF7A6B; --field:#161618; --field-t:#E9ECEE;
+  --glow:radial-gradient(42% 58% at 16% 42%,rgba(174,64,71,.42),rgba(174,64,71,0) 70%),radial-gradient(28% 40% at 92% 92%,rgba(0,224,184,.10),rgba(0,224,184,0) 70%);
+}
+.stage[data-dir="cut-silver"]{
+  --stripe:#80878D;
+  --deco:var(--glow),linear-gradient(118deg,transparent 0 58%,#80878D 58% 64%,transparent 64% 67%,#494E51 67% 70%,transparent 70%);
+}
+.stage[data-dir="cut-crimson"]{
+  --stripe:#AE4047;
+  --deco:var(--glow),linear-gradient(118deg,transparent 0 58%,#AE4047 58% 64%,transparent 64% 67%,#480F15 67% 70%,transparent 70%);
+}
+.stage[data-dir="cut-split"]{
+  --stripe:#80878D;
+  --deco:var(--glow),linear-gradient(118deg,transparent 0 58%,#80878D 58% 64%,transparent 64% 67%,#671E24 67% 70%,transparent 70%);
+}
+/* the quiet alternative: night ground, zinc metal, one live teal, the red kept inside the mark */
 .stage[data-dir="final"]{
   --g:#0D0D0D; --g-read:#0D0D0D; --g2:#161618; --t:#E9ECEE; --t2:#B7BEC2; --rule:rgba(233,236,238,.12);
   --mark-rest:#D6DDE2; --disc:rgba(233,236,238,.07);
@@ -484,9 +513,9 @@ p{margin:0}
     <h1 class="title">Colour lab</h1>
     <p class="lede">Six colour directions on the same brand pieces: the mark, the buttons, the drop, the pour, the categories and the waitlist. <b>Deep Zinc is the decision</b> — the others are what it was tested against. Switch between them, hover or tap everything, or <a href="#mixer">mix your own</a> at the bottom.</p>
     <div class="verdict-line">
-      <div><h3>The decision</h3><p><b>Deep Zinc.</b> Night ground, zinc metal type, one live teal. The mark's crimson stays inside the mark: red is what the object is made of, not what we paint with.</p></div>
-      <div><h3>Why not red-led</h3><p>Red is the colour of alarm, the system already spends it on failure (0.033 away), it is the category uniform, and it cannot carry a word on black (3.35:1).</p></div>
-      <div><h3>Why teal</h3><p>It is the one colour event on the mood board — measured off the car at hue 172&deg;, two degrees from Elixir Lit — and it sits opposite the mark, so the two never compete.</p></div>
+      <div><h3>The three cuts</h3><p><b>Deep carbon, unchanged</b> &mdash; glow, crimson button, teal states &mdash; with Taskin's diagonal added. The only difference between the three is the stripe: silver, crimson, or both.</p></div>
+      <div><h3>Where it lands</h3><p><b>Cut in both</b> is the recommendation: it is the jar itself &mdash; silver lid, crimson mark, black body &mdash; and the two values keep the diagonal reading as two materials rather than one wide band.</p></div>
+      <div><h3>The measurements</h3><p>Silver stripe <b>5.3:1</b>, crimson stripe <b>3.4:1</b>, both are structure rather than text. Crimson stays the action colour, and the button is still the reddest thing on the page.</p></div>
     </div>
   </header>
 
@@ -496,8 +525,11 @@ p{margin:0}
     <button type="button" data-dir="gemini" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#E9ECEE"></i><i style="background:#AE4047"></i><i style="background:#0B6B5C"></i></span>Gemini: Core Trace</button>
     <button type="button" data-dir="red" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0A0A0A"></i><i style="background:#E11D2A"></i><i style="background:#FFFFFF"></i></span>Taskin: black + red</button>
     <button type="button" data-dir="neon" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#1D0670"></i><i style="background:#3B3CF2"></i><i style="background:#7CF7FF"></i></span>Taskin: neon gradient</button>
-    <button type="button" data-dir="carbon" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#AE4047"></i><i style="background:#00E0B8"></i></span>Deep carbon (rejected)</button>
-    <button type="button" data-dir="final" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#D6DDE2"></i><i style="background:#00E0B8"></i></span>Deep Zinc &mdash; decided</button>
+    <button type="button" data-dir="carbon" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#AE4047"></i><i style="background:#00E0B8"></i></span>Deep carbon (the base)</button>
+    <button type="button" data-dir="final" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#D6DDE2"></i><i style="background:#00E0B8"></i></span>Deep Zinc &mdash; the quiet one</button>
+    <button type="button" data-dir="cut-silver" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#AE4047"></i><i style="background:#80878D"></i></span>Cut in silver</button>
+    <button type="button" data-dir="cut-crimson" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#AE4047"></i><i style="background:#480F15"></i></span>Cut in crimson</button>
+    <button type="button" data-dir="cut-split" aria-pressed="false"><span class="dots" aria-hidden="true"><i style="background:#0D0D0D"></i><i style="background:#80878D"></i><i style="background:#671E24"></i></span>Cut in both</button>
     <button type="button" data-dir="mix" aria-pressed="false" hidden><span class="dots" aria-hidden="true"></span>Your mix</button>
   </nav>
 
@@ -600,21 +632,21 @@ p{margin:0}
         </ul>
       </div>
       <div class="col">
-        <h3>Deep Zinc, the decision</h3>
+        <h3>The cut: which stripe wins</h3>
         <ul>
-          <li class="yes"><b>Dark first.</b> Obsidian is the ground for everything the brand says. <i>(Hridoy was right)</i></li>
-          <li class="yes"><b>The red logo leads &mdash; as an object.</b> It glows on black, and you uncover it by touching the mark. Energy revealed, not announced. <i>(Taskin&rsquo;s instinct, kept)</i></li>
-          <li class="yes"><b>One live colour.</b> Teal marks where you are, what succeeded and the pour: recovery after effort. Under 8% of a screen.</li>
-          <li class="no"><b>Red as the action colour is rejected.</b> It contradicts a brand built on restraint, collides with failure (0.033 apart), is the category uniform, fails on black at 3.35:1, and doubles the red-green risk.</li>
-          <li class="meh"><b>No glow.</b> The crimson bloom behind type is dropped: surfaces stay flat, light stays inside liquid.</li>
-          <li class="no"><b>Still to prove.</b> The mark&rsquo;s crimson on a cheap Android in sunlight, and a thread match before the red is locked for Wear.</li>
+          <li class="yes"><b>Deep carbon is the base, untouched.</b> The crimson glow, the crimson button, teal for live states. Only the diagonal is new. <i>(Kash)</i></li>
+          <li class="yes"><b>Cut in both &mdash; the recommendation.</b> Silver leading, oxblood behind: it is the jar itself, and the two values read as two materials instead of one thick band.</li>
+          <li class="meh"><b>Cut in silver.</b> The calmest and the most &ldquo;instrument&rdquo;. At 5.3:1 the stripe is the brightest thing on the page, so keep it out of the text column.</li>
+          <li class="meh"><b>Cut in crimson.</b> The most energy, and the closest to the aisle: black, red and a diagonal is ASRV&rsquo;s signature, and red ends up doing three jobs at once.</li>
+          <li class="yes"><b>Dark ground repairs the old collision.</b> Red-led was killed on light, where error red sits 0.033 from the mark&rsquo;s crimson. On Night the error is #FF7A6B, <b>0.208</b> away.</li>
+          <li class="no"><b>Still to prove.</b> The crimson on a cheap Android in sunlight, and a thread match before the red is locked for Wear.</li>
         </ul>
       </div>
     </div>
     <div class="take">
       <p class="label">What to do next</p>
       <ol>
-        <li>Build Deep Zinc on one real page first &mdash; the homepage hero, the drop and the join band &mdash; before touching the rest.</li>
+        <li>Pick a cut, then build it on one real page first &mdash; the homepage hero, the drop and the join band &mdash; before touching the rest. Deep Zinc stays in this page as the fallback if the red ever feels like too much.</li>
         <li>Check the mark on a cheap Android in daylight, and buy a crimson thread and a garment-dyed swatch before locking the red for Wear.</li>
         <li>Send this page to Hridoy and Taskin so they can see where their notes landed, and read the brand book for the rules that came out of it.</li>
       </ol>
@@ -822,7 +854,19 @@ p{margin:0}
       idea:"An indigo to electric-blue gradient with a white glow, and a cyan neon accent.",
       works:["Eye-catching","White on indigo reads well (12:1)"],
       breaks:["It fights the red mark (hover the logo)","It has nothing to do with zinc, gyms or effort","White text dies in the light corner (2.2:1)","The most common generated look right now"] },
-    final: { name:"Deep Zinc", by:"THE DECISION · 17 SEPTEMBER",
+    'cut-silver': { name:"Cut in silver", by:"DEEP CARBON + THE DIAGONAL · STRIPES IN THE LID’S SILVER #80878D",
+      idea:"Deep carbon exactly as it is — the crimson glow, the crimson button, teal for live states — with Taskin’s diagonal added in the jar lid’s own metal.",
+      works:["Black, silver and crimson is not the aisle’s black-and-red","The silver is the product’s own lid: measured at L 62%, cooled into the brand’s band","The stripe reads 5.3:1 — structure you can see without it shouting","Red stays where you act; the metal carries the movement"],
+      breaks:["Silver this bright competes with the headline if a stripe crosses the text column","One stripe set per page","Crimson still cannot carry small text (3.35:1)"] },
+    'cut-crimson': { name:"Cut in crimson", by:"DEEP CARBON + THE DIAGONAL · STRIPES IN THE MARK’S RED",
+      idea:"The same page with the diagonal in the mark’s crimson and its deep shade: Taskin’s board, in our red rather than the category’s #E11D2A.",
+      works:["The most energy of the three — the page reads as one colour, hard","It is the mark’s own red, cooler and a third less chromatic than ASRV’s","Stripe and button agree, so the page speaks with one voice"],
+      breaks:["Closest to the category uniform: black, red and a diagonal is the supplement aisle’s signature","Red now does three jobs — mark, action, decoration — so the button stops being the loudest thing on the page","A red field behind copy breaks ‘colour is an event’"] },
+    'cut-split': { name:"Cut in both", by:"DEEP CARBON + THE DIAGONAL · SILVER LEADING, OXBLOOD BEHIND",
+      idea:"The wide stripe in the lid’s silver, the narrow one in oxblood: metal and muscle, the two materials this brand is actually made of.",
+      works:["It tells the whole story in one graphic — steel and blood","Red is present without a red field, so the button stays the reddest thing on the page","Two flat plates: it survives a screen-print, a label and an embroidery"],
+      breaks:["Two stripe colours is one more decision on every layout","The oxblood needs the glow behind it or it sinks into the black (1.7:1)"] },
+    final: { name:"Deep Zinc", by:"THE QUIET ALTERNATIVE · 17 SEPTEMBER",
       idea:"Night ground, zinc metal type, one live teal. The mark’s crimson stays inside the mark — found by touching it, never painted onto a surface.",
       works:["Deep at first look, and it never shouts","The red mark glows on black and keeps its one meaning","Effort then recovery: teal marks every live state","Every label passes at any size (16.4:1)","No colour is spent twice: red is the object, teal is the signal"],
       breaks:["Red is not available for actions — the buttons are teal","Long reading and dense tables move to the Day surface","Still to prove: the mark’s crimson on a cheap phone in sunlight"] },
@@ -837,6 +881,9 @@ p{margin:0}
     red:    [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Red headline","--accent-t","--g-read","large"],["Label on red button","--btn-t","--btn","text"],["Small red text on black","--btn","--g-read","text"],["Text on the red pour band","--band-t","--band","text"]],
     neon:   [["Body text on indigo","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Cyan headline","--accent-t","--g-read","large"],["Label on white button","--btn-t","--btn","text"],["Label on filled button","--btn-liq-t","--btn-liq","text"],["White text on the glow","--t","--g-worst","text"]],
     carbon: [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Crimson headline (display only)","--accent-t","--g-read","large"],["Label on crimson button","--btn-t","--btn","text"],["Label on filled button","--btn-liq-t","--btn-liq","text"],["Teal “you are here”","--live","--g-read","ui"]],
+    'cut-silver': [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Crimson headline (display only)","--accent-t","--g-read","large"],["Label on the crimson button","--btn-t","--btn","text"],["Label on the filled button","--btn-liq-t","--btn-liq","text"],["Teal “you are here”","--live","--g-read","ui"],["The stripe on the ground","--stripe","--g-read","ui"]],
+    'cut-crimson': [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Crimson headline (display only)","--accent-t","--g-read","large"],["Label on the crimson button","--btn-t","--btn","text"],["Label on the filled button","--btn-liq-t","--btn-liq","text"],["Teal “you are here”","--live","--g-read","ui"],["The stripe on the ground","--stripe","--g-read","ui"]],
+    'cut-split': [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Crimson headline (display only)","--accent-t","--g-read","large"],["Label on the crimson button","--btn-t","--btn","text"],["Label on the filled button","--btn-liq-t","--btn-liq","text"],["Teal “you are here”","--live","--g-read","ui"],["The stripe on the ground","--stripe","--g-read","ui"]],
     final:  [["Body text","--t","--g-read","text"],["Secondary text","--t2","--g-read","text"],["Liquid headline, Flame Teal","--accent-t","--g-read","large"],["Button label at rest","--btn-t","--g-read","text"],["Label on the filled button","--btn-liq-t","--btn-liq","text"],["Teal “you are here”","--live","--g-read","ui"],["Category name on the flood","--flood-t","--flood","text"]]
   };
 
@@ -902,7 +949,7 @@ p{margin:0}
   }
 
   function setDir(key){
-    if (!NOTES[key]) key = 'final';
+    if (!NOTES[key]) key = 'cut-split';
     stage.setAttribute('data-dir', key);
     buttons.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-dir') === key ? 'true' : 'false'); });
     renderNotes(key);
@@ -1599,8 +1646,8 @@ p{margin:0}
   render();
   })();
 
-  var start = 'final';
-  try { start = localStorage.getItem('zinstim-colour-lab') || 'final'; } catch (e) {}
+  var start = 'cut-split';
+  try { start = localStorage.getItem('zinstim-colour-lab') || 'cut-split'; } catch (e) {}
   setDir(start);
 })();
 </script>

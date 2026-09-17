@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="../assets/img/zinstim-favicon.png">
+<title>ZinStim Motion Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* ZinStim motion build sheet — the site's fills, rebuilt in After Effects.
+   Day surface: this is a specification document, not a brand surface. */
+:root{
+  --obsidian:#0D0D0D; --wash:#E9ECEE; --silver:#D6DDE2; --graphite:#6E7679; --plate:#DDE2E5;
+  --elixir:#0B6B5C; --elixir-lit:#12B394; --flame:#00E0B8; --crimson:#AE4047; --lid:#80878D;
+  --fail:#B0332B; --warn:#8A5B12;
+  --rule:rgba(13,13,13,.16); --rule-dark:rgba(233,236,238,.16);
+  --display:"Archivo",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,Consolas,monospace;
+  --gut:clamp(16px,4vw,44px);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0; background:var(--wash); color:var(--obsidian); font-family:var(--display);
+  font-variation-settings:"wdth" 95,"wght" 400; font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0; text-wrap:balance; font-weight:400}
+p,ul,ol,table,figure{margin:0}
+b,strong{font-weight:inherit; font-variation-settings:"wdth" 92,"wght" 700}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--elixir); outline-offset:3px}
+.sheet{max-width:74rem; margin:0 auto; padding-inline:var(--gut); padding-block:0 88px}
+.eyebrow{font-family:var(--mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--graphite)}
+.lede{font-size:clamp(1.02rem,.95rem + .4vw,1.2rem); max-width:64ch}
+.small{font-size:.9rem; color:#42494C; max-width:66ch}
+.code{font-family:var(--mono); font-size:.8rem}
+.plate{background:var(--obsidian); color:var(--wash); padding:clamp(20px,3.5vw,40px); border-radius:2px}
+.plate .eyebrow{color:var(--silver)}
+.plate .small{color:#B7BEC2}
+
+.cover{margin-top:clamp(18px,3vw,32px); display:grid; gap:24px; padding:clamp(24px,4vw,52px)}
+.cover h1{font-variation-settings:"wdth" 78,"wght" 900; font-size:clamp(2.2rem,1.3rem + 4vw,4.2rem); line-height:.9; letter-spacing:-.03em; max-width:18ch}
+.cover__row{display:flex; flex-wrap:wrap; gap:8px 26px; border-top:1px solid var(--rule-dark); padding-top:16px}
+
+.sec{display:grid; gap:clamp(14px,2vw,22px); padding-top:clamp(34px,5vw,60px); scroll-margin-top:20px}
+.sec__head{display:grid; gap:8px; border-top:2px solid var(--obsidian); padding-top:14px}
+.sec__head h2{font-variation-settings:"wdth" 80,"wght" 850; font-size:clamp(1.5rem,1.1rem + 1.8vw,2.4rem); line-height:1; letter-spacing:-.02em}
+h3{font-variation-settings:"wdth" 86,"wght" 750; font-size:1.12rem}
+h4{font-variation-settings:"wdth" 88,"wght" 700; font-size:.98rem}
+.cols{display:grid; gap:clamp(14px,2vw,24px)}
+@media (min-width:820px){ .cols--2{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (min-width:980px){ .cols--3{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.panel{background:#fff; border:1px solid var(--rule); border-radius:2px; padding:clamp(14px,2vw,20px); display:grid; gap:10px; align-content:start}
+.panel--quiet{background:var(--plate); border-color:transparent}
+
+.tablewrap{overflow-x:auto; border:1px solid var(--rule); border-radius:2px; background:#fff}
+table{width:100%; min-width:24rem; border-collapse:collapse; font-size:.86rem}
+th,td{text-align:left; padding:9px 13px; border-bottom:1px solid var(--rule); vertical-align:top}
+thead th{font-family:var(--mono); font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--graphite); font-weight:400; white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.num,td.code{font-family:var(--mono); font-size:.78rem; font-variant-numeric:tabular-nums; white-space:nowrap}
+.tag{display:inline-block; padding:.1rem .45rem; border-radius:2px; font-family:var(--mono); font-size:.64rem; border:1px solid currentColor}
+.tag--site{color:var(--elixir)} .tag--film{color:var(--warn)} .tag--stop{color:var(--fail)}
+
+pre{margin:0; padding:14px; overflow:auto; border-radius:2px; background:var(--obsidian); color:var(--silver);
+  font-family:var(--mono); font-size:.72rem; line-height:1.6; white-space:pre; user-select:all}
+pre b{color:var(--flame); font-variation-settings:normal}
+
+/* the layer stack diagrams */
+.stack{display:grid; gap:4px; font-family:var(--mono); font-size:.72rem}
+.stack div{display:grid; grid-template-columns:1.6rem minmax(0,1fr); gap:10px; align-items:center; padding:9px 12px; border-radius:2px; background:var(--plate)}
+.stack div span:first-child{color:var(--graphite)}
+.stack .is-matte{background:var(--obsidian); color:var(--wash)}
+.stack .is-matte span:first-child{color:var(--flame)}
+.stack .note{background:transparent; padding:2px 12px; color:var(--graphite)}
+
+.figure{background:#fff; border:1px solid var(--rule); border-radius:2px; padding:16px; display:grid; gap:8px}
+.figure svg{display:block; width:100%; height:auto}
+.figure figcaption{font-family:var(--mono); font-size:.66rem; letter-spacing:.06em; color:var(--graphite)}
+.dim{fill:none; stroke:var(--elixir); stroke-width:.5; stroke-dasharray:2.5 2.5}
+.dimsolid{fill:none; stroke:var(--elixir); stroke-width:.7}
+.dimtext{font-family:var(--mono); font-size:4px; fill:var(--elixir)}
+.liquid{fill:var(--elixir-lit)}
+.hairline{fill:none; stroke:var(--obsidian); stroke-width:.7}
+
+.checklist{display:grid; gap:8px; font-size:.92rem; list-style:none; padding:0}
+.checklist li{display:grid; grid-template-columns:1.2rem minmax(0,1fr); gap:8px; align-items:start}
+.checklist li::before{content:""; width:1rem; height:1rem; margin-top:.22rem; border:1.5px solid var(--obsidian); border-radius:2px}
+.colophon{margin-top:56px; border-top:2px solid var(--obsidian); padding-top:16px; display:flex; flex-wrap:wrap; gap:8px 28px; font-family:var(--mono); font-size:.7rem; color:var(--graphite)}
+
+@media print{
+  .sec{break-before:page}
+  h3,h4{break-after:avoid}
+  .panel,.tablewrap,.figure,.stack,pre{break-inside:avoid}
+  .tablewrap{overflow:visible}
+  table{min-width:0; font-size:.72rem}
+  th,td{padding:5px 8px}
+  .plate,.stack div{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .sheet{max-width:none; padding-block:0 20px}
+}
+@media (prefers-reduced-motion:reduce){ *{transition:none !important; animation:none !important} }
+</style>
+</head>
+<body>
+
+
+<div class="sheet">
+  <header class="plate cover">
+    <p class="eyebrow">ZinStim &middot; motion build sheet &middot; for After Effects &middot; edition 01</p>
+    <h1>Everything fills, and this is exactly how.</h1>
+    <p class="small" style="max-width:60ch">Five constructions carry every animation in the brand: the mark, the button, the type, the product and the flood. Each one is a wave-topped body rising behind a cut-out. The numbers below are the site's own — same geometry, same easing, same durations &mdash; so film and screen cannot drift apart.</p>
+    <div class="cover__row">
+      <p class="eyebrow">Source: assets/css/brand.css</p>
+      <p class="eyebrow">Mark vector: assets/img/zinstim-mark.svg</p>
+      <p class="eyebrow">Artwork: assets/img/zinstim-mark.png</p>
+    </div>
+  </header>
+
+  <section class="sec" id="rules">
+    <div class="sec__head">
+      <p class="eyebrow">01</p>
+      <h2>Ground rules</h2>
+    </div>
+    <div class="cols cols--3">
+      <div class="panel">
+        <h3>Frame rate</h3>
+        <p class="small">Build at <b>60 fps</b>. Every duration below is given in seconds and in frames at 60 and at 30. Deliver 60 for screens, 30 only when a platform demands it &mdash; and re-time by seconds, never by frame count.</p>
+      </div>
+      <div class="panel">
+        <h3>Scale</h3>
+        <p class="small">The site's shapes are drawn in SVG units. Work at <b>8&times;</b>: one SVG unit is 8&nbsp;px. The mark's 128&nbsp;&times;&nbsp;114 box becomes a <b>1024&nbsp;&times;&nbsp;912</b> comp, and every wave number below scales with it.</p>
+      </div>
+      <div class="panel">
+        <h3>The one rule</h3>
+        <p class="small">A liquid moves <b>only while it is being filled</b>. The drift and the turn run during the fill and stop when it settles. Nothing in this brand loops on its own.</p>
+      </div>
+    </div>
+
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Easing</h3>
+        <p class="small">Two curves do all the work. <b>Arriving</b> is used for every fill; <b>moving</b> is only for something travelling between two known positions.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Curve</th><th>CSS</th><th>In After Effects</th></tr></thead>
+            <tbody>
+              <tr><td><b>Arriving</b></td><td class="code">cubic-bezier(.16, 1, .3, 1)</td><td>Out influence <b>16%</b>, in influence <b>70%</b> with incoming speed <b>0</b>. Fast departure, long settle.</td></tr>
+              <tr><td><b>Moving</b></td><td class="code">cubic-bezier(.62, .03, .2, 1)</td><td>Out influence <b>62%</b> (slow start), in influence <b>80%</b>, incoming speed 0.</td></tr>
+              <tr><td>Drift and turn</td><td class="code">linear</td><td>No easing at all. Convert both keyframes to Linear or the loop will stutter at the seam.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">Influence values get you close. For an exact match, drive the property with the expression instead &mdash; it is the same curve the browser solves.</p>
+      </div>
+      <div class="sub">
+        <h3>The ease, as an expression</h3>
+        <pre>// ZinStim arriving ease. Paste on any property.
+// Set t0/t1 (seconds) and v0/v1 (from / to).
+var t0 = 0, t1 = 0.75;
+var v0 = 912, v1 = -102;        // example: the mark's level
+function bez(p1x, p1y, p2x, p2y, x){
+  var cx = 3*p1x, bx = 3*(p2x-p1x) - cx, ax = 1 - cx - bx;
+  var cy = 3*p1y, by = 3*(p2y-p1y) - cy, ay = 1 - cy - by;
+  function sx(t){ return ((ax*t + bx)*t + cx)*t; }
+  function sy(t){ return ((ay*t + by)*t + cy)*t; }
+  function dx(t){ return (3*ax*t + 2*bx)*t + cx; }
+  var t = x;
+  for (var i = 0; i &lt; 8; i++){
+    var d = sx(t) - x;
+    if (Math.abs(d) &lt; 1e-5) break;
+    var s = dx(t);
+    if (Math.abs(s) &lt; 1e-6) break;
+    t = t - d/s;
+  }
+  return sy(t);
+}
+var x = clamp(linear(time, t0, t1, 0, 1), 0, 1);
+v0 + (v1 - v0) * bez(<b>.16, 1, .3, 1</b>, x)</pre>
+      </div>
+    </div>
+
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Duration</th><th>Seconds</th><th>Frames @60</th><th>Frames @30</th><th>Where it is used</th></tr></thead>
+        <tbody>
+          <tr><td>Fast</td><td class="num">0.18 s</td><td class="num">11</td><td class="num">5</td><td>Colour answering a pointer</td></tr>
+          <tr><td>Base</td><td class="num">0.32 s</td><td class="num">19</td><td class="num">10</td><td>Small state changes, discs, pills</td></tr>
+          <tr><td>Label flip</td><td class="num">0.30 s, 0.20 s late</td><td class="num">18, starts at 12</td><td class="num">9, starts at 6</td><td>Button text turning over as the liquid passes</td></tr>
+          <tr><td>Slow</td><td class="num">0.58 s</td><td class="num">35</td><td class="num">17</td><td>Panels, sheets</td></tr>
+          <tr><td>Mark fill</td><td class="num">0.75 s</td><td class="num">45</td><td class="num">23</td><td>The nav mark, and the button's blob</td></tr>
+          <tr><td>Type fill, hover</td><td class="num">0.80 s</td><td class="num">48</td><td class="num">24</td><td>A word filling under the cursor</td></tr>
+          <tr><td>Vessel fill</td><td class="num">1.05 s</td><td class="num">63</td><td class="num">32</td><td>A product filling inside its outline</td></tr>
+          <tr><td>Flood</td><td class="num">1.10 s</td><td class="num">66</td><td class="num">33</td><td>A card or tile flooding</td></tr>
+          <tr><td>Type pour, on load</td><td class="num">2.20 s, 0.55 s late</td><td class="num">132, starts at 33</td><td class="num">66, starts at 17</td><td>A page title pouring to its resting level</td></tr>
+          <tr><td>Wave drift</td><td class="num">1.60 s per loop</td><td class="num">96</td><td class="num">48</td><td>The surface travelling sideways</td></tr>
+          <tr><td>Blob turn</td><td class="num">5 s per turn</td><td class="num">300</td><td class="num">150</td><td>The button's body rotating</td></tr>
+          <tr><td>Flood turn</td><td class="num">12 s per turn</td><td class="num">720</td><td class="num">360</td><td>The card's body rotating</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="wave">
+    <div class="sec__head">
+      <p class="eyebrow">02</p>
+      <h2>The wave</h2>
+    </div>
+    <p class="lede">One wave shape sits on top of every liquid in the brand. Build it once, reuse it everywhere.</p>
+    <div class="cols cols--2">
+      <figure class="figure">
+        <svg viewBox="-4 -2 108 26" role="img" aria-label="The wave: period 50 units, crest 3.5 units above the baseline at y=7, trough 3.5 below.">
+          <path class="liquid" d="M0 7Q12.5 0 25 7T50 7T75 7T100 7V24H0Z"/>
+          <path class="dim" d="M0 7H100"/>
+          <path class="dimsolid" d="M0 3.5V10.5M50 3.5V10.5"/>
+          <path class="dimsolid" d="M0 1.6H50"/>
+          <text class="dimtext" x="18" y="-0.4">period 50</text>
+          <path class="dimsolid" d="M75 3.5H88M75 7H88"/>
+          <text class="dimtext" x="89" y="5.6">3.5</text>
+          <text class="dimtext" x="-3.5" y="8.4">7</text>
+        </svg>
+        <figcaption>SVG units. At 8&times;: period 400 px, amplitude 28 px, crest to trough 56 px.</figcaption>
+      </figure>
+      <div class="sub">
+        <h3>Geometry</h3>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><td>Period</td><td class="num">50 units &middot; 400 px at 8&times;</td></tr>
+              <tr><td>Amplitude</td><td class="num">&plusmn;3.5 units &middot; &plusmn;28 px</td></tr>
+              <tr><td>Crest to trough</td><td class="num">7 units &middot; 56 px</td></tr>
+              <tr><td>Baseline</td><td class="num">y = 7 units from the top of the wave strip</td></tr>
+              <tr><td>Curve</td><td>Quadratic, control point on the baseline &mdash; a sine, not a scallop</td></tr>
+              <tr><td>Body</td><td>Solid fill from the wave down; the body is never a gradient on a surface</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>The path, to paste into Illustrator</h3>
+        <pre>M0 7 Q12.5 0 25 7 T50 7 T75 7 T100 7 V14 H0 Z</pre>
+        <p class="small">Paste as a path, then <b>Layer &rarr; Create Shapes from Vector Layer</b> in After Effects. Build the strip at least <b>3&times; the width of the vessel</b> so it never runs out while drifting.</p>
+      </div>
+    </div>
+    <div class="panel panel--quiet">
+      <h3>Drift: the seam rule</h3>
+      <p class="small">The surface travels sideways <b>exactly two periods &mdash; 100 units, 800 px at 8&times; &mdash; every 1.6 s, linear, and loops</b>. Any other distance leaves a visible jump at the loop point. Use the expression rather than keyframes and it can never drift out of phase:</p>
+      <pre>// X position of the wave strip. 800 px = 2 periods at 8&times;.
+var per = 1.6, dist = 800;
+value - (time % per) / per * dist</pre>
+      <p class="small">The drift runs <b>while the level is moving</b> and for about two passes after it settles, then stops. On the site the resting state is still.</p>
+    </div>
+  </section>
+  <section class="sec" id="mark">
+    <div class="sec__head">
+      <p class="eyebrow">03</p>
+      <h2>The mark reveal</h2>
+    </div>
+    <p class="lede">A liquid rises inside the mark's silhouette and uncovers the carbon-fibre artwork. Two cut-outs, one moving body: the level is the only thing that animates.</p>
+
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Comp and cut-outs</h3>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><td>Comp</td><td class="num">1024 &times; 912 px &middot; 60 fps</td></tr>
+              <tr><td>Source box</td><td class="num">128 &times; 114 SVG units at 8&times;</td></tr>
+              <tr><td>Cut-out 1</td><td>The mark silhouette &mdash; blade and wedge, one closed shape, from <span class="code">zinstim-mark.svg</span></td></tr>
+              <tr><td>Cut-out 2</td><td>The wave body, which is what moves</td></tr>
+              <tr><td>Artwork</td><td><span class="code">zinstim-mark.png</span>, placed to fill the 1024 &times; 912 box exactly &mdash; never scaled to taste</td></tr>
+              <tr><td>Rest colour</td><td>Zinc Silver <span class="code">#D6DDE2</span> on Night, Obsidian <span class="code">#0D0D0D</span> on Day</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sub">
+        <h3>Layer stack, top to bottom</h3>
+        <div class="stack">
+          <div class="is-matte"><span>1</span><span>MARK-SILHOUETTE &middot; white fill &middot; set as Alpha Matte</span></div>
+          <div><span>2</span><span>REVEAL (precomp) &mdash; the artwork, matted by the liquid</span></div>
+          <p class="note">inside REVEAL:</p>
+          <div class="is-matte"><span>a</span><span>LIQUID &middot; wave strip &middot; Alpha Matte</span></div>
+          <div><span>b</span><span>ARTWORK &middot; zinstim-mark.png</span></div>
+          <p class="note">back in the main comp:</p>
+          <div><span>3</span><span>MARK-REST &middot; the same silhouette, flat Zinc Silver</span></div>
+        </div>
+        <p class="small">The silhouette is used twice for the same reason the site uses it twice: once to clip, once to draw. The liquid can then never leave the mark, and the edge stays crisp over it.</p>
+      </div>
+    </div>
+
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>The movement</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Frame @60</th><th>Liquid Y</th><th>Level</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td class="num">0</td><td class="num">+912 px</td><td class="num">0</td><td>Wave crest sits on the bottom edge, nothing showing</td></tr>
+              <tr><td class="num">45</td><td class="num">&minus;109 px</td><td class="num">1.12</td><td>Full. Arriving ease on both keyframes</td></tr>
+              <tr><td class="num">hold</td><td class="num">&minus;109 px</td><td class="num">1.12</td><td>As long as the cursor stays. For film, 0.5&ndash;1 s</td></tr>
+              <tr><td class="num">+45</td><td class="num">+912 px</td><td class="num">0</td><td>Drains at the same speed when the cursor leaves</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small"><b>Why 1.12 and not 1.</b> At level 1 the wave's troughs are still 10.5 units &mdash; 84 px at 8&times; &mdash; below the top of the mark, so a row of base-coloured bumps rides along the blade. Measured on the site: 356 changed pixels at 8 rem before the fix, 0 after. Overshoot to 1.12 and the crest clears the edge.</p>
+      </div>
+      <div class="sub">
+        <h3>Set-up notes</h3>
+        <ul class="checklist">
+          <li><span>Liquid strip: 4800 px wide, body 1920 px deep, so it covers the mark at every level and through the whole drift.</span></li>
+          <li><span>Drift the strip &minus;800 px per 1.6 s, linear, only while the level is moving.</span></li>
+          <li><span>Anchor the strip's <em>wave line</em>, not its box, at Y = 0 so the numbers above read directly.</span></li>
+          <li><span>Motion blur off. The liquid is a surface, not a moving object.</span></li>
+          <li><span>The artwork never moves. Only the edge travels &mdash; that is what makes it read as a reveal instead of a wipe.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="button">
+    <div class="sec__head">
+      <p class="eyebrow">04</p>
+      <h2>The liquid button</h2>
+    </div>
+    <p class="lede">A large turning square with soft corners rises through the pill. Its curved edge is the meniscus; the label turns over as the surface passes it.</p>
+
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Geometry, as a formula</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Part</th><th>Rule</th><th>Worked example</th></tr></thead>
+            <tbody>
+              <tr><td>Button</td><td>Any size</td><td class="num">176 &times; 46 px</td></tr>
+              <tr><td>Blob</td><td>Square, side = max(2.4 &times; button width, 224 px)</td><td class="num">422 &times; 422 px</td></tr>
+              <tr><td>Corner radius</td><td class="num">0.42 &times; side</td><td class="num">177 px</td></tr>
+              <tr><td>Start, top edge</td><td class="num">+118% of button height</td><td class="num">+54 px</td></tr>
+              <tr><td>End, top edge</td><td class="num">&minus;46% of button height</td><td class="num">&minus;21 px</td></tr>
+              <tr><td>Travel</td><td class="num">164% of button height</td><td class="num">75 px</td></tr>
+              <tr><td>Horizontal</td><td>Centred on the button, and it stays centred</td><td class="num">x = 88 px</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">Work at 4&times; for film: the example button becomes a 704 &times; 184 px comp and every number multiplies by four.</p>
+      </div>
+      <div class="sub">
+        <h3>The movement</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Frame @60</th><th>What</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td class="num">0</td><td>Blob top edge</td><td class="num">+54 px &middot; arriving ease</td></tr>
+              <tr><td class="num">45</td><td>Blob top edge</td><td class="num">&minus;21 px</td></tr>
+              <tr><td class="num">0 &rarr; 300</td><td>Blob rotation</td><td class="num">0&deg; &rarr; 360&deg;, linear, looping</td></tr>
+              <tr><td class="num">12 &rarr; 30</td><td>Label colour</td><td>Zinc Wash &rarr; Obsidian, 0.3 s, plain ease</td></tr>
+              <tr><td class="num">on press</td><td>Whole button</td><td class="num">scale 100% &rarr; 98.5%, 0.18 s</td></tr>
+              <tr><td class="num">on exit</td><td>Blob</td><td>Back to +54 px, same 45 frames, rotation stops</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul class="checklist">
+          <li><span>Clip everything to the pill: put the pill shape above as an Alpha Matte, or mask the precomp.</span></li>
+          <li><span>Rotate about the blob's own centre, not the button's.</span></li>
+          <li><span>The blob is flat colour. No gradient, no blur, no glow inside the pill.</span></li>
+          <li><span><span class="tag tag--film">film only</span> Matte the second label copy with the blob so the text flips pixel by pixel as the surface crosses it. Handsome on film; the site flips the whole word on a timer, and that stays.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel--quiet">
+      <h3>Which colours</h3>
+      <p class="small">On Night: the pill is crimson <span class="code">#AE4047</span> with a Zinc Wash label, and it fills with <span class="code">#F29BA1</span> as the label turns Obsidian. On Day: the pill is Obsidian with a Zinc Wash label, and it fills with Elixir <span class="code">#0B6B5C</span> &mdash; the label does not change, because Zinc Wash reads 5.4:1 on the elixir. Secondary buttons are an outline that fills with 16% Zinc Wash.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="type">
+    <div class="sec__head">
+      <p class="eyebrow">05</p>
+      <h2>Liquid type</h2>
+    </div>
+    <p class="lede">The word is drawn twice: solid type underneath, and a wave-topped body on top clipped to the letterforms. The empty part is never a faint ghost &mdash; it is full-strength type.</p>
+
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Build</h3>
+        <div class="stack">
+          <div class="is-matte"><span>1</span><span>WORD &middot; the text layer &middot; Alpha Matte</span></div>
+          <div><span>2</span><span>FILL (precomp) &mdash; flat colour with the wave on its top edge</span></div>
+          <div><span>3</span><span>WORD &middot; the same text, solid, full strength</span></div>
+        </div>
+        <p class="small">Layer 1 and layer 3 are duplicates: same face, size, tracking and position. Archivo at width 78, weight 900 for display. If they drift by a pixel the fill will look like a shadow.</p>
+        <h3>The box</h3>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><td>Liquid box height</td><td class="num">1.32 em of the type size</td></tr>
+              <tr><td>At 152 px type</td><td class="num">200 px</td></tr>
+              <tr><td>Wave height</td><td class="num">0.15 em &middot; 23 px at 152 px</td></tr>
+              <tr><td>Wave overlap</td><td class="num">0.14 em above the waterline</td></tr>
+              <tr><td>Drift distance</td><td class="num">0.9 em per pass</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sub">
+        <h3>Levels and timing</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Moment</th><th>Level</th><th>Timing</th></tr></thead>
+            <tbody>
+              <tr><td>Page title, on load</td><td class="num">0 &rarr; 0.5</td><td class="num">2.2 s, starting 0.55 s in &middot; 132 f</td></tr>
+              <tr><td>Under the cursor</td><td class="num">0.5 &rarr; 1</td><td class="num">0.8 s &middot; 48 f</td></tr>
+              <tr><td>Cursor leaves</td><td class="num">1 &rarr; 0.5</td><td class="num">0.9 s &middot; 54 f</td></tr>
+              <tr><td>On a phone</td><td class="num">0.5, still</td><td>No hover: the idea has to be visible at rest</td></tr>
+              <tr><td>Drift, settling</td><td>&mdash;</td><td class="num">1.4 s per pass, two passes, then still</td></tr>
+              <tr><td>Drift, while held</td><td>&mdash;</td><td class="num">1.1 s per pass, looping</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small"><b>Why 0.5 is the resting level.</b> Measured, not guessed: at 152 px the cap height is 0.691 em inside the 1.32 em box, so 0.5 puts the waterline 51% down the ink &mdash; a real half. The first guess, 0.6, sat 32% down and the words read as colour with dark smudges on top.</p>
+        <p class="small">Waterline Y inside the box = <span class="code">box &times; (1 &minus; level) &minus; 0.14 em</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="vessel">
+    <div class="sec__head">
+      <p class="eyebrow">06</p>
+      <h2>The product vessel</h2>
+    </div>
+    <p class="lede">A garment or a tub fills inside its own outline. Same construction as the mark, different cut-out.</p>
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Build and numbers</h3>
+        <div class="tablewrap">
+          <table>
+            <tbody>
+              <tr><td>Cut-out</td><td>The product outline, closed &mdash; used as the matte</td></tr>
+              <tr><td>Line on top</td><td class="num">2.4 units &middot; 19 px at 8&times;, round joins</td></tr>
+              <tr><td>Second line</td><td class="num">same path at 55% opacity, for the seam</td></tr>
+              <tr><td>Fill</td><td class="num">1.05 s &middot; 63 f &middot; arriving ease</td></tr>
+              <tr><td>Drift</td><td class="num">&minus;800 px per 1.6 s while filling</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="sub">
+        <h3>Levels</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Piece</th><th>Rest</th><th>Pointed at</th><th>On a phone</th></tr></thead>
+            <tbody>
+              <tr><td>A tee in the drop</td><td class="num">0.10</td><td class="num">0.94</td><td class="num">0.50</td></tr>
+              <tr><td>The Fuel tub</td><td class="num">0.16</td><td class="num">0.90</td><td class="num">0.50</td></tr>
+              <tr><td>The mark</td><td class="num">0</td><td class="num">1.12</td><td>Opens with the menu</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">A product never fills to 1: a full garment reads as a solid shape and the drawing disappears. 0.94 leaves the shoulders as line.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="flood">
+    <div class="sec__head">
+      <p class="eyebrow">07</p>
+      <h2>The flood</h2>
+    </div>
+    <p class="lede">A whole card or category tile fills. The same turning body as the button, scaled to the card and slowed down.</p>
+    <div class="cols cols--2">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Part</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Blob</td><td class="num">280% of the card width, square</td></tr>
+            <tr><td>Corner radius</td><td class="num">0.43 &times; side</td></tr>
+            <tr><td>Start, top edge</td><td class="num">+104% of card height</td></tr>
+            <tr><td>End, top edge</td><td class="num">&minus;18% of card height</td></tr>
+            <tr><td>Fill</td><td class="num">1.1 s &middot; 66 f &middot; arriving ease</td></tr>
+            <tr><td>Turn</td><td class="num">360&deg; per 12 s, linear, while filling</td></tr>
+            <tr><td>Small type on the card</td><td class="num">brightens over 0.4 s, 0.3 s late</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sub">
+        <h3>Notes</h3>
+        <ul class="checklist">
+          <li><span>Clip to the card, including its corner radius.</span></li>
+          <li><span>The flood colour is flat &mdash; Deep crimson <span class="code">#480F15</span> or Elixir deep <span class="code">#0A4A3F</span>. A gradient on a turning shape turns with it, which is the tell.</span></li>
+          <li><span>Small grey type fails on the flood, so the specs brighten to Zinc Silver as the surface reaches them. That colour change is information, not decoration &mdash; keep it.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="export">
+    <div class="sec__head">
+      <p class="eyebrow">08</p>
+      <h2>Export, and what not to do</h2>
+    </div>
+    <div class="cols cols--2">
+      <div class="sub">
+        <h3>Deliver</h3>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Use</th><th>Format</th></tr></thead>
+            <tbody>
+              <tr><td>Master</td><td>ProRes 4444 with alpha, 60 fps, at 2&times; the largest place it will sit</td></tr>
+              <tr><td>Review</td><td>H.264, 60 fps, same frame size</td></tr>
+              <tr><td>Web overlay</td><td>PNG sequence with alpha, or WebM with alpha</td></tr>
+              <tr><td>Interface</td><td>Do not export. The site builds these in CSS &mdash; film is for campaign, not for the button.</td></tr>
+              <tr><td>Stills</td><td>Rest frame and full frame of every construction, for the brand book</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">Name files <span class="code">zinstim_[construction]_[state]_[fps]_[size].[ext]</span> &mdash; for example <span class="code">zinstim_mark_reveal_60_2048.mov</span>.</p>
+      </div>
+      <div class="sub">
+        <h3>If it has to be Lottie</h3>
+        <ul class="checklist">
+          <li><span>Text clipped to a fill has no Lottie equivalent: rebuild the word as outlines and matte it.</span></li>
+          <li><span>Keep everything as shape layers. No effects, no track mattes on precomps that Bodymovin will flatten.</span></li>
+          <li><span>Re-check the loop seam after export: the drift must still travel exactly two periods.</span></li>
+          <li><span><span class="tag tag--stop">never</span> Auto-trace the mark. Use the supplied vector &mdash; the traced version misses the wedge's inner angle.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="plate">
+      <p class="eyebrow">Before you send it</p>
+      <div class="cols cols--2" style="margin-top:10px">
+        <ul class="checklist" style="color:var(--wash)">
+          <li><span>The mark's level overshoots to 1.12 &mdash; no bumps riding along the top edge at full.</span></li>
+          <li><span>The drift travels exactly two periods per loop. Scrub the seam frame by frame.</span></li>
+          <li><span>Drift and turn are linear; every fill uses the arriving ease.</span></li>
+          <li><span>Nothing moves once the fill has settled.</span></li>
+        </ul>
+        <ul class="checklist" style="color:var(--wash)">
+          <li><span>The liquid never crosses the cut-out &mdash; check the blade tip and the garment hem at full.</span></li>
+          <li><span>The button label turns over 0.2 s after the fill starts, over 0.3 s.</span></li>
+          <li><span>Flat colour everywhere. Gradients only inside a pour, never on a surface.</span></li>
+          <li><span>A still of the finished state exists, for reduced motion and for print.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <span>ZinStim motion build sheet &middot; edition 01 &middot; September 2026</span>
+    <span>Values taken from assets/css/brand.css</span>
+    <span>Pairs with the brand book, section 07</span>
+  </footer>
+</div>
+</body>
+</html>
