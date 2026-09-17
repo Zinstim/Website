@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Origin — ZinStim</title>
 <meta name="description" content="Confidence is built, not worn. Where the name comes from, what we make, and what we refuse to do.">
-<link rel="icon" type="image/svg+xml" href="assets/img/zinstim-mark.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
 <meta name="theme-color" content="#E9ECEE">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Origin — ZinStim">
 <meta property="og:description" content="Confidence is built, not worn. Where the name comes from, what we make, and what we refuse to do.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/brand.css">
 </head>
 <body>
@@ -71,44 +71,52 @@
     </svg>
   </div>
 
-  <!-- THE THESIS -->
-  <section class="band">
-    <div class="shell">
-      <p class="t-head lines" data-reveal style="max-width:22ch">
-        <span class="ln"><span>Confidence is not</span></span>
-        <span class="ln"><span>bought at checkout.</span></span>
-      </p>
-      <div class="prose" style="margin-top:var(--space-lg)">
-        <p>It is built. Rep after rep, set after set, one grip on the bar at a
-          time. Nobody hands it over and no purchase shortcuts it.</p>
-        <p>It is also quiet. The people who have it are rarely the ones
-          announcing it.</p>
+  <!-- THE THESIS — reading pours. The stage pins and the words fill
+       with ink as the reader scrolls through them; the quiet line after
+       them stays quiet. See .manifesto in brand.css, scrub in site.js. -->
+  <section class="manifesto" data-scrub="pin">
+    <div class="manifesto__stage">
+      <div class="shell">
+        <p class="manifesto__text" data-pour-words>Confidence is not bought at checkout. It is built. Rep after rep, set after set, one grip on the bar at a time. Nobody hands it over and no purchase shortcuts it.</p>
+        <p class="manifesto__quiet t-body">It is also quiet. The people who have it are rarely the ones announcing it.</p>
       </div>
     </div>
   </section>
 
-  <!-- WHAT WE MAKE — the list is the argument -->
-  <section class="band" style="padding-top:0">
+  <!-- WHAT WE MAKE — the four things, set large and hollow. Each one
+       pours full as the reader reaches it. See .make in brand.css. -->
+  <section class="band make">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:24ch">
         <span class="ln"><span>Everything we make</span></span>
         <span class="ln"><span>exists for that one rep.</span></span>
       </p>
-      <ul class="refuse refuse--make">
-        <li><span class="refuse__k">The shirt</span>
-            <span class="prose">That does not get in your way.</span></li>
-        <li><span class="refuse__k">The shaker</span>
-            <span class="prose">That does not leak in your bag.</span></li>
-        <li><span class="refuse__k">The belt</span>
-            <span class="prose">That holds when your spine stops trusting itself.</span></li>
-        <li><span class="refuse__k">The fuel</span>
-            <span class="prose">That shows up on the days you do not want to.</span></li>
-      </ul>
-      <p class="t-head lines" data-reveal
-         style="max-width:26ch;margin-top:var(--space-xl)">
+      <ol class="make__list">
+        <li class="make__row" data-scrub>
+          <span class="make__n" aria-hidden="true">01</span>
+          <span class="make__name">The shirt</span>
+          <span class="make__line">That does not get in your way.</span>
+        </li>
+        <li class="make__row" data-scrub>
+          <span class="make__n" aria-hidden="true">02</span>
+          <span class="make__name">The shaker</span>
+          <span class="make__line">That does not leak in your bag.</span>
+        </li>
+        <li class="make__row" data-scrub>
+          <span class="make__n" aria-hidden="true">03</span>
+          <span class="make__name">The belt</span>
+          <span class="make__line">That holds when your spine stops trusting itself.</span>
+        </li>
+        <li class="make__row" data-scrub>
+          <span class="make__n" aria-hidden="true">04</span>
+          <span class="make__name">The fuel</span>
+          <span class="make__line">That shows up on the days you do not want to.</span>
+        </li>
+      </ol>
+      <p class="t-head lines make__close" data-reveal>
         <span class="ln"><span>We did not build</span></span>
         <span class="ln"><span>a wardrobe. We built</span></span>
-        <span class="ln"><span>what sits underneath.</span></span>
+        <span class="ln"><span>what sits <em class="liq-type" data-liq="underneath.">underneath.</em></span></span>
       </p>
     </div>
   </section>
@@ -119,29 +127,36 @@
     </svg>
   </div>
 
-  <!-- THE NAME — the one place zinc gets explained -->
-  <section class="band band--dark">
-    <div class="shell origin-name">
-      <div>
-      <p class="t-head lines" data-reveal style="max-width:22ch">
-        <span class="ln"><span>The name is</span></span>
-        <span class="ln"><span>not a metaphor.</span></span>
-      </p>
-      <div class="prose" style="margin-top:var(--space-lg);color:var(--muted)">
-        <p>Zinc is a trace element. You are carrying about two grams of it right
-          now, spread across every tissue in your body. It runs protein
-          synthesis. It runs hormone production. It runs immune response and
-          wound repair.</p>
-        <p>Remove it and everything downstream fails, quietly, over months. You
-          would not be able to point at the cause.</p>
-        <p>That is the whole idea behind this company. The thing holding you up
-          is rarely the thing you notice.</p>
-      </div>
-      </div>
-      <figure class="two-grams" data-reveal>
-        <svg class="vessel" viewBox="0 0 200 226" aria-hidden="true" focusable="false"><defs><clipPath id="vessel-two-grams"><path d="M84,34 H116 V192 Q116,214 100,214 Q84,214 84,192 Z"/></clipPath></defs><g clip-path="url(#vessel-two-grams)"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></g><path class="vessel__line" d="M76,18 H124 V34 H116 V192 Q116,214 100,214 Q84,214 84,192 V34 H76 Z"/><path class="vessel__line vessel__line--soft" d="M84,64 H94 M84,94 H94 M84,124 H94 M84,154 H94 M84,184 H94"/></svg>
-        <figcaption>2 g &mdash; the whole supply</figcaption>
+  <!-- THE NAME — the one place zinc gets explained. The element is set
+       as a tile holding its two grams. What zinc runs pours in line by
+       line, drains when the copy says what happens without it, and the
+       tile's sliver comes back with the last line. See .name. -->
+  <section class="band band--dark name">
+    <div class="shell name__grid">
+      <figure class="element" data-scrub data-scrub-start=".95" data-scrub-end=".55">
+        <div class="element__tile" aria-hidden="true">
+          <span class="element__num">30</span>
+          <span class="element__sym">Zn</span>
+          <span class="element__word">Zinc</span>
+          <span class="element__mass">65.38</span>
+        </div>
+        <figcaption class="element__cap">2 g &mdash; the whole supply</figcaption>
       </figure>
+      <div class="name__copy">
+        <p class="t-head lines" data-reveal style="max-width:22ch">
+          <span class="ln"><span>The name is</span></span>
+          <span class="ln"><span>not a metaphor.</span></span>
+        </p>
+        <p class="name__lede">Zinc is a trace element. You are carrying about two grams of it right now, spread across every tissue in your body.</p>
+        <p class="name__runs-k" aria-hidden="true">It runs</p>
+        <ul class="name__runs">
+          <li data-scrub style="--k:0"><span class="name__vh">It runs </span><span class="name__run">protein synthesis.</span></li>
+          <li data-scrub style="--k:1"><span class="name__vh">It runs </span><span class="name__run">hormone production.</span></li>
+          <li data-scrub style="--k:2"><span class="name__vh">It runs </span><span class="name__run">immune response and wound repair.</span></li>
+        </ul>
+        <p class="name__fail" data-scrub data-scrub-var="--drain" data-scrub-to=".name" data-scrub-rest="0" data-scrub-start=".62" data-scrub-end=".4">Remove it and everything downstream fails, quietly, over months. You would not be able to point at the cause.</p>
+        <p class="name__idea" data-scrub data-scrub-var="--idea" data-scrub-to=".name" data-scrub-start=".45" data-scrub-end=".32">That is the whole idea behind this company. The thing holding you up is rarely the thing you notice.</p>
+      </div>
     </div>
   </section>
 
@@ -151,20 +166,22 @@
     </svg>
   </div>
 
-  <!-- THE ARGUMENT AGAINST EVERYONE ELSE -->
-  <section class="band">
-    <div class="shell">
-      <p class="t-head lines" data-reveal style="max-width:26ch">
-        <span class="ln"><span>Every other brand</span></span>
-        <span class="ln"><span>sells the gesture.</span></span>
-      </p>
-      <div class="prose" style="margin-top:var(--space-lg)">
-        <p>The shout. The flexed jaw. The word UNLEASH in capital letters. It
-          works because it is legible, and it fails because nobody remembers
-          which brand they just looked at.</p>
-        <p>The people who actually change are the ones doing small correct things
-          long after anyone stopped watching. That is less dramatic and far
-          harder, which is exactly why nobody sells it.</p>
+  <!-- THE ARGUMENT — every other brand sells the gesture. The shout is
+       set wide and heavy and full of ink, and it collapses — narrows,
+       thins, drains — as the reader scrolls, while the quiet line comes
+       in and fills. See .shout in brand.css. -->
+  <section class="shout" data-scrub="pin">
+    <div class="shout__stage">
+      <div class="shell shout__inner">
+        <p class="t-head lines" data-reveal style="max-width:22ch">
+          <span class="ln"><span>Every other brand</span></span>
+          <span class="ln"><span>sells the gesture.</span></span>
+        </p>
+        <p class="shout__word" aria-hidden="true">UNLEASH</p>
+        <div class="shout__copy">
+          <p class="shout__a">The shout. The flexed jaw. The word UNLEASH in capital letters. It works because it is legible, and it fails because nobody remembers which brand they just looked at.</p>
+          <p class="shout__b">The people who actually change are the ones doing <span class="shout__quiet">small correct things</span> long after anyone stopped watching. That is less dramatic and far harder, which is exactly why nobody sells it.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -175,27 +192,31 @@
     </div>
   </section>
 
-  <!-- WHAT WE REFUSE -->
+  <!-- WHAT WE REFUSE — each refusal is struck through as the reader
+       reaches it. The strike is the nav's underline raised to the middle
+       of the word; the reason beside it stays at full strength. -->
   <section class="band">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:22ch">
         <span class="ln"><span>What we</span></span>
         <span class="ln"><span>refuse to do.</span></span>
       </p>
-      <ul class="refuse">
-        <li><span class="refuse__k">Blends</span>
+      <ul class="refuse refuse--struck">
+        <li data-scrub><span class="refuse__k"><span class="strike">Blends</span></span>
             <span class="prose">If we will not tell you the dose, there is a reason, and it is never a good one.</span></li>
-        <li><span class="refuse__k">Before and after</span>
+        <li data-scrub><span class="refuse__k"><span class="strike">Before and after</span></span>
             <span class="prose">Photographs of other people's bodies are not evidence of anything.</span></li>
-        <li><span class="refuse__k">Urgency</span>
+        <li data-scrub><span class="refuse__k"><span class="strike">Urgency</span></span>
             <span class="prose">No countdown timers, no fake scarcity. It will still be here tomorrow.</span></li>
-        <li><span class="refuse__k">Untestable claims</span>
+        <li data-scrub><span class="refuse__k"><span class="strike">Untestable claims</span></span>
             <span class="prose">If a lab cannot measure it, we do not print it.</span></li>
       </ul>
     </div>
   </section>
 
-  <!-- THE COMMITMENTS -->
+  <!-- THE COMMITMENTS — the batch line. The elixir runs along it as the
+       reader scrolls; each commitment's dot and numeral fill when the
+       flow reaches them. Then the one ask on the page before the end. -->
   <section class="band" style="padding-top:0">
     <div class="shell">
       <p class="t-head lines" data-reveal style="max-width:24ch">
@@ -209,19 +230,28 @@
           buy a supplement. The honest answer to that is not a louder claim. It
           is publishing the numbers. Three things we hold ourselves to:</p>
       </div>
-      <div class="facts">
-        <div data-reveal class="lines">
-          <div class="fact__n"><span class="liq-type" data-liq="01">01</span></div>
-          <p class="fact__t t-meta">Every batch goes to an independent lab before it goes anywhere near a tub.</p>
-        </div>
-        <div data-reveal class="lines">
-          <div class="fact__n"><span class="liq-type" data-liq="02">02</span></div>
-          <p class="fact__t t-meta">Full panel published. Numeric heavy metals, not the word "complies".</p>
-        </div>
-        <div data-reveal class="lines">
-          <div class="fact__n"><span class="liq-type" data-liq="03">03</span></div>
-          <p class="fact__t t-meta">The batch number on your tub matches a report you can read on this site.</p>
-        </div>
+      <div class="batch" data-scrub data-scrub-start=".85" data-scrub-end=".3">
+        <div class="batch__rail" aria-hidden="true"><span class="batch__flow"></span></div>
+        <ol class="batch__stops">
+          <li class="batch__stop" style="--k:0">
+            <span class="batch__dot" aria-hidden="true"></span>
+            <div class="fact__n"><span class="batch__num">01</span></div>
+            <p class="fact__t t-meta">Every batch goes to an independent lab before it goes anywhere near a tub.</p>
+          </li>
+          <li class="batch__stop" style="--k:1">
+            <span class="batch__dot" aria-hidden="true"></span>
+            <div class="fact__n"><span class="batch__num">02</span></div>
+            <p class="fact__t t-meta">Full panel published. Numeric heavy metals, not the word "complies".</p>
+          </li>
+          <li class="batch__stop" style="--k:2">
+            <span class="batch__dot" aria-hidden="true"></span>
+            <div class="fact__n"><span class="batch__num">03</span></div>
+            <p class="fact__t t-meta">The batch number on your tub matches a report you can read on this site.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="batch__action">
+        <a class="btn" href="#waitlist">Join the list</a>
       </div>
     </div>
   </section>

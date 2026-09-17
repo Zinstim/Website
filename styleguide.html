@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZinStim — style guide</title>
 <meta name="description" content="The ZinStim design system: tokens, type, motion and the liquid components.">
-<link rel="icon" type="image/svg+xml" href="assets/img/zinstim-mark.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
 <meta name="theme-color" content="#E9ECEE">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZinStim — style guide">
@@ -104,6 +104,8 @@
 .sg-mark--l .mark{width:8rem;height:auto}
 .sg-mark:hover .mark{--vessel-level:1.12}
 .sg-mark:hover .vessel__liquid{animation-play-state:running}
+.sg-pour .make__name{font-size:clamp(2.6rem,6vw,4.2rem)}
+.sg-pour .manifesto__text{font-size:clamp(1.6rem,3.2vw,2.4rem);max-width:none}
 .sg-steps{list-style:none;counter-reset:s;display:grid;gap:.55rem;margin-top:var(--space-sm);
   font-size:var(--step--1);max-width:72ch}
 .sg-steps li{counter-increment:s;display:grid;grid-template-columns:2rem 1fr;gap:.5rem;color:var(--graphite)}
@@ -144,7 +146,7 @@
         is trace. Dense because trace means concentrated, not spread thin.
       </p>
       <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">This page is the handoff. Every component on the site is here with the reason it is the way it is; the decision log in <code>docs/ZINSTIM.md</code> has the history. Take it from here.</p>
-      <nav class="sg-toc" aria-label="Contents"><a href="#mark">The mark</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#space">Space</a><a href="#divider">The divider</a><a href="#motion">Motion</a><a href="#signals">Signals</a><a href="#button">Button</a><a href="#liquid">Liquid</a><a href="#views">Views</a><a href="#field">Field</a><a href="#radius">Radius and elevation</a><a href="#anatomy">Page anatomy</a><a href="#quality">Quality floor</a></nav>
+      <nav class="sg-toc" aria-label="Contents"><a href="#mark">The mark</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#space">Space</a><a href="#divider">The divider</a><a href="#motion">Motion</a><a href="#signals">Signals</a><a href="#button">Button</a><a href="#liquid">Liquid</a><a href="#scrub">Scroll pours</a><a href="#phones">Phones</a><a href="#views">Views</a><a href="#field">Field</a><a href="#radius">Radius and elevation</a><a href="#anatomy">Page anatomy</a><a href="#quality">Quality floor</a></nav>
     </div>
   </section>
 
@@ -171,9 +173,10 @@
       <table class="sg-motion" style="margin-top:var(--space-md)">
         <tr><th style="width:9rem">Colour</th><td>Obsidian on light, Zinc Silver on dark at rest &mdash; the mark rule carried in from the start. Never painted a colour and never Flame Teal: the red enters only as the liquid, only while it is pointed at, and it is the artwork itself &mdash; the same carbon fibre on both grounds.</td></tr>
         <tr><th>Hover</th><td>The liquid rises in .75s to <code>--vessel-level: 1.12</code> and drains when the cursor leaves. Full has to be well past 1: at level 1 the wave's troughs are still 10.5 units below the top of the mark, and at 1.08 they drifted along the top of the blade as small bumps of the base colour &mdash; invisible in the nav, plain at 8rem. The liquid is a mask, not a paint: the artwork is placed once and holds still, and the rising wave uncovers it &mdash; only the edge moves, the weave never slides. The mark is the brand rather than a control, so it is the one deliberate crossing of the dots-and-liquid rule.</td></tr>
+        <tr><th>Phones</th><td>There is no hover, so the reveal plays while the phone nav's sheet is open (<code>.masthead.is-menu-open</code>, set by <code>nav.js</code>) and drains when it closes.</td></tr>
         <tr><th>Checked</th><td>Chrome, Edge and Firefox, opened from disk over <code>file://</code>, with a real pointer: no red at rest, the fibre rising from the bottom, the whole artwork showing within about half a second, and no red again once the cursor has left.</td></tr>
         <tr><th>Size</th><td>1.7rem in the nav. Holds at 16px as the favicon; smaller than that, the gap between blade and wedge closes.</td></tr>
-        <tr><th>Files</th><td><code>assets/img/zinstim-mark.svg</code> &mdash; vector master and favicon; switches to Zinc Silver in dark browser UI. <code>assets/img/zinstim-mark.png</code> &mdash; the carbon-fibre artwork the liquid uncovers, 128&times;114, so it sits exactly on the vector. To change what the mark fills with, replace this file with art of the same 128:114 proportions. Larger sources are in the repo root (<code>ZinstimLogo_mark.png</code>, 512px).</td></tr>
+        <tr><th>Files</th><td><code>assets/img/zinstim-favicon.png</code> &mdash; the tab icon, the red artwork at 64px (the tab shows the colour; the nav reveals it). <code>assets/img/zinstim-mark.svg</code> &mdash; the flat vector master. <code>assets/img/zinstim-mark.png</code> &mdash; the carbon-fibre artwork the liquid uncovers, 128&times;114, so it sits exactly on the vector. To change what the mark fills with, replace this file with art of the same 128:114 proportions. Larger sources are in the repo root (<code>ZinstimLogo_mark.png</code>, 512px).</td></tr>
         <tr><th>Markup</th><td>Inline in every masthead, so it paints over <code>file://</code>. The carbon fibre comes in as an SVG <code>&lt;image&gt;</code> under an SVG <code>&lt;mask&gt;</code>, both inside that inline SVG &mdash; never CSS <code>mask-image</code>, which is what made the 07 Sep mark vanish when a page was opened from disk. Ids are unique per page: <code>mark-clip</code> and <code>mark-fill</code> in the masthead.</td></tr>
       </table>
     </div>
@@ -676,7 +679,7 @@
       <table class="sg-motion" style="margin-top:var(--space-md)">
         <tr><th style="width:9rem">Button</th><td>From the liquid-button reference. A turning rounded square rises through the pill and turns only while filled. Every button on every page.</td></tr>
         <tr><th>Type</th><td>From the liquid-type reference. The word twice: solid text, and a copy whose fill is a wave-topped body clipped to the letterforms. Titles pour to .5 on load &mdash; measured to put the waterline at half the cap height. Wear, Fuel, Instruments, Elements, and the Elements doors.</td></tr>
-        <tr><th>Vessel</th><td>From the liquid-SVG reference. The outline is the clip; a wave-topped body rises inside it. The homepage tees and the Fuel tub.</td></tr>
+        <tr><th>Vessel</th><td><code>.vessel .vessel__level .vessel__liquid .vessel__line</code></td><td>&sect;liquid</td><td>&mdash;</td><td>Home, Fuel, the mark</td></tr>
         <tr><th>Flood</th><td>From the single-div fill reference. The card fills with Elixir Deep; small muted type brightens to Zinc Silver as the flood reaches it (muted on Elixir Deep is ~2.9:1). The homepage kit.</td></tr>
         <tr><th>Touch</th><td>No hover, so vessels and door names hold at half &mdash; the idea stays visible.</td></tr>
         <tr><th>Reduced motion</th><td>End states only: no turning, no drift, no travel.</td></tr>
@@ -685,24 +688,21 @@
       <table class="sg-motion">
         <tr><th style="width:11rem">Turning blob</th><td>A large rounded square rising through the element, turning as it rises. Only for containers near square &mdash; buttons, cards. In a thin row a straight edge of the square crosses as a slanted wedge; that was captured on Origin and replaced.</td></tr>
         <tr><th>Wave-topped body</th><td>A body with the wave tile on its top edge, rising straight up. For thin, wide things &mdash; list rows &mdash; and inside type.</td></tr>
-        <tr><th>Clipped vessel</th><td>A drawing's own outline used as the clip, with a wave-topped body translated up inside it. For drawings &mdash; tees, the tub, the vial.</td></tr>
+        <tr><th>Clipped vessel</th><td>A drawing's own outline used as the clip, with a wave-topped body translated up inside it. For drawings &mdash; the homepage tees and the Fuel tub.</td></tr>
         <tr><th>Masked reveal</th><td>The clipped vessel with its body moved into an SVG <code>&lt;mask&gt;</code>, over a still image: the level uncovers the picture instead of pouring a colour. For artwork that keeps its own texture &mdash; the mark.</td></tr>
+        <tr><th>Scroll pour</th><td>The wave-topped body painted as three backgrounds clipped to the type &mdash; crest, substance, dry &mdash; at a level set by scroll progress. No copy of the word is laid over it, so a screen reader hears it once. For reading: Origin's thesis, product names, element symbol, runs, UNLEASH and batch numerals. See <a href="#scrub">Scroll pours</a>.</td></tr>
         <tr><th>Scroll-built shape</th><td>One path rebuilt every frame from scroll progress. Only the homepage pour.</td></tr>
       </table>
 
       <p class="sg-label" style="margin-top:var(--space-xl)">Where it is used</p>
       <div class="sg-pair">
-        <div class="sg-demo">
-          <p class="sg-cap">Row fill &mdash; Origin, what we make</p>
-          <ul class="refuse refuse--make" style="width:100%;margin-top:0">
-            <li><span class="refuse__k">The shirt</span><span class="prose">That does not get in your way.</span></li>
-          </ul>
+        <div class="sg-demo sg-pour">
+          <p class="sg-cap">Scroll pour &mdash; a product name held at half (<code>--p: .5</code>)</p>
+          <span class="make__name" style="--p:.5">The shirt</span>
         </div>
-        <div class="sg-demo">
-          <p class="sg-cap">Numeral &mdash; Origin commitments: hollow, half on reveal, full on hover</p>
-          <div class="facts" style="margin-top:0;width:100%">
-            <div data-reveal class="lines"><div class="fact__n"><span class="liq-type" data-liq="01">01</span></div></div>
-          </div>
+        <div class="sg-demo sg-pour">
+          <p class="sg-cap">Scroll pour &mdash; the thesis, each word at its own level (<code>--p: .5</code>)</p>
+          <p class="manifesto__text" style="--p:.5;--n:6"><span class="pw" style="--i:0">Rep</span> <span class="pw" style="--i:1">after</span> <span class="pw" style="--i:2">rep,</span> <span class="pw" style="--i:3">set</span> <span class="pw" style="--i:4">after</span> <span class="pw" style="--i:5">set.</span></p>
         </div>
       </div>
       <table class="sg-motion" style="margin-top:var(--space-md)">
@@ -710,9 +710,10 @@
         <tr><th>Door names</th><td><code>.door-name .liq-type</code> &mdash; Elements. Fill when their band is chosen.</td></tr>
         <tr><th>Rolling line</th><td><code>.rollcall__word.liq-type</code> &mdash; the Origin H1. Each phrase pours full in Flame Teal as it lands and drains as it leaves; &ldquo;Confidence / is&rdquo; hold in Zinc Wash.</td></tr>
         <tr><th>Stressed phrase</th><td><code>em.liq-type</code> &mdash; Origin's quote (&ldquo;stopped watching.&rdquo;, pours full) and closing line (&ldquo;repeated.&rdquo;, half).</td></tr>
-        <tr><th>Numerals</th><td><code>.fact__n .liq-type</code> &mdash; Origin commitments. The outline stays on top of the fill.</td></tr>
-        <tr><th>Row fill</th><td><code>.refuse--make</code> &mdash; Origin. The refusals list below it stays still, on purpose.</td></tr>
-        <tr><th>Vessels</th><td><code>.vessel</code> &mdash; the homepage tees, the Fuel tub, the Origin two-grams vial (a sliver; it never fills &mdash; the point is how little it is), the mark (a masked reveal of its carbon fibre).</td></tr>
+        <tr><th>Numerals</th><td><code>.batch__num</code> &mdash; Origin's batch line. Hollow; each pours full when the flow reaches its station, and the outline stays on top of the fill.</td></tr>
+        <tr><th>Reading pours</th><td><code>.manifesto .pw</code>, <code>.make__name</code>, <code>.element__sym</code>, <code>.name__run</code>, <code>.shout__word</code>, <code>.shout__quiet</code> &mdash; Origin. Ink on light, Flame Teal on dark, the elixir for the phrase a section turns on.</td></tr>
+        <tr><th>Strike</th><td><code>.refuse--struck .strike</code> &mdash; Origin's refusals, struck through in reading order as they are reached. Not liquid: the nav's underline raised to the middle of the word.</td></tr>
+        <tr><th>Vessels</th><td><code>.vessel</code> &mdash; the homepage tees, the Fuel tub, and the mark (a masked reveal of its carbon fibre).</td></tr>
         <tr><th>Flood</th><td><code>.band--dark .kit__item</code> &mdash; the homepage kit.</td></tr>
         <tr><th>Buttons</th><td><code>.btn</code> &mdash; every button on every page.</td></tr>
         <tr><th>Colour in type</th><td>The type rule stands: no painted accent on a word. The one way colour enters display type is as the substance filling it.</td></tr>
@@ -721,6 +722,62 @@
   </section>
 
     <!-- VIEWS -->
+  <!-- SCROLL POURS -->
+  <section class="sg-section" id="scrub">
+    <div class="shell">
+      <p class="sg-label">Scroll pours</p>
+      <p class="t-head" style="max-width:22ch">The reader's scroll is the pour.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        Origin's sections below the hero move by one rule: <code>site.js</code> (scrub) writes each
+        <code>[data-scrub]</code> element's scroll progress as a custom property, 0 to 1, and CSS decides
+        what that pours. Nothing plays by itself and nothing loops &mdash; scroll back and it drains.
+        It is a script writing one number rather than scroll-driven CSS because Firefox 156 has no
+        <code>animation-timeline</code>.
+      </p>
+      <pre class="sg-code" style="margin-top:var(--space-lg)">&lt;section class="manifesto" data-scrub="pin"&gt;   pinned: 0 when its top is at 60% of the
+                                                viewport, 1 when its bottom meets the bottom
+&lt;li class="make__row" data-scrub&gt;             passing: 0 when its top is at 90%, 1 at 45%
+&lt;p data-scrub data-scrub-start=".62" data-scrub-end=".4"
+   data-scrub-var="--drain" data-scrub-to=".name"
+   data-scrub-rest="0"&gt;                        writes --drain on the closest .name instead
+                                                of --p on itself; holds 0 under reduced motion
+&lt;p data-pour-words&gt;                          split into .pw spans carrying --i, --n on the p</pre>
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:11rem">In CSS</th><td>Read <code>var(--p, 1)</code> &mdash; the fallback is the finished state &mdash; and turn it into a level: <code>--f</code> for the pour fill, a strike width, an axis value. Per-word levels come from <code>--i</code> and <code>--n</code>; staged moments from clamps on <code>--p</code>, e.g. <code>clamp(0, (var(--p) - .1) * 2.2, 1)</code>.</td></tr>
+        <tr><th>The pour fill</th><td>Three backgrounds clipped to the type: a wave tile on the surface (<code>--sw</code>, sized with <code>--sw-w</code> and <code>--sw-h</code>), the substance (<code>--ink</code>) and the dry state (<code>--dry</code>, <code>transparent</code> for hollow type with a stroke). Size the crest to the type: at .15em a 220px glyph grows a 33px wave.</td></tr>
+        <tr><th>Pinning</th><td>Pinned sections only get their tall height and sticky stage under <code>html.has-scrub</code>, which the script adds. The stage sits under the masthead at <code>var(--mast-h)</code>, measured by the script.</td></tr>
+        <tr><th>Reduced motion, no JS</th><td>Reduced motion writes each element's rest value once (default 1) and never adds <code>has-scrub</code>, so nothing pins and every section shows its finished state. Without the script <code>--p</code> is unset and falls back to 1 &mdash; the same finished states.</td></tr>
+        <tr><th>Cost</th><td>One passive scroll listener and one animation frame per scroll: every rectangle is read first, then only changed values are written, so a frame costs one layout.</td></tr>
+        <tr><th>Sizing large type</th><td>Size a single unbreakable word to its column, not the viewport: <code>container-type:inline-size</code> on the column and <code>cqi</code> on the word. UNLEASH sized in <code>vw</code> stretched its grid track until the copy beside it ran to 7px from a phone's edge.</td></tr>
+        <tr><th>Checked</th><td>Chrome and Firefox from disk, 360 to 1920 wide: every section at exact progress values, no element past its column, no sideways scroll, reduced motion and no-JS finished states.</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- PHONES -->
+  <section class="sg-section" id="phones">
+    <div class="shell">
+      <p class="sg-label">Phones</p>
+      <p class="t-head" style="max-width:22ch">No cursor, the same site.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        Everything the desktop does under the cursor has a phone equivalent. The nav's dot opens
+        downward into a sheet; whatever crosses the middle of the screen takes its hover state;
+        buttons fill while they are pressed; and short screens stop pinning. Resize this page below
+        861px, or open it on a phone, and use the menu at the top.
+      </p>
+      <table class="sg-motion" style="margin-top:var(--space-lg)">
+        <tr><th style="width:11rem">The nav</th><td>Below 861px <code>nav.js</code> builds a pill and a sheet from the links already in the markup (<code>.navtoggle</code>, <code>.navsheet</code>) and adds <code>.has-sheet</code>. The pill is the page you are on, with its teal dot &mdash; &ldquo;Menu&rdquo; on the homepage &mdash; beside an Obsidian dot. Tapping grows the dot into the sheet: a <code>clip-path</code> circle centred on the dot, so the dot opens into the panel rather than a panel fading in. The pages rise in, staggered; the current one is Flame Teal. Origin, Elements, then Wear, Fuel and Instruments under it. The header is one 3rem row (72px); the old stacked list took three rows and dropped Elements.</td></tr>
+        <tr><th>Closing</th><td>Tap the pill again, tap anywhere outside, choose a page, or press Escape (focus goes back to the pill). Opening from the keyboard moves focus to the first page. Widening past 860px closes it.</td></tr>
+        <tr><th>Without the script</th><td>The stacked list of links is still there, so the nav works before <code>nav.js</code> loads.</td></tr>
+        <tr><th>The mark</th><td>The carbon fibre rises while the sheet is open and drains when it closes &mdash; opening the nav is what reveals the brand on a phone.</td></tr>
+        <tr><th>Touch pointing</th><td>On a device that cannot hover, <code>site.js</code> (touch) gives <code>.is-pointed</code> to whichever of <code>.piece</code>, <code>.door</code>, <code>.kit__item</code>, <code>.door-band</code> and <code>.fuel-tub</code> crosses a line 1% of the screen tall through its middle, and <code>&sect;touch</code> gives it that component's hover state: the homepage piece lifts and fills, a door word changes face, a kit card floods, an Elements word fills, the Fuel tub pours. A line, not a band: at 16% the three stacked door words all lit together. To add a component, add it to the selector in <code>site.js</code> and mirror its hover rules under <code>.is-pointed</code> in <code>&sect;touch</code>.</td></tr>
+        <tr><th>Buttons</th><td><code>.btn</code> fills while pressed (<code>:active</code>); an empty <code>touchstart</code> listener lets iOS Safari apply it. Wear's next action always shows its label on touch.</td></tr>
+        <tr><th>Short screens</th><td>Below 34rem of height Origin's thesis and gesture sections do not pin &mdash; on a phone held sideways the pinned stage was shorter than the text. Their pours still run as they scroll past.</td></tr>
+        <tr><th>Checked</th><td>Real taps in Chrome's touch emulation at 360&times;640, 390&times;844 and 844&times;390 on every page; a real click in Firefox on a narrow window; each touch state probed at the middle of the screen; desktop nav unchanged at 1440.</td></tr>
+      </table>
+    </div>
+  </section>
+
   <section class="sg-section" id="views">
     <div class="shell">
       <p class="sg-label">Views</p>
@@ -857,7 +914,7 @@
       <div style="overflow-x:auto">
       <table class="sg-motion">
         <tr><th style="width:9rem">Component</th><th>Classes</th><th>brand.css</th><th>site.js</th><th>Used on</th></tr>
-        <tr><th>Masthead + nav</th><td><code>.masthead .home .navgroup .capsule .morph .rise</code></td><td>&sect;nav</td><td>nav.js; sticky hairline</td><td>every page</td></tr>
+        <tr><th>Masthead + nav</th><td><code>.masthead .home .navgroup .capsule .morph .rise .navtoggle .navsheet</code></td><td>&sect;nav, &sect;nav &mdash; small screens</td><td>nav.js; sticky hairline</td><td>every page</td></tr>
         <tr><th>The mark</th><td><code>.home__mark .mark .vessel .mark__art</code></td><td>&sect;the mark, &sect;liquid</td><td>&mdash;</td><td>every page</td></tr>
         <tr><th>Fracture</th><td><code>.cleave .cleave--dark .cleave--light .cleave--elixir</code></td><td>&sect;cleave</td><td>reveal</td><td>every page</td></tr>
         <tr><th>Liquid button</th><td><code>.btn .btn--secondary .btn--ghost .btn--sm</code></td><td>&sect;button, &sect;liquid</td><td>&mdash;</td><td>every page</td></tr>
@@ -873,9 +930,14 @@
         <tr><th>Kit + flood</th><td><code>.kit .kit__item .kit__specs .kit__state</code></td><td>&sect;kit</td><td>&mdash;</td><td>Home</td></tr>
         <tr><th>Viewer + views</th><td><code>.viewer .vtab .vpanel .vpanel__view .vview .sprite</code></td><td>&sect;viewer, &sect;views</td><td>viewer</td><td>Wear</td></tr>
         <tr><th>Rollcall</th><td><code>.rollcall .rollcall__word .rollcall__note</code></td><td>&sect;rollcall, &sect;origin</td><td>rollcall</td><td>Origin</td></tr>
-        <tr><th>Facts</th><td><code>.facts .fact__n .fact__t</code></td><td>&sect;facts, &sect;origin</td><td>reveal</td><td>Origin</td></tr>
-        <tr><th>Lists</th><td><code>.refuse .refuse--make</code></td><td>&sect;refuse, &sect;origin</td><td>&mdash;</td><td>Origin</td></tr>
-        <tr><th>Two grams</th><td><code>.origin-name .two-grams</code></td><td>&sect;origin</td><td>reveal</td><td>Origin</td></tr>
+        <tr><th>Batch line</th><td><code>.batch .batch__rail .batch__flow .batch__stop .batch__dot .batch__num</code> with <code>.fact__n .fact__t</code></td><td>&sect;facts, &sect;origin</td><td>scrub</td><td>Origin</td></tr>
+        <tr><th>Lists</th><td><code>.refuse .refuse--struck .strike</code></td><td>&sect;refuse, &sect;origin</td><td>scrub</td><td>Origin</td></tr>
+        <tr><th>Element tile</th><td><code>.name .element .element__tile .element__sym .name__runs .name__run</code></td><td>&sect;origin</td><td>scrub</td><td>Origin</td></tr>
+        <tr><th>Thesis</th><td><code>.manifesto .manifesto__stage .manifesto__text .pw .manifesto__quiet</code></td><td>&sect;origin</td><td>scrub (pin, words)</td><td>Origin</td></tr>
+        <tr><th>Make index</th><td><code>.make .make__row .make__n .make__name .make__line</code></td><td>&sect;origin</td><td>scrub</td><td>Origin</td></tr>
+        <tr><th>The gesture</th><td><code>.shout .shout__stage .shout__word .shout__copy .shout__quiet</code></td><td>&sect;origin</td><td>scrub (pin)</td><td>Origin</td></tr>
+        <tr><th>Scrub</th><td><code>[data-scrub] [data-pour-words] html.has-scrub</code></td><td>&sect;origin</td><td>scrub</td><td>Origin; any page</td></tr>
+        <tr><th>Touch</th><td><code>.is-pointed</code> on <code>.piece .door .kit__item .door-band .fuel-tub</code></td><td>&sect;touch</td><td>touch</td><td>Home, Elements, Fuel; Wear and every button</td></tr>
         <tr><th>Quote</th><td><code>.quote-band .quote .quote__text</code></td><td>&sect;quote, &sect;origin</td><td>reveal</td><td>Origin</td></tr>
         <tr><th>Lab panel + tub</th><td><code>.lab-panel .purity-n .lab-table .fuel-split .fuel-tub</code></td><td>&sect;fuel, &sect;lab panel</td><td>&mdash;</td><td>Fuel</td></tr>
         <tr><th>Door bands</th><td><code>.door-band .door-name .door-sub .plate</code></td><td>&sect;elements</td><td>&mdash;</td><td>Elements</td></tr>

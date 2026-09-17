@@ -386,6 +386,105 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
 })();
 
 
+/* scrub — the reader's scroll is the pour (Origin, §origin "reading
+   pours"). Every [data-scrub] element gets its progress written as a
+   custom property, 0 to 1, and CSS decides what that pours. This
+   file never styles anything itself.
+
+     data-scrub            passes: 0 when its top is at 90% of the
+                           viewport, 1 when its top reaches 45%
+     data-scrub="pin"      a tall section whose stage sticks: 0 when
+                           its top is at 60%, 1 when its bottom meets
+                           the bottom of the viewport
+     data-scrub-start/-end override those fractions
+     data-scrub-var        the property to write (default --p)
+     data-scrub-to         write it on the closest ancestor matching
+                           this selector instead of on the element
+     data-scrub-rest       the value to hold under reduced motion
+                           (default 1, the finished state)
+
+   [data-pour-words] is split into word spans carrying --i, with --n
+   on the container, so a paragraph can pour a word at a time.
+
+   Reduced motion writes the rest values once and never pins: the tall
+   pinned heights only exist under html.has-scrub, added here. Reads
+   every rectangle first and writes after, so a frame costs one layout. */
+(function(){
+  var pours = document.querySelectorAll('[data-pour-words]');
+  for (var w = 0; w < pours.length; w++){
+    var box = pours[w], words = box.textContent.trim().split(/\s+/);
+    box.textContent = '';
+    for (var i = 0; i < words.length; i++){
+      if (i) box.appendChild(document.createTextNode(' '));
+      var span = document.createElement('span');
+      span.className = 'pw';
+      span.style.setProperty('--i', i);
+      span.textContent = words[i];
+      box.appendChild(span);
+    }
+    box.style.setProperty('--n', words.length);
+  }
+
+  var els = document.querySelectorAll('[data-scrub]');
+  if (!els.length) return;
+  var root = document.documentElement;
+  var items = [];
+  for (var k = 0; k < els.length; k++){
+    var el = els[k], to = el.getAttribute('data-scrub-to');
+    items.push({
+      el: el,
+      out: (to && el.closest(to)) || el,
+      name: el.getAttribute('data-scrub-var') || '--p',
+      pin: el.getAttribute('data-scrub') === 'pin',
+      start: parseFloat(el.getAttribute('data-scrub-start')),
+      end: parseFloat(el.getAttribute('data-scrub-end')),
+      rest: el.hasAttribute('data-scrub-rest') ? el.getAttribute('data-scrub-rest') : '1',
+      last: -1
+    });
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    items.forEach(function(it){ it.out.style.setProperty(it.name, it.rest); });
+    return;
+  }
+  root.classList.add('has-scrub');
+
+  var mast = document.querySelector('.masthead');
+  function measureMast(){ if (mast) root.style.setProperty('--mast-h', mast.offsetHeight + 'px'); }
+
+  function clamp01(v){ return v < 0 ? 0 : (v > 1 ? 1 : v); }
+  function progress(it, r, vh){
+    if (it.pin){
+      var from = vh * (isNaN(it.start) ? .6 : it.start);
+      var to = vh - r.height;                       // bottom meets the viewport bottom
+      return from === to ? 1 : clamp01((from - r.top) / (from - to));
+    }
+    var s = vh * (isNaN(it.start) ? .9 : it.start);
+    var e = vh * (isNaN(it.end) ? .45 : it.end);
+    return clamp01((s - r.top) / (s - e));
+  }
+
+  var ticking = false;
+  function frame(){
+    ticking = false;
+    var vh = window.innerHeight, values = [];
+    for (var n = 0; n < items.length; n++)
+      values.push(progress(items[n], items[n].el.getBoundingClientRect(), vh));
+    for (var m = 0; m < items.length; m++){
+      var v = Math.round(values[m] * 1000) / 1000;
+      if (v !== items[m].last){ items[m].last = v; items[m].out.style.setProperty(items[m].name, v); }
+    }
+  }
+  function request(){ if (!ticking){ ticking = true; requestAnimationFrame(frame); } }
+
+  measureMast();
+  frame();
+  window.addEventListener('scroll', request, {passive:true});
+  window.addEventListener('resize', function(){ measureMast(); request(); }, {passive:true});
+  if (document.fonts) document.fonts.ready.then(function(){ measureMast(); request(); });
+})();
+
+
 /* viewer — pick a piece, the piece opens. The tab's dot opens into a
    pill and the stage's block opens out of a circle into the ground
    the product stands on. All of that is CSS; this only says which
@@ -447,4 +546,29 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
   }
 
   open(0);
+})();
+
+
+/* touch — no cursor, so the middle of the screen stands in for one
+   (docs/tokens.md: scroll can stand in for the cursor). On a device
+   that cannot hover, each of these things gets .is-pointed while it
+   crosses the middle band of the viewport, and brand.css (§touch)
+   gives it its hover state. The "middle" is a line 1% of the screen
+   tall: at 16% the homepage's three stacked door words all sat inside
+   it and swapped faces together (measured: 3 pointed at once). On a
+   line, stacked things take turns, and a full-screen Elements band
+   holds it for as long as it covers the middle of the screen.
+
+   The empty touchstart listener is what lets iOS Safari apply :active,
+   which is how buttons fill while pressed. */
+(function(){
+  if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+  document.addEventListener('touchstart', function(){}, {passive:true});
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('.piece, .door, .kit__item, .door-band, .fuel-tub');
+  if (!els.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ e.target.classList.toggle('is-pointed', e.isIntersecting); });
+  }, {rootMargin:'-49.5% 0px -49.5% 0px'});
+  els.forEach(function(el){ io.observe(el); });
 })();

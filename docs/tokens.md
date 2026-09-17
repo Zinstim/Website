@@ -25,8 +25,11 @@ fixes both at once and costs nothing.
 
 **Rules**
 
-- The mark is Zinc Silver on dark, Obsidian on light. **Never Flame Teal.** Carried in, still holds. *(16 Sep: it is now an inline vector trace. Under the cursor a liquid rises inside it and uncovers its own red carbon fibre — the original artwork revealed, not a colour painted on the mark, and only while it is pointed at.)*
-- Flame Teal only appears on Obsidian. On Zinc Wash it measures roughly 1.7:1, which is unreadable. It is a dark-surface accent, not a brand colour.
+- The mark is Zinc Silver on dark, Obsidian on light. **Never Flame Teal.** Carried in, still holds. *(16 Sep: it is now an inline vector trace. Under the cursor a liquid rises inside it and uncovers its own red carbon fibre — the original artwork revealed, not a colour painted on the mark, and only while it is pointed at.) The tab icon is the red artwork itself.)*
+- **Red is the material the mark is made of, not a colour we paint with.** *(17 Sep, DECIDED.)* It appears as the artwork the reveal uncovers, the tab icon, a physical finish (one crimson thread, anodising, print on black) and photography of the object. Never a button, band, headline, link, badge, chart or category field. Reasons and measurements in `brand-book.html` §05; the crimson-led direction is rejected.
+- **The ratio is 90 / 8 / 2** across a whole screen: night and metal, the live colour, the mark's red. Two red things at once means one of them is wrong.
+- **Two surfaces.** Night (Obsidian) carries the brand: home, Origin, the drop, packaging, social. Day (Zinc Wash) carries the proof: size charts, lab panels, dose tables, policy, email. The live colour changes value with the surface, never hue — Flame Teal on Night, Elixir core on Day.
+- Flame Teal only appears on Obsidian. On Zinc Wash it measures **1.4:1**, which is invisible. It is a dark-surface accent, not a brand colour.
 - Obsidian on Zinc Wash runs about 17:1. Comfortable everywhere including small type.
 - No gradients **on surfaces**. Zinc is a solid. A gradient on a button, a card or a band would be the first dishonest thing on the page. The one scoped exception is inside the elixir, below — a liquid is a volume with light travelling through it, and painted flat it is just a rectangle.
 
@@ -58,8 +61,8 @@ single live-state colour, and the elixir is the depth behind it.
 
 **Rules**
 
-- A **dark-surface family**, more strictly than Flame Teal. Elixir Lit on Zinc Wash is **2.2:1** — fails at every size, large type included. The elixir never carries copy on a light surface.
-- Flame Teal on the elixir reads **9.3:1**. It is not a second accent; it is the same accent with depth behind it.
+- A **dark-surface family**, more strictly than Flame Teal. Elixir Lit on Zinc Wash is **2.2:1** — fails at every size, large type included, and Glow is worse. *(17 Sep: the rule was written for Lit and above. The **core** `#0B6B5C` measures **5.4:1** on Zinc Wash and is the live colour on Day surfaces, small type included.)*
+- Flame Teal on the elixir **at depth** (`--elixir-void`) reads **9.3:1**; on the core it is 3.8:1, so that pairing is display size only. It is not a second accent; it is the same accent with depth behind it.
 - `--elixir-void` sits **1.2:1** against Obsidian on purpose — enough to give the fluid a body, little enough to stay abyssal. The first value measured 1.00, identical, and the liquid vanished into the band.
 - Gradients are permitted **inside the liquid only** — see the amended rule above.
 
@@ -89,7 +92,7 @@ more disciplined and gives both scripts a shared rule.
 **Rules**
 
 - Body line length under 70 characters. Long measures are what make white space read as neglect rather than intent.
-- No all-caps for labels. The most common tell of a templated page.
+- No all-caps in Archivo. *(17 Sep: uppercase survives only in Space Mono at small sizes, where it reads as instrument lettering — specimen tags, spec tables, batch lines. All-caps display type is the most common tell of a templated page.)*
 - No accenting a single word in a headline in a different colour. If the line needs help, rewrite the line. *(16 Sep, one exception: the liquid system. Colour may arrive as the substance filling type — a title's resting level, Origin's rolling line, a stressed phrase — never as a static painted accent.)*
 - Bangla sits beside English, not beneath it as a translation. Equal standing, because Bangladesh is the first audience.
 
@@ -125,6 +128,7 @@ want to know what the thing is. Nothing on this site is fully visible at rest.
 | Motion answers the cursor | Hover, focus, and click get a response. Those are the moments motion belongs. |
 | One page-load moment, not many | A single settling gesture on load. Fade-and-slide-up on every section as you scroll is the generated-page default. |
 | Nothing loops | No ambient drifting, pulsing, or floating. It reads as decoration and undermines the restraint. |
+| Scroll can stand in for the cursor | Where a page tells a story, the reader's scroll may drive the substance (Origin's reading pours). On a device that cannot hover, the middle of the screen stands in for the cursor: the component crossing it takes its hover state. Progress, never playback: it moves only as the reader moves and runs back when they scroll back. Without JavaScript, or with reduced motion, every section shows its finished state. |
 | Reduced motion is honoured | `prefers-reduced-motion` removes movement, never removes information. |
 
 **Timing:** fast enough that it feels like a response, slow enough to read as

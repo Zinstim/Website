@@ -491,6 +491,109 @@ img,svg{display:block;max-width:100%}
   .rise:hover,.rise:focus-visible{color:var(--obsidian)}
 }
 
+/* ── phones: the pill and the sheet ─────────────────────────
+   The list above is only the no-JavaScript fallback now. nav.js
+   builds a toggle and a sheet from the same links and adds
+   .has-sheet / .has-navsheet. That list took three rows of a sticky
+   header (at 474x237 the header was 155px of a 237px screen) and
+   dropped Elements altogether; the header is one 3rem row now.
+
+   The pill is the page you are on, with its teal dot, beside the
+   nav's own dot — an Obsidian circle. Tapping grows that circle into
+   the sheet: a clip-path circle centred on the dot, so the dot does
+   not fade into a panel, it opens into one. §nav's dot-to-pill,
+   turned downward. The pages rise in behind it, staggered, out of
+   clips; the current one is Flame Teal on Obsidian, where teal is
+   allowed. Closing is quicker than opening, like the capsule. The
+   sheet stops short of the home button at every width.            */
+.navtoggle,.navsheet{display:none}
+@media (max-width:860px){
+  .has-navsheet{padding-top:.75rem;padding-bottom:.75rem}
+  .has-navsheet .home{top:.75rem}
+  .navgroup.has-sheet{height:3rem;align-items:center;justify-content:flex-end}
+  .navgroup.has-sheet .origin,
+  .navgroup.has-sheet .capsule{display:none}
+
+  .navtoggle{
+    position:relative;z-index:2;
+    display:inline-flex;align-items:center;gap:.75rem;
+    height:3rem;padding:0 .35rem 0 1rem;
+    border:0;border-radius:var(--radius-pill);
+    background:transparent;color:var(--obsidian);
+    font:inherit;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .3s ease .14s;
+  }
+  .navtoggle__label{white-space:nowrap}
+  .navtoggle__dot{
+    position:relative;flex:none;
+    width:2.3rem;height:2.3rem;border-radius:50%;
+    background:var(--obsidian);
+    transition:transform var(--dur-fast) ease;
+  }
+  .navtoggle__dot i{
+    position:absolute;left:31%;right:31%;height:1.5px;border-radius:1px;
+    background:var(--zinc-wash);
+    top:calc(50% - 3.5px);
+    transition:top .3s var(--ease-out),transform .36s var(--ease-out);
+  }
+  .navtoggle__dot i + i{top:calc(50% + 2px)}
+  .navtoggle:active .navtoggle__dot{transform:scale(.92)}
+  .is-sheet-open .navtoggle{color:var(--zinc-wash);transition-delay:0s}
+  .is-sheet-open .navtoggle__dot i,
+  .is-sheet-open .navtoggle__dot i + i{top:calc(50% - .75px)}
+  .is-sheet-open .navtoggle__dot i{transform:rotate(45deg)}
+  .is-sheet-open .navtoggle__dot i + i{transform:rotate(-45deg)}
+  .is-sheet-open .navtoggle:focus-visible{outline-color:var(--zinc-silver)}
+
+  .navsheet{
+    display:block;
+    position:absolute;z-index:1;top:0;right:0;
+    width:min(19rem,calc(100vw - 2 * var(--space-md) - 3.5rem));
+    max-height:calc(100vh - 1.5rem);max-height:calc(100svh - 1.5rem);
+    overflow-y:auto;overscroll-behavior:contain;
+    padding:4rem 1.5rem 1.25rem 1.6rem;
+    background:var(--obsidian);color:var(--zinc-wash);
+    border-radius:1.5rem;
+    /* an edge for when it opens over a dark band, where Obsidian on
+       Obsidian had none and the pages floated over the hero. Inset,
+       because the clip would cut anything drawn outside the box. */
+    box-shadow:inset 0 0 0 1px rgba(214,221,226,.16);
+    /* the dot: 2.3rem wide, .35rem in from the pill's right edge */
+    clip-path:circle(1.15rem at calc(100% - 1.5rem) 1.5rem);
+    visibility:hidden;
+    transition:clip-path .4s var(--ease-move),visibility 0s linear .4s;
+  }
+  .is-sheet-open .navsheet{
+    clip-path:circle(150% at calc(100% - 1.5rem) 1.5rem);
+    visibility:visible;
+    transition:clip-path .62s var(--ease-out),visibility 0s;
+  }
+
+  .navsheet__list{display:grid}
+  .navsheet__item{overflow:hidden}
+  .navsheet__item--sub{padding-left:1.1rem}
+  .navsheet__link{
+    display:flex;align-items:center;min-height:3rem;
+    font-family:var(--face-display);
+    font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
+    font-size:var(--step-2);line-height:1;letter-spacing:-.02em;
+    color:var(--zinc-wash);
+    opacity:0;transform:translateY(110%);
+    transition:transform .22s var(--ease-move),opacity .14s ease,color .3s ease;
+  }
+  .navsheet__item--sub .navsheet__link{min-height:2.75rem;font-size:var(--step-1);color:var(--muted)}
+  .is-sheet-open .navsheet__link{
+    opacity:1;transform:none;
+    transition:transform var(--dur-slow) var(--ease-out) calc(.16s + var(--k,0) * .05s),
+               opacity .34s ease calc(.16s + var(--k,0) * .05s),
+               color .3s ease;
+  }
+  .navsheet__link:active,.navsheet__link:focus-visible{color:var(--zinc-silver)}
+  .navsheet__link.is-here{color:var(--flame-teal)}
+  .navsheet__link:focus-visible{outline-color:var(--zinc-silver);outline-offset:3px}
+}
+
 
 /* ═══ layout helpers ═════════════════════════════════════════ */
 
@@ -608,6 +711,9 @@ img,svg{display:block;max-width:100%}
   --wave-teal:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%2300E0B8'/%3E%3C/svg%3E");
   /* the elixir at 10% — a substance you can read type through */
   --wave-pale:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230B6B5C' fill-opacity='.1'/%3E%3C/svg%3E");
+  /* ink — #0D0D0D is --obsidian. For type that fills with ink rather
+     than with the elixir: Origin's reading pours (§origin). */
+  --wave-ink:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230D0D0D'/%3E%3C/svg%3E");
 }
 
 @keyframes liq-turn{to{rotate:360deg}}
@@ -2432,6 +2538,10 @@ img,svg{display:block;max-width:100%}
   .home:hover .vessel__liquid{animation-play-state:running}
 }
 .home:focus-visible .mark{--vessel-level:1.12}
+/* phones have no hover to reveal it with: the carbon fibre rises while
+   the nav sheet is open and drains when it closes (nav.js) */
+.masthead.is-menu-open .mark{--vessel-level:1.12}
+.masthead.is-menu-open .vessel__liquid{animation-play-state:running}
 
 
 /* ═══ origin ═════════════════════════════════════════════════
@@ -2454,68 +2564,10 @@ img,svg{display:block;max-width:100%}
 }
 .rollcall__word.is-on::after{animation:liq-drift-b 1.4s linear 3}
 
-/* THE COMMITMENTS FILL. Hollow numerals — the promise, not yet kept —
-   fill to half as each one comes into view and to full under the
-   cursor. The outline is inherited by the liquid copy, so the numeral
-   keeps its edge over the fill. */
-.fact__n .liq-type{--liq-lh:.8em}
-.facts [data-reveal].is-in .liq-type{
-  --liq-level:.5;transition:--liq-level 1.8s var(--ease-out) .35s;
-}
-@media (hover:hover){
-  .facts [data-reveal].is-in:hover .liq-type{--liq-level:1;transition:--liq-level .8s var(--ease-out)}
-  .facts [data-reveal].is-in:hover .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
-}
-@media (hover:none){ .facts .liq-type{--liq-level:.5} }
-
-/* WHAT WE MAKE FLOODS. The four things the company makes are rows a
-   pale substance rises through on hover, and the name takes the
-   elixir (5.8:1 on Zinc Wash). The refusals list below is left still,
-   on purpose — it reads like a specification, and not everything on a
-   page should move. */
-/* NOT the turning blob. A row is ~60px tall against a 1,600px square,
-   so mid-rotation a straight edge of the square crossed the row as a
-   slanted wedge — it read as a skewed shape, not liquid (captured).
-   The blob only works in containers near square, like a button or a
-   card. A thin row gets the liquid-type construction instead: a pale
-   body with the wave tile on its top edge, rising straight up. */
-.refuse--make li{position:relative;isolation:isolate;overflow:hidden}
-.refuse--make li::before{
-  content:"";position:absolute;z-index:-1;left:0;right:0;top:0;
-  height:calc(100% + .7rem);
-  background:
-    var(--wave-pale) 0 0 / 5rem .7rem repeat-x,
-    linear-gradient(rgba(11,107,92,.1),rgba(11,107,92,.1)) 0 .7rem / 100% calc(100% - .7rem) no-repeat;
-  transform:translateY(102%);
-  transition:transform .8s var(--ease-out);
-  pointer-events:none;
-}
-.refuse--make .refuse__k{transition:color .4s ease .15s}
-@keyframes row-drift{to{background-position:5rem 0,0 .7rem}}
-@media (hover:hover){
-  .refuse--make li:hover::before{transform:translateY(-.7rem);animation:row-drift 1.8s linear infinite}
-  .refuse--make li:hover .refuse__k{color:var(--elixir)}
-}
-
-/* TWO GRAMS. The one place zinc is explained gets a vessel that holds
-   almost nothing — a sliver, poured once as the section arrives, and
-   it does not fill on hover. The point is how little it is. */
-.origin-name{
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.5fr);
-  gap:var(--space-xl);align-items:center;
-}
-.two-grams{margin:0;display:grid;justify-items:center;gap:var(--space-sm)}
-.two-grams .vessel{
-  width:min(100%,11rem);height:auto;color:var(--zinc-silver);
-  --vessel-c:var(--flame-teal);--vessel-level:0;
-}
-.two-grams.is-in .vessel{--vessel-level:.08}
-.two-grams .vessel__level{transition-duration:2.4s;transition-delay:.5s}
-.two-grams figcaption{
-  font-family:"Space Mono",ui-monospace,monospace;
-  font-size:.68rem;letter-spacing:.12em;color:var(--muted);
-}
-@media (max-width:860px){ .origin-name{grid-template-columns:1fr} }
+/* The commitments' numerals, the "what we make" row flood and the
+   two-grams vial lived here. The 16 Sep rework replaced all three
+   (the batch line, the make index, the element tile — see "reading
+   pours" below), so their rules went with them. */
 
 /* THE PHRASE THE LINE TURNS ON FILLS. In the pull quote ("stopped
    watching.") it pours full after the lines have risen; in the closing
@@ -2530,6 +2582,346 @@ img,svg{display:block;max-width:100%}
   .band--divider .t-divider.is-in:hover .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
 }
 @media (hover:none){ .band--divider .t-divider .liq-type{--liq-level:.5} }
+
+
+/* ── reading pours ───────────────────────────────────────────
+   16 Sep rework. Below the hero, Origin was five sections built the
+   same way — a heading and small grey paragraphs, the right half of
+   the page empty — so the page read as a document after a poster.
+   Every word of the copy is kept; each section now has a shape of
+   its own, and they all move by ONE rule:
+
+   THE READER'S SCROLL IS THE POUR. site.js (scrub) writes each
+   [data-scrub] element's progress as --p, 0 to 1, and CSS decides
+   what pours. Nothing plays by itself, nothing loops: scroll back
+   and it drains. The same substances as everywhere else — ink on
+   light, Flame Teal on dark, the elixir for the one phrase a section
+   turns on — and the same wave-topped body, clipped to the type.
+
+     .manifesto   the thesis, pinned; the words fill with ink as read
+     .make        the four things, hollow and huge; each pours full
+     .name        the element tile; what zinc runs pours in, drains
+                  when the copy says what happens without it
+     .shout       the gesture: UNLEASH collapses — narrows, thins,
+                  drains — while the quiet line fills
+     .refuse--struck  each refusal is struck through as it is reached
+     .batch       the batch line: the elixir runs, each commitment fills
+
+   Firefox 156 has no animation-timeline, which is why this is a
+   script writing one number rather than scroll-driven CSS.
+   Without JS, or with reduced motion, --p is 1 (or unset, which
+   falls back to 1): every section shows its finished state and
+   nothing pins — the tall pinned heights only apply under .has-scrub,
+   which the script adds.                                           */
+
+/* THE POUR FILL. The type paints three layers clipped to its glyphs:
+   a wave tile riding the surface, the substance (--ink) below it,
+   the dry state (--dry) above. --f is the level. No copy of the word
+   laid over it (the ::after of .liq-type), so a screen reader hears
+   each word once. The wave collapses to nothing at an empty level,
+   so a dry word shows no stray crest along its foot. The crest is
+   sized per component (--sw-w, --sw-h): at .15em a 220px "Zn" grew a
+   33px wave, and its two-gram sliver read as a third of the glyph. */
+.manifesto__text .pw,
+.make__name,
+.element__sym,
+.name__run,
+.shout__word,
+.shout__quiet,
+.batch__num{
+  --f:1;
+  color:transparent;-webkit-text-fill-color:transparent;
+  background-image:
+    var(--sw),
+    linear-gradient(var(--ink),var(--ink)),
+    linear-gradient(var(--dry),var(--dry));
+  background-repeat:repeat-x,no-repeat,no-repeat;
+  background-size:
+    var(--sw-w,.9em) calc(var(--sw-h,.15em) * min(1, var(--f) * 40)),
+    100% calc(var(--f) * 100%),
+    100% 100%;
+  background-position:
+    0 calc((1 - var(--f)) * 100% - var(--f) * var(--sw-h,.15em) + .02em),
+    0 100%,
+    0 0;
+  -webkit-background-clip:text;background-clip:text;
+}
+
+/* THE THESIS. Pinned for 250vh; about three words pour at a time, in
+   reading order. Dry words are the zinc between silver and graphite —
+   legible at this size, plainly not yet read. The quiet line is not
+   poured: it is quiet, so it just arrives. */
+.manifesto{position:relative;background:var(--zinc-wash)}
+.manifesto__stage{padding:var(--space-xl) 0}
+.has-scrub .manifesto{height:250vh;height:250svh}
+.has-scrub .manifesto__stage{
+  position:sticky;top:var(--mast-h,0px);
+  height:calc(100vh - var(--mast-h,0px));height:calc(100svh - var(--mast-h,0px));
+  display:grid;align-content:center;padding:0;
+}
+.manifesto__text{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
+  font-size:clamp(2.3rem,.9rem + 3.9vw,5.2rem);
+  line-height:1.06;letter-spacing:-.022em;
+  max-width:22ch;
+  --n:1;
+}
+.manifesto__text .pw{
+  display:inline-block;
+  --ink:var(--obsidian);
+  --dry:color-mix(in srgb,var(--graphite) 55%,var(--zinc-wash));
+  --sw:var(--wave-ink);
+  --f:clamp(0, (var(--p,1) * (var(--n) + 6) - var(--i) - 3) / 3, 1);
+}
+.manifesto__quiet{
+  --r:clamp(0, (var(--p,1) - .84) * 8, 1);
+  margin-top:var(--space-lg);max-width:44ch;font-size:var(--step-1);color:var(--graphite);
+  opacity:var(--r);transform:translateY(calc((1 - var(--r)) * .8em));
+}
+
+/* WHAT WE MAKE. The four things are set hollow at display size — the
+   marquee's outline — and each pours full with ink as it rises past
+   the lower part of the screen. The index numbers are the Wear
+   viewer's code register. "underneath." takes the elixir once the
+   closing line has risen, like "stopped watching." in the quote. */
+.make__list{margin-top:var(--space-lg);border-top:1px solid rgba(110,118,121,.22)}
+.make__row{
+  display:grid;grid-template-columns:3.5rem minmax(0,1.3fr) minmax(0,1fr);
+  align-items:baseline;gap:var(--space-md);
+  padding:var(--space-md) 0;border-bottom:1px solid rgba(110,118,121,.22);
+}
+.make__n{
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.72rem;letter-spacing:.12em;color:var(--graphite);
+}
+.make__name{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 70,"wght" 900;
+  font-size:clamp(2.8rem,1rem + 8vw,9rem);
+  line-height:.92;letter-spacing:-.03em;
+  padding-bottom:.04em;
+  -webkit-text-stroke:1.5px var(--graphite);
+  --ink:var(--obsidian);--dry:transparent;--sw:var(--wave-ink);
+  --sw-w:.6em;--sw-h:.1em;
+  --f:clamp(0, var(--p,1) * 1.1, 1);
+}
+.make__line{font-size:var(--step-2);line-height:1.2;max-width:22ch;text-wrap:balance}
+.make__close{max-width:26ch;margin-top:var(--space-xl)}
+.make__close .liq-type{--liq-lh:1.05em}
+.make__close.is-in .liq-type{--liq-level:1;transition:--liq-level 2.2s var(--ease-out) .9s}
+@media (max-width:860px){
+  .make__row{grid-template-columns:2.25rem minmax(0,1fr);row-gap:var(--space-xs)}
+  .make__line{grid-column:2;font-size:var(--step-1)}
+}
+
+/* THE NAME. Zinc as an element tile — the name is not a metaphor, it
+   is a square on the periodic table — and the symbol is a vessel
+   holding its two grams: a teal sliver at the foot of "Zn". What zinc
+   runs is set large and pours teal line by line. When the paragraph
+   about removing it passes, the three lines drain in order and the
+   sliver drains with them ("everything downstream fails, quietly");
+   the last line brings the sliver and the three lines back. The tile
+   rides beside the copy on wide screens, so the drain is watched, not
+   inferred. The drain waits until its paragraph is mid-screen: begun
+   at 80%, it emptied the first line before the last had filled. */
+.name__grid{
+  display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1fr);
+  gap:var(--space-xl);align-items:start;
+}
+.element{
+  margin:0;display:grid;gap:var(--space-sm);
+  position:sticky;top:calc(var(--mast-h,0px) + var(--space-lg));
+}
+.element__tile{
+  aspect-ratio:1;display:grid;
+  grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto;
+  padding:clamp(1rem,2.2vw,1.75rem);
+  border:1px solid rgba(214,221,226,.3);
+  color:var(--zinc-silver);
+}
+.element__num,.element__mass,.element__cap{
+  font-family:"Space Mono",ui-monospace,monospace;letter-spacing:.08em;
+}
+.element__num{grid-area:1 / 1;font-size:clamp(.95rem,1.4vw,1.25rem)}
+.element__sym{
+  grid-area:2 / 1 / 3 / 3;place-self:center;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 78,"wght" 900;
+  font-size:clamp(6rem,3rem + 12vw,15rem);
+  line-height:1;letter-spacing:-.04em;
+  padding:0 .04em;
+  -webkit-text-stroke:1.5px var(--zinc-silver);
+  --ink:var(--flame-teal);--dry:transparent;--sw:var(--wave-teal);
+  --sw-w:.35em;--sw-h:.045em;
+  /* 2 g: the sliver is about a tenth of the letters. MEASURED at
+     220px: the line box is 1em and the baseline sits .165em above its
+     foot (font ascent .88em, descent .21em, half-leading -.04em); the
+     cap height is .69em, so .075em is 11% of it. */
+  --foot:.165;
+  --held:clamp(0, var(--p,1) - var(--drain,0) + var(--idea,0), 1);
+  /* the visible part shrinks with what is held, and the whole fill
+     goes to zero when nothing is, so no crest is left at the baseline */
+  --f:calc((var(--foot) + .075 * var(--held)) * min(1, var(--held) * 20));
+}
+.element__word{grid-area:3 / 1;align-self:end;font-variation-settings:"wdth" 82,"wght" 700;font-size:var(--step-1)}
+.element__mass{grid-area:3 / 2;align-self:end;font-size:.8rem;color:var(--muted)}
+.element__cap{font-size:.68rem;letter-spacing:.12em;color:var(--muted)}
+
+.name__lede{margin-top:var(--space-lg);max-width:40ch;font-size:var(--step-1);color:var(--muted)}
+.name__runs-k{
+  margin-top:var(--space-lg);
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+}
+.name__runs{margin-top:var(--space-xs);display:grid;gap:.12em}
+.name__run{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
+  font-size:clamp(2rem,1rem + 3.4vw,4.2rem);
+  line-height:1.04;letter-spacing:-.025em;
+  --ink:var(--flame-teal);--dry:var(--muted);--sw:var(--wave-teal);
+  --f:min(clamp(0, var(--p,1) * 1.15, 1), calc(1 - clamp(0, var(--drain,0) * 3 - var(--k,0), 1) + var(--idea,0)));
+}
+.name__vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.name__fail{margin-top:var(--space-lg);max-width:40ch;font-size:var(--step-1)}
+.name__idea{margin-top:var(--space-md);max-width:40ch;font-size:var(--step-1);color:var(--muted)}
+/* a held beat under the last line on wide screens: the tile rides for
+   as long as the copy column lasts, and without it the tile had already
+   left when the sliver came back */
+@media (min-width:861px){ .name__copy{padding-bottom:30vh} }
+@media (max-width:860px){
+  .name__grid{grid-template-columns:1fr;gap:var(--space-lg)}
+  .element{position:static;max-width:17rem}
+}
+
+/* THE GESTURE. Pinned for 230vh. UNLEASH starts as the category
+   sells it — widest, heaviest, full of ink — and as the reader
+   scrolls it collapses: width 125 to 62, weight 900 to 200, the ink
+   draining out until only an outline is left. The paragraph about the
+   shout greys with it; the paragraph about small correct things
+   rises in after, and that phrase fills with the elixir.
+     --q  the collapse     p .10 to .55
+     --r  the quiet line   p .55 to .86                              */
+.shout{
+  position:relative;background:var(--zinc-wash);overflow:clip;
+  --q:clamp(0, (var(--p,1) - .1) * 2.2, 1);
+  --r:clamp(0, (var(--p,1) - .55) * 3.2, 1);
+}
+.shout__stage{padding:var(--space-xl) 0}
+.has-scrub .shout{height:230vh;height:230svh}
+.has-scrub .shout__stage{
+  position:sticky;top:var(--mast-h,0px);
+  height:calc(100vh - var(--mast-h,0px));height:calc(100svh - var(--mast-h,0px));
+  display:grid;align-content:center;padding:0;overflow:hidden;
+}
+.shout__inner{display:grid;grid-template-columns:minmax(0,1fr);container-type:inline-size}
+/* sized to the column, not the viewport: at full width and weight the
+   word is 6.35em wide, so 15cqi fills 95% of it at any size. Sized in
+   vw it stretched the grid track — the copy beside it ran to 7px from
+   the edge of a 390px phone, and at 1920 the word left the page
+   column by 370px. */
+.shout__word{
+  font-family:var(--face-display);
+  font-size:min(15cqi,15rem);
+  line-height:.9;white-space:nowrap;
+  font-variation-settings:"wdth" calc(125 - 63 * var(--q)),"wght" calc(900 - 700 * var(--q));
+  letter-spacing:calc(-.02em + .012em * var(--q));
+  margin:var(--space-sm) 0 var(--space-md);
+  -webkit-text-stroke:calc(1.5px * var(--q)) var(--graphite);
+  --ink:var(--obsidian);--dry:transparent;--sw:var(--wave-ink);
+  --sw-w:.5em;--sw-h:.07em;
+  --f:calc(1 - var(--q));
+}
+.shout__copy{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--space-lg);max-width:64rem;font-size:var(--step-1);
+}
+.shout__a{color:color-mix(in srgb,var(--obsidian) calc((1 - var(--q)) * 100%),var(--graphite))}
+.shout__b{opacity:var(--r);transform:translateY(calc((1 - var(--r)) * 1.2em))}
+.shout__quiet{
+  font-variation-settings:"wdth" 95,"wght" 700;
+  --ink:var(--elixir);--dry:var(--obsidian);--sw:var(--wave-elixir);
+  --f:clamp(0, (var(--p,1) - .8) * 6, 1);
+}
+@media (max-width:860px){
+  .shout__copy{grid-template-columns:1fr;gap:var(--space-md);font-size:var(--step-0)}
+}
+
+/* SHORT SCREENS DO NOT PIN. A pinned stage only has the screen's
+   height to work with; on a phone held sideways (390px tall, 72px of
+   it header) the thesis ran out of stage and was cut off. Below 34rem
+   of height nothing sticks — the sections sit in the page at their
+   own height and the pours still run as they scroll past. */
+@media (max-height:34rem){
+  .has-scrub .manifesto,.has-scrub .shout{height:auto}
+  .has-scrub .manifesto__stage,.has-scrub .shout__stage{
+    position:static;height:auto;display:block;padding:var(--space-xl) 0;
+  }
+}
+
+/* WHAT WE REFUSE, STRUCK. Each refusal is set large and struck through
+   as it rises past the lower part of the screen, and dims behind the
+   strike. The strike is a background on the inline name, so on a name
+   that wraps it runs through the lines in reading order. The reason
+   beside it stays at full strength: it is what we say instead. */
+.refuse--struck li{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--space-lg);align-items:baseline;padding:var(--space-lg) 0;
+}
+.refuse--struck .refuse__k{
+  --s:clamp(0, (var(--p,1) - .05) * 1.6, 1);
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 82,"wght" 800;
+  font-size:var(--step-3);line-height:1.05;letter-spacing:-.025em;
+  color:color-mix(in srgb,var(--obsidian) calc((1 - .55 * var(--s)) * 100%),var(--zinc-wash));
+}
+.strike{
+  background:linear-gradient(var(--obsidian),var(--obsidian)) 0 60% / calc(var(--s,1) * 100%) .085em no-repeat;
+}
+.refuse--struck .prose{font-size:var(--step-1);max-width:34ch}
+@media (max-width:860px){
+  .refuse--struck li{grid-template-columns:1fr;gap:var(--space-sm)}
+}
+
+/* THE BATCH LINE. The three commitments are stations on a line. The
+   elixir runs along it as the reader scrolls; when it reaches a
+   station, the station's dot fills and its hollow numeral pours
+   full. Across on wide screens (stations at 0, .5 and 1 of the run),
+   down on phones (0, .33, .67). Then the page's one ask before the
+   end, because the proof is where the decision gets made. */
+.batch{position:relative;margin-top:var(--space-xl);--step:.5}
+.batch__rail{
+  position:absolute;top:.55rem;height:2px;left:0;
+  right:calc((100% - 2 * var(--space-lg)) / 3);
+  background:rgba(110,118,121,.25);
+}
+.batch__flow{
+  position:absolute;left:0;top:0;bottom:0;
+  width:calc(var(--p,1) * 100%);
+  background:var(--elixir);
+}
+.batch__stops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-lg)}
+.batch__stop{
+  position:relative;padding-top:var(--space-lg);
+  --lv:clamp(0, (var(--p,1) - var(--k) * var(--step)) * 8 + .15, 1);
+}
+.batch__dot{
+  position:absolute;left:0;top:calc(.55rem - 6px);
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--elixir) calc(var(--lv) * 100%),rgba(110,118,121,.55));
+  background:color-mix(in srgb,var(--elixir) calc(var(--lv) * 100%),var(--zinc-wash));
+}
+.batch__num{--ink:var(--elixir);--dry:transparent;--sw:var(--wave-elixir);--f:var(--lv)}
+.batch .fact__t{max-width:28ch}
+.batch__action{margin-top:var(--space-xl)}
+@media (max-width:860px){
+  .batch{--step:.333}
+  .batch__rail{left:6px;right:auto;top:.55rem;bottom:0;width:2px;height:auto}
+  .batch__flow{width:100%;height:calc(var(--p,1) * 100%);bottom:auto}
+  .batch__stops{grid-template-columns:1fr}
+  .batch__stop{padding:0 0 0 2.5rem}
+}
 
 
 /* ═══ foot ═══════════════════════════════════════════════════
@@ -2552,3 +2944,55 @@ img,svg{display:block;max-width:100%}
   background:var(--flame-teal);margin-right:.45rem;vertical-align:.12em;
 }
 .foot__nav a[aria-current="page"]::after{display:none}
+
+
+/* ═══ touch ══════════════════════════════════════════════════
+   No cursor. On a device that cannot hover, site.js (touch) gives
+   .is-pointed to whichever of these crosses the middle of the screen,
+   and it takes its hover state — the reader's scroll stands in for
+   the cursor (docs/tokens.md). Before this a phone saw half-filled
+   vessels, and never saw a door word change face, a kit card flood
+   or an Elements word fill. Leaving the middle hands the state back.
+
+   Also here: buttons fill while they are pressed, and Wear's next
+   action shows where it goes without needing a hover to say so.    */
+@media (hover:none){
+  /* homepage drop — the piece lifts, fills and closes its status pill */
+  .piece.is-pointed .piece__frame{transform:translateY(-.6rem);box-shadow:var(--lift-2)}
+  .piece.is-pointed .vessel{--vessel-level:.94}
+  .piece.is-pointed .vessel__liquid{animation-play-state:running}
+  .piece.is-pointed .piece__state{color:var(--zinc-wash)}
+  .piece.is-pointed .piece__pill{
+    opacity:1;transform:scale(1);width:100%;
+    transition:transform .3s var(--ease-out) .04s,opacity .2s ease .04s,width .46s var(--ease-out) .24s;
+  }
+
+  /* homepage doors — the word changes into its own face */
+  .door.is-pointed .door__face--base{opacity:0;transform:scale(1.06,.9)}
+  .door.is-pointed .door__face--alt{opacity:1;transform:scale(1)}
+
+  /* homepage kit — the card floods and its specs come up */
+  .band--dark .kit__item.is-pointed::before{top:-18%;animation-play-state:running}
+  .band--dark .kit__item.is-pointed .kit__code,
+  .band--dark .kit__item.is-pointed .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
+  .kit__item.is-pointed .kit__fig{transform:translateY(-1.4rem) scale(1.03)}
+  .kit__item.is-pointed .kit__specs{opacity:1;transform:none}
+
+  /* Elements — the door word fills */
+  .door-band.is-pointed .liq-type{--liq-level:1;transition:--liq-level .9s var(--ease-out)}
+  .door-band.is-pointed .liq-type::after{animation:liq-drift-b 1.1s linear infinite}
+
+  /* Fuel — the tub pours */
+  .fuel-tub.is-pointed .vessel{--vessel-level:.9}
+  .fuel-tub.is-pointed .vessel__liquid{animation-play-state:running}
+
+  /* Wear — the next action is a pill with its label, always */
+  .vpanel__next{border-radius:var(--radius-pill)}
+  .vpanel__next .vpanel__next-slot{max-width:14rem}
+  .vpanel__next .vpanel__next-word{opacity:1;transform:none}
+
+  /* buttons fill while pressed */
+  .btn:active::before{top:-46%;animation-play-state:running;transition-duration:.35s}
+  .band--dark .btn:active{color:var(--obsidian);transition-delay:0s}
+  .band--dark .btn--secondary:active{color:var(--zinc-wash)}
+}

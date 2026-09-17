@@ -109,10 +109,10 @@ This is the single source of truth for the design system. It defines:
 - reveal/scroll animation behavior
 
 ### `assets/js/nav.js`
-Handles the interactive navigation capsule, hover/focus behavior, and current-page state for the primary nav.
+Handles the interactive navigation capsule, hover/focus behavior, and current-page state for the primary nav — and below 861px builds the phone nav (a pill that opens the nav's dot into a sheet of every page).
 
 ### `assets/js/site.js`
-Everything else that responds to the reader: the page-load settle, scroll reveals, the doors hover/focus controller, the runway scroll track, and the marquee.
+Everything else that responds to the reader: the page-load settle, scroll reveals, the sticky masthead edge, the Origin rollcall, the doors hover/focus controller, the homepage pour, the marquee, the Wear viewer and its views, scrub — the scroll-progress controller behind Origin's reading pours — and touch, which gives the thing in the middle of a phone's screen its hover state (both documented in `styleguide.html`).
 
 ### `dotmark.js`
 The interactive ZINSTIM wordmark that closes each page. A canvas particle field that reads the letterforms as pixels and repels from the cursor. It only animates while on screen, to save battery.
