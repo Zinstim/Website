@@ -204,6 +204,276 @@
 @view-transition { navigation: auto; }
 
 
+/* ═══ surfaces ═══════════════════════════════════════════════
+   Deep Carbon, decided 17 Sep. A surface sets tokens, components
+   read them. Night is the brand, Day is the proof, and nesting
+   works: a .day inside a .night gets the light values back.
+   Reasons and measurements in docs/brand-book.html §05.        */
+
+:root{
+  /* the mark's own materials, measured off the artwork and the lid */
+  --crimson:      #AE4047;   /* where you act, on Night              */
+  --crimson-lit:  #F29BA1;   /* the fill that arrives under a cursor */
+  --crimson-type: #E87A82;   /* display type only — 7:1 on obsidian  */
+  --oxblood:      #671E24;   /* the cut's trailing band              */
+  --lid-silver:   #80878D;   /* the cut's leading band, off the lid  */
+
+  /* Day — the proof surface. Today's values, unchanged. */
+  --surface:           var(--zinc-wash);
+  --ink:               var(--obsidian);
+  --ink-2:             var(--graphite);
+  --rule-c:            var(--zinc-silver);
+  --action:            var(--obsidian);
+  --action-label:      var(--zinc-wash);
+  --action-fill:       var(--elixir);
+  --action-fill-label: var(--zinc-wash);
+  --live:              var(--elixir);
+  --type-accent:       var(--elixir);
+  --bloom:             none;
+}
+
+.night,.band--dark{
+  --surface:           var(--obsidian);
+  --ink:               var(--zinc-wash);
+  --ink-2:             var(--muted);
+  --rule-c:            rgba(233,236,238,.16);
+  --action:            var(--crimson);
+  --action-label:      var(--zinc-wash);
+  --action-fill:       var(--crimson-lit);
+  --action-fill-label: var(--obsidian);
+  --live:              var(--flame-teal);
+  --type-accent:       var(--crimson-type);
+  --bloom:
+    radial-gradient(42% 58% at 16% 42%,rgba(174,64,71,.42),rgba(174,64,71,0) 70%),
+    radial-gradient(28% 40% at 92% 92%,rgba(0,224,184,.10),rgba(0,224,184,0) 70%);
+}
+.day{
+  --surface:var(--zinc-wash);--ink:var(--obsidian);--ink-2:var(--graphite);
+  --rule-c:var(--zinc-silver);--action:var(--obsidian);--action-label:var(--zinc-wash);
+  --action-fill:var(--elixir);--action-fill-label:var(--zinc-wash);
+  --live:var(--elixir);--type-accent:var(--elixir);--bloom:none;
+}
+.night,.day{background:var(--surface);color:var(--ink)}
+
+/* ── the cut ──────────────────────────────────────────────────
+   One diagonal, two bands: Lid Silver leading, Oxblood behind. It
+   runs off both edges, because it is a section of something larger
+   rather than a shape sitting on the page. One set per page, never
+   across the text column, always behind everything.
+
+   The bloom is the one place light may glow on the dark. Surfaces
+   still get no gradient fills.                                  */
+
+.has-cut{position:relative;isolation:isolate}
+.has-cut .cut{
+  position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    linear-gradient(118deg,
+      transparent 0 58%,
+      var(--lid-silver) 58% 64%,
+      transparent 64% 67%,
+      var(--oxblood) 67% 70%,
+      transparent 70%);
+}
+.has-cut .cut--bloom{background:var(--bloom)}
+.has-cut .shell,.has-cut .shell--full,.above{position:relative;z-index:1}
+
+/* a phone is too narrow for two bands and a text column: one band,
+   pushed further out, so nothing sits behind the copy */
+@media (max-width:860px){
+  .has-cut .cut{
+    background:linear-gradient(118deg,
+      transparent 0 66%,
+      var(--lid-silver) 66% 73%,
+      transparent 73% 76%,
+      var(--oxblood) 76% 79%,
+      transparent 79%);
+  }
+}
+
+
+/* ── night chrome ─────────────────────────────────────────────
+   The pieces that paint their own light ground. Everything else
+   already had a dark-context rule from the band system, and those
+   now answer to .night as well.                                 */
+
+.night .masthead{background:var(--surface);color:var(--ink)}
+.night .band--dark{background:transparent}
+.night .pour,.night .manifesto{background:transparent}
+.night .cleave--dark,.night .cleave--light{background:transparent}
+.night .rule{background:var(--rule-c)}
+.night .t-meta,.night .hero__bn{color:var(--ink-2)}
+.night .foot__nav a{color:var(--ink-2)}
+.night .foot__nav a:hover,
+.night .foot__nav a:focus-visible,
+.night .foot__nav a[aria-current="page"]{color:var(--ink)}
+.night :focus-visible{outline-color:var(--flame-teal)}
+.night ::selection{background:var(--zinc-wash);color:var(--obsidian)}
+
+/* The bloom follows the reader. It is fixed to the viewport, not to a
+   section, so the crimson and the teal stay with you down the page —
+   still light on dark, still not a gradient on a surface. */
+/* The bloom belongs to the hero and nowhere else: one glow per page,
+   behind one headline. Every other section is flat Obsidian. */
+
+/* a product plate is the metal the piece sits on, so on Night it is
+   the raised surface, not a light rectangle shouting off the page */
+.night .piece__plate{background:#161618}
+.night .piece__plate .vessel{color:var(--zinc-silver)}
+
+/* ── night corrections ────────────────────────────────────────
+   These components were drawn for a white page: their unfilled
+   state is a pale grey and their fill is Obsidian, which on Night
+   is ink on ink. Each one flips: the fill becomes Zinc Wash, the
+   dry state becomes a faint wash of it, and the wave tile follows.
+   Origin's scroll pours are the whole of this list.             */
+
+/* A pour leaves its word unfilled until the reader reaches it. On
+   white that read as ink waiting to arrive; on Night the same value
+   reads as broken text, so the dry state is lifted to 8:1 — visible
+   first, poured second. Motion may not carry information. */
+.night .manifesto__text .pw{
+  --ink:var(--zinc-wash);--dry:rgba(233,236,238,.55);--sw:var(--wave-pale);
+}
+
+/* the door cards become the raised surface */
+.night .doors__set[data-set="1"] .door-card{background:#161618}
+
+/* ── night corrections, second pass ───────────────────────────
+   Audited in one go rather than found one screenshot at a time:
+   every rule that painted a light ground or Obsidian ink from when
+   the site was Zinc Wash first.                                  */
+
+/* grounds */
+.night .shout{background:transparent}
+.night .kit__item{background:transparent}
+.night .door-card,
+.night .plate,
+.night .doors__set[data-set="0"] .door-card{background:#161618}
+
+/* inks that were Obsidian on a white page */
+.night .fuel-tub .vessel{color:var(--zinc-silver)}
+.night .kit__spec b{color:var(--zinc-wash)}
+.night .field__input:focus{border-color:var(--zinc-wash)}
+.night .band:not(.band--dark) .quote__by b{color:var(--zinc-wash)}
+
+/* ── the viewer on Night ──────────────────────────────────────
+   Its three interactions are the nav's morph at three scales — the
+   tab's dot opens into a pill, the ground opens out of a circle into
+   a block, the action opens from a square into a pill — and all three
+   were drawn DARKER than the page so they would stand off white. On
+   Obsidian that is ink on ink, and every one of them ran invisibly:
+   the pill and the square were Obsidian on Obsidian, and the block had
+   been made transparent. The animations were all still playing; there
+   was nothing to see them by. So they invert the way the nav's morph
+   does on Night, and for the same reason — WHATEVER YOU HAVE CHOSEN,
+   AND WHATEVER YOU CAN PRESS, IS ZINC WASH:
+
+     selected tab pill     Obsidian on Zinc Wash          16.4:1
+     the action square     Zinc Wash against the page     16.4:1
+                           Zinc Wash against the block     5.4:1
+     selected view plate   the drawing in ink on Wash     16.4:1
+     the block             Elixir against the page         3.0:1
+     small text            Muted, was Graphite    5.7:1, was 4.2:1
+
+   The block is the substance, not a selection, so it is the one thing
+   here that does not go white. It is Elixir — the colour the pour's
+   surface is — easing a little toward Elixir Deep with depth, the way
+   the flood does. At 3.0:1 it is a ground you can see; the Elixir Void
+   it was before measured 1.2:1 and read as a dead grey rectangle. */
+.night .vtab{color:var(--muted)}
+.night .vtab:hover{color:var(--zinc-wash)}
+.night .vtab__pill{background:var(--zinc-wash)}
+/* the words go dark only once the pill has grown under them: on the
+   base timing they darkened while the pill was still a circle behind
+   the dot, and for a beat they were dark words on a dark page */
+.night .vtab[aria-selected="true"],
+.night .vtab[aria-selected="true"]:hover{color:var(--obsidian);transition:color .3s ease .3s}
+.night .vtab[aria-selected="true"] .vtab__dot{background:var(--elixir)}
+
+.night .vpanel__block{
+  background:linear-gradient(180deg,var(--elixir),
+    color-mix(in srgb,var(--elixir) 55%,var(--elixir-deep)));
+}
+/* the piece is drawn twice and split at the block's edge: the metal
+   above it, and the brightest value where it stands in the liquid */
+.night .vpanel__art--out{color:var(--zinc-silver)}
+.night .vpanel__art--in{color:var(--zinc-wash)}
+.night .vpanel__num{color:var(--zinc-wash)}
+
+.night .vpanel__next{background:var(--zinc-wash);color:var(--obsidian)}
+
+/* the views: an edge you can see at rest, a brighter one under the
+   cursor, and the chosen one turned into a lit plate */
+.night .vview{color:var(--muted)}
+.night .vview__plate{
+  background:#15181A;
+  box-shadow:inset 0 0 0 1px rgba(214,221,226,.16);
+}
+.night .vview__plate svg{color:var(--zinc-silver);opacity:.55}
+@media (hover:hover){
+  .night .vview:hover{color:var(--zinc-wash)}
+  .night .vview:hover .vview__plate{box-shadow:inset 0 0 0 1px rgba(214,221,226,.45)}
+  .night .vview:hover .vview__plate svg{opacity:.9}
+}
+.night .vview[aria-pressed="true"]{color:var(--zinc-wash)}
+.night .vview[aria-pressed="true"] .vview__plate{background:var(--zinc-wash);box-shadow:none}
+.night .vview[aria-pressed="true"] .vview__plate svg{color:var(--obsidian);opacity:1}
+.night .vview[aria-pressed="true"] .vview__dot{background:var(--flame-teal);opacity:1}
+
+.night .vpanel__code,.night .vpanel__caption,.night .viewer__stamp{color:var(--muted)}
+.night .make__name,.night .shout__word{
+  -webkit-text-stroke-color:var(--muted);
+  --ink:var(--zinc-wash);--sw:var(--wave-pale);
+}
+.night .shout__a{color:var(--zinc-wash)}
+.night .shout__quiet{--dry:rgba(233,236,238,.18)}
+.night .refuse--struck .refuse__k{
+  color:color-mix(in srgb,var(--zinc-wash) calc((1 - .45 * var(--s)) * 100%),var(--muted));
+}
+.night .strike{background-image:linear-gradient(var(--zinc-wash),var(--zinc-wash))}
+.night .batch__station{background:color-mix(in srgb,var(--elixir) calc(var(--lv) * 100%),#161618)}
+
+/* ── night nav ────────────────────────────────────────────────
+   Dot-to-pill is the nav's whole language, and it was an Obsidian
+   pill on a light bar — on Night that is ink on ink, so the
+   interaction was still running and simply could not be seen.
+   It inverts: the pill becomes the metal, the words inside it turn
+   Obsidian, and the live colour inside the pill steps down from
+   Flame Teal to Elixir, because Flame Teal on Zinc Wash is 1.4:1.
+   The dot on the bar itself stays Flame Teal — 11.4:1 on Obsidian. */
+
+.night .masthead.is-stuck{box-shadow:0 1px 0 rgba(233,236,238,.14)}
+.night .home:hover{background:rgba(233,236,238,.08)}
+.night .morph{background:var(--zinc-wash)}
+.night .rise{color:var(--graphite)}
+.night .rise:hover,.night .rise:focus-visible{color:var(--obsidian)}
+.night .rise:focus-visible{outline-color:var(--obsidian)}
+.night .rise.is-current,.night .rise.is-current:hover{color:var(--elixir)}
+
+/* the phone sheet is already an Obsidian panel, so on Night it needs
+   its edge back or it dissolves into the page */
+.night .navsheet{box-shadow:inset 0 0 0 1px rgba(214,221,226,.22)}
+
+/* the cut needs room to read as a diagonal, not a sliver in a corner */
+.has-cut{min-height:clamp(16rem,32vh,24rem)}
+
+/* A fracture exists to break between two grounds. On an all-night page
+   there is nothing for it to break between, so it stays out of the way
+   and returns only where Night actually meets Day — there it is as
+   crisp as it is on a light page. */
+.night .cleave{display:none}
+.night .day + .cleave,
+.night .cleave:has(+ .day){display:block}
+
+/* and where it does break, it breaks the right way round: into the
+   light band, then back out of it */
+.night .cleave:has(+ .day){background:var(--obsidian)}
+.night .cleave:has(+ .day) path{fill:var(--zinc-wash)}
+.night .day + .cleave{background:var(--zinc-wash)}
+.night .day + .cleave path{fill:var(--obsidian)}
+
+
 /* ═══ base ═══════════════════════════════════════════════════ */
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -316,8 +586,8 @@ img,svg{display:block;max-width:100%}
 .marquee__track span:nth-child(even){
   color:var(--obsidian);-webkit-text-stroke:0;
 }
-.band--dark .marquee__track span:nth-child(even){color:var(--zinc-wash)}
-.band--dark .marquee__track span{-webkit-text-stroke-color:var(--muted)}
+:is(.band--dark,.night) .marquee__track span:nth-child(even){color:var(--zinc-wash)}
+:is(.band--dark,.night) .marquee__track span{-webkit-text-stroke-color:var(--muted)}
 
 
 /* ═══ nav ════════════════════════════════════════════════════ */
@@ -669,6 +939,7 @@ img,svg{display:block;max-width:100%}
 .cleave--elixir path{fill:var(--elixir-void)}
 
 
+
 @media (prefers-reduced-motion:reduce){
   .cleave svg{transform:none !important}
   .ln > span{transform:none !important;opacity:1 !important}
@@ -713,6 +984,7 @@ img,svg{display:block;max-width:100%}
   --wave-pale:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230B6B5C' fill-opacity='.1'/%3E%3C/svg%3E");
   /* ink — #0D0D0D is --obsidian. For type that fills with ink rather
      than with the elixir: Origin's reading pours (§origin). */
+  --wave-crimson:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%23E87A82'/%3E%3C/svg%3E");
   --wave-ink:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V14H0Z' fill='%230D0D0D'/%3E%3C/svg%3E");
 }
 
@@ -740,7 +1012,7 @@ img,svg{display:block;max-width:100%}
   transition:--liq-level .9s var(--ease-out);
 }
 .ln > .liq-type{display:inline-block}
-.band--dark .liq-type{--liq-c:var(--flame-teal);--liq-wave:var(--wave-teal)}
+:is(.band--dark,.night) .liq-type{--liq-c:var(--type-accent);--liq-wave:var(--wave-crimson)}
 
 .liq-type::after{
   content:attr(data-liq);
@@ -1490,7 +1762,7 @@ img,svg{display:block;max-width:100%}
   -webkit-background-clip:text;background-clip:text;
   color:var(--graphite);-webkit-text-fill-color:transparent;
 }
-.band--dark .dotmark{color:var(--muted)}
+:is(.band--dark,.night) .dotmark{color:var(--muted)}
 
 
 /* ═══ lab panel ══════════════════════════════════════════════
@@ -1604,24 +1876,31 @@ img,svg{display:block;max-width:100%}
 .btn:focus-visible::before{top:-46%;animation-play-state:running}
 .btn:active{transform:scale(.985)}
 
-.band--dark .btn{
-  background:transparent;border-color:var(--flame-teal);
-  color:var(--zinc-wash);--liq:var(--flame-teal);
+/* On Night the primary is the mark's crimson with a Zinc Wash label
+   (4.88:1), filling to #F29BA1 as the label turns Obsidian (9.24:1).
+   The halo is the bloom at button scale — light on dark, not a
+   gradient on a surface. Deep Carbon, 17 Sep. */
+.night .btn,:is(.band--dark,.night) .btn{
+  background:var(--action);border-color:var(--action);
+  color:var(--action-label);--liq:var(--action-fill);
+  box-shadow:0 0 0 1px rgba(227,111,120,.35),0 10px 40px -8px rgba(174,64,71,.75);
 }
 @media (hover:hover){
-  .band--dark .btn:hover{color:var(--obsidian);transition-delay:0s,0s,.2s}
+  .night .btn:hover,:is(.band--dark,.night) .btn:hover{color:var(--action-fill-label);transition-delay:0s,0s,.2s}
 }
-.band--dark .btn:focus-visible{color:var(--obsidian)}
+.night .btn:focus-visible,:is(.band--dark,.night) .btn:focus-visible{color:var(--action-fill-label)}
 
 /* secondary: the same vessel, a thinner substance */
 .btn--secondary{background:transparent;color:inherit;border-color:currentColor;
   --liq:var(--zinc-silver)}
-.band--dark .btn--secondary{border-color:rgba(233,236,238,.5);
-  --liq:rgba(233,236,238,.16)}
-@media (hover:hover){
-  .band--dark .btn--secondary:hover{color:var(--zinc-wash)}
+.night .btn--secondary,:is(.band--dark,.night) .btn--secondary{
+  background:transparent;color:var(--ink);border-color:rgba(233,236,238,.5);
+  --liq:rgba(233,236,238,.16);box-shadow:none;
 }
-.band--dark .btn--secondary:focus-visible{color:var(--zinc-wash)}
+@media (hover:hover){
+  .night .btn--secondary:hover,:is(.band--dark,.night) .btn--secondary:hover{color:var(--zinc-wash)}
+}
+.night .btn--secondary:focus-visible,:is(.band--dark,.night) .btn--secondary:focus-visible{color:var(--zinc-wash)}
 
 /* ghost: a link that happens to sit in a row of buttons — no vessel */
 .btn--ghost{background:transparent;color:inherit;border-color:transparent;
@@ -1659,7 +1938,7 @@ img,svg{display:block;max-width:100%}
 
 .field{display:grid;gap:.4rem;max-width:26rem;text-align:left}
 .field__label{font-size:var(--step--1);color:var(--graphite)}
-.band--dark .field__label{color:var(--muted)}
+:is(.band--dark,.night) .field__label{color:var(--muted)}
 
 .field__input{
   width:100%;font:inherit;color:inherit;
@@ -1669,18 +1948,18 @@ img,svg{display:block;max-width:100%}
   padding:.7rem .9rem;
   transition:border-color var(--dur-base) ease;
 }
-.band--dark .field__input{border-color:rgba(214,221,226,.28)}
+:is(.band--dark,.night) .field__input{border-color:rgba(214,221,226,.28)}
 .field__input::placeholder{color:var(--graphite);opacity:.7}
 .field__input:focus{outline:0;border-color:var(--obsidian)}
-.band--dark .field__input:focus{border-color:var(--flame-teal)}
+:is(.band--dark,.night) .field__input:focus{border-color:var(--flame-teal)}
 
 .field__help{font-size:var(--step--1);color:var(--graphite)}
-.band--dark .field__help{color:var(--muted)}
+:is(.band--dark,.night) .field__help{color:var(--muted)}
 
 .field--error .field__input{border-color:var(--fail)}
 .field--error .field__help{color:var(--fail)}
-.band--dark .field--error .field__input{border-color:var(--fail-lit)}
-.band--dark .field--error .field__help{color:var(--fail-lit)}
+:is(.band--dark,.night) .field--error .field__input{border-color:var(--fail-lit)}
+:is(.band--dark,.night) .field--error .field__help{color:var(--fail-lit)}
 
 .field__input:disabled{opacity:.5;cursor:not-allowed}
 
@@ -1752,6 +2031,7 @@ img,svg{display:block;max-width:100%}
 /* the only teal on the page, and it sits on obsidian, which is
    the only surface teal is allowed on */
 .rollcall__star{color:var(--flame-teal)}
+.night .rollcall__star{color:var(--type-accent)}
 
 .rollcall__note{
   margin-top:var(--space-md);
@@ -1840,7 +2120,7 @@ img,svg{display:block;max-width:100%}
   font-variation-settings:"wdth" 70,"wght" 900;
   font-size:var(--step-4);line-height:.8;
   color:transparent;-webkit-text-stroke:1.5px var(--graphite)}
-.band--dark .fact__n{-webkit-text-stroke-color:var(--muted)}
+:is(.band--dark,.night) .fact__n{-webkit-text-stroke-color:var(--muted)}
 .fact__t{margin-top:var(--space-sm);max-width:26ch}
 
 
@@ -1854,8 +2134,8 @@ img,svg{display:block;max-width:100%}
 .refuse li:last-child{border-bottom:1px solid rgba(110,118,121,.22)}
 .refuse__k{flex:0 0 10rem;
   font-variation-settings:"wdth" 82,"wght" 800;letter-spacing:-.01em}
-.band--dark .refuse li{border-top-color:rgba(214,221,226,.16)}
-.band--dark .refuse li:last-child{border-bottom-color:rgba(214,221,226,.16)}
+:is(.band--dark,.night) .refuse li{border-top-color:rgba(214,221,226,.16)}
+:is(.band--dark,.night) .refuse li:last-child{border-bottom-color:rgba(214,221,226,.16)}
 
 
 /* ═══ pour ═══════════════════════════════════════════════════
@@ -1911,11 +2191,18 @@ img,svg{display:block;max-width:100%}
   isolation:isolate;
 }
 
+/* Four layers, back to front: stream, jar, flood, claim.
+   The FLOOD is in front of the vessel — behind it, the vessel sat on
+   top of the rising flood like a bottle floating on a surface; in
+   front, the flood swallows it, which is what the reference does.
+   The STREAM is behind both, which is what hides its two ends: the
+   jar covers where it starts and the flood covers where it goes in. */
+.pour__jet{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;display:block;pointer-events:none;
+}
 .pour__liquid{
-  /* IN FRONT of the vessel. Behind it, the vessel sat on top of the
-     rising flood like a bottle floating on a surface; in front, the
-     flood swallows it, which is what the reference does. */
-  position:absolute;inset:0;z-index:1;
+  position:absolute;inset:0;z-index:2;
   width:100%;height:100%;display:block;
 }
 /* the stream is thin, so it is all surface: the light end of the
@@ -1934,7 +2221,7 @@ img,svg{display:block;max-width:100%}
    pose — how far in, how far tipped — and reads the mouth back off
    .pour__mouth so the stream always leaves from the real lip. */
 .pour__vessel{
-  position:absolute;z-index:0;
+  position:absolute;z-index:1;
   left:clamp(.5rem,4vw,6rem);
   top:clamp(1.25rem,8vh,6rem);
   /* the reference's bottle takes about a third of the frame; at 19vw
@@ -1948,9 +2235,23 @@ img,svg{display:block;max-width:100%}
   will-change:transform;
 }
 .pour__vessel svg{display:block;width:100%;height:auto;overflow:visible}
-.pour__body{fill:var(--obsidian)}
-.pour__band{fill:var(--zinc-silver)}
-.pour__mouth{position:absolute;left:96.43%;top:50%;width:0;height:0}
+/* The jar stays the jar on both grounds — black body, silver collar,
+   the product as it actually is. What changes is which of the two is
+   drawn solid and which is drawn in line, because a solid black tub
+   disappears on Obsidian and a silver collar disappears on Zinc Wash.
+   Outlining the dark one is the same move wear.html makes with the
+   tee, so the two pages draw product the same way. */
+.pour__body{fill:var(--obsidian);stroke:none}
+.pour__band{fill:var(--zinc-silver);stroke:var(--obsidian);stroke-width:5;stroke-linejoin:miter}
+.night .pour__body{fill:var(--obsidian);stroke:var(--zinc-silver);stroke-width:5;stroke-linejoin:miter}
+.night .pour__band{fill:var(--zinc-silver);stroke:none}
+/* chips thrown off where the column lands. Same family as the flood
+   so they are the substance, not sparks. */
+.pour__shards{fill:var(--elixir-lit)}
+/* inside the collar, 20 units short of its face at x=260 of 270:
+   the stream's source is behind the metal, so what the reader sees
+   is liquid coming out from under the lip, never the start of a path */
+.pour__mouth{position:absolute;left:88.9%;top:50%;width:0;height:0}
 
 /* ── the claim ───────────────────────────────────────────────
    --c is how much of the claim the liquid currently covers, 0 to 1,
@@ -1958,24 +2259,70 @@ img,svg{display:block;max-width:100%}
    sinks back if the liquid drains — it is IN the liquid, so without
    the liquid there is nothing to see it by. */
 .pour__content{
-  position:absolute;inset:0;z-index:2;
+  position:absolute;inset:0;z-index:3;
   display:grid;align-content:center;
   pointer-events:none;
 }
+/* THE WATERLINE DECIDES, not the page.
+   Black or white is the wrong question: the claim crosses two grounds
+   in one shot, so one colour has to be wrong in one of them. Measured
+   against every ground the shot passes through —
+
+     ground               Obsidian   Zinc Wash
+     Zinc Wash page         16.4 :1     1.0 :1
+     Obsidian page           1.0 :1    16.4 :1
+     elixir, at the surface  3.0 :1     5.4 :1
+     elixir-deep, the body   1.9 :1     8.6 :1
+     elixir-void, at depth   1.2 :1    13.3 :1
+
+   — black drowns as the liquid deepens (1.2:1 at depth) and white
+   strengthens (13.3:1). So above the waterline the type belongs to the
+   page and below it the type belongs to the liquid, and the liquid's
+   type is always Zinc Wash. One rule, both grounds, no special case:
+   on a light page it reads black then turns wash as the flood takes
+   it; on a dark page both halves are wash, so the split is invisible
+   and nothing needs a second answer. --wl is the waterline's height
+   through the claim's own box, written by the controller.
+
+   Flat, with no glow: the reference for this shot is cut paper, and
+   cut paper has no light in it. The liquid reveals the line by
+   covering it, which is the whole point — a bloom around the letters
+   would say the type lit up on its own. */
+/* THE LIQUID BRINGS IT IN, and it does it to the whole line.
+   The version before this stacked a blurred copy over a sharp one and
+   masked them against each other at the waterline. The seam was the
+   problem: blur runs before mask, so cutting a blurred copy at a hard
+   line leaves the smeared tops of the next line standing above the
+   surface, and the claim read as double-struck. One element, blurred
+   by how far the liquid has come — the way the reference does it —
+   and there is no seam to smear.
+
+   What the reference did not have is the floor and the colour. Opacity
+   bottoms out at .5 rather than 0: measured 3.52:1 on Zinc Wash and
+   4.65:1 on Obsidian, both clear of the 3:1 floor type this size sits
+   under, so the line is legible before the liquid arrives instead of
+   being white on white waiting for it. The colour is still cut at the
+   waterline — it costs nothing here and it is what keeps the line
+   right on both grounds. */
 .pour__claim{
-  color:var(--zinc-wash);
-  opacity:var(--c,1);
-  transform:translateY(calc((1 - var(--c,1)) * 1.75rem));
+  color:var(--ink);
+  opacity:calc(.5 + .5 * var(--c,1));
   filter:blur(calc((1 - var(--c,1)) * 6px));
-  transition:text-shadow .9s var(--ease-out);
+  /* 1.75rem, the reference's number, and it does a second job: while
+     the claim is still down there the jar clears its top by 14px. At
+     1.4rem the jar sat on the words. */
+  transform:translateY(calc((1 - var(--c,1)) * 1.75rem));
+}
+@supports ((background-clip:text) or (-webkit-background-clip:text)){
+  .pour__claim{
+    color:transparent;-webkit-text-fill-color:transparent;
+    background-image:linear-gradient(to bottom,
+      var(--ink) 0 calc(var(--wl,1) * 100%),
+      var(--zinc-wash) calc(var(--wl,1) * 100%) 100%);
+    -webkit-background-clip:text;background-clip:text;
+  }
 }
 .pour__line{display:block}
-/* the claim goes wet once it is fully under */
-.pour__claim.is-lit{
-  text-shadow:
-    0 0 28px rgba(91,245,214,.45),
-    0 0 70px rgba(11,107,92,.35);
-}
 
 /* ── without the controller ──────────────────────────────────
    No JS, no liquid shape — so no pin, and a plain elixir ground the
@@ -1986,7 +2333,10 @@ img,svg{display:block;max-width:100%}
   position:relative;top:0;height:auto;min-height:26rem;
   background:var(--elixir-deep);
 }
-.pour:not(.is-live) .pour__vessel{display:none}
+.pour:not(.is-live) .pour__vessel,.pour:not(.is-live) .pour__jet{display:none}
+/* no controller means no waterline, and the claim is standing on the
+   elixir ground rather than on the page — so it is already under */
+.pour:not(.is-live) .pour__claim{--wl:0;--c:1}
 
 /* ── reduced motion ──────────────────────────────────────────
    Movement removed, information kept: no pin and no pour, just the
@@ -1996,7 +2346,8 @@ img,svg{display:block;max-width:100%}
   position:relative;top:0;
   height:min(80vh,44rem);height:min(80svh,44rem);
 }
-.pour.is-still .pour__vessel{display:none}
+.pour.is-still .pour__vessel,.pour.is-still .pour__jet{display:none}
+.pour.is-still .pour__claim{--wl:0;--c:1}
 
 
 /* ═══ doors ══════════════════════════════════════════════════
@@ -2199,7 +2550,7 @@ img,svg{display:block;max-width:100%}
   display:flex;flex-direction:column;min-height:24rem;
   overflow:hidden;
 }
-.band--dark .kit__item{background:var(--obsidian)}
+:is(.band--dark,.night) .kit__item{background:var(--obsidian)}
 
 /* THE CARD FLOODS. A turning rounded square rises through the whole
    card — the single-div liquid fill from the reference. Flat
@@ -2207,7 +2558,7 @@ img,svg{display:block;max-width:100%}
    with it. Small muted type fails on --elixir-deep (~2.9:1), so it
    brightens to Zinc Silver (~8:1) as the flood reaches it. */
 .kit__item{isolation:isolate}
-.band--dark .kit__item::before{
+:is(.band--dark,.night) .kit__item::before{
   content:"";position:absolute;z-index:-1;
   left:50%;top:104%;width:280%;aspect-ratio:1;
   border-radius:43%;
@@ -2218,15 +2569,15 @@ img,svg{display:block;max-width:100%}
   pointer-events:none;
 }
 @media (hover:hover){
-  .band--dark .kit__item:hover::before{top:-18%;animation-play-state:running}
-  .band--dark .kit__item:hover .kit__code,
-  .band--dark .kit__item:hover .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
+  :is(.band--dark,.night) .kit__item:hover::before{top:-18%;animation-play-state:running}
+  :is(.band--dark,.night) .kit__item:hover .kit__code,
+  :is(.band--dark,.night) .kit__item:hover .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
 }
-.band--dark .kit__item:focus-visible::before{top:-18%;animation-play-state:running}
-.band--dark .kit__item:focus-visible .kit__code,
-.band--dark .kit__item:focus-visible .kit__spec{color:var(--zinc-silver)}
+:is(.band--dark,.night) .kit__item:focus-visible::before{top:-18%;animation-play-state:running}
+:is(.band--dark,.night) .kit__item:focus-visible .kit__code,
+:is(.band--dark,.night) .kit__item:focus-visible .kit__spec{color:var(--zinc-silver)}
 @media (prefers-reduced-motion:reduce){
-  .band--dark .kit__item::before{transition:none;animation:none}
+  :is(.band--dark,.night) .kit__item::before{transition:none;animation:none}
 }
 
 .kit__code{
@@ -2234,7 +2585,7 @@ img,svg{display:block;max-width:100%}
   font-size:.7rem;letter-spacing:.14em;
   color:var(--graphite);
 }
-.band--dark .kit__code{color:var(--muted)}
+:is(.band--dark,.night) .kit__code{color:var(--muted)}
 
 .kit__fig{
   flex:1;display:grid;place-items:center;
@@ -2268,9 +2619,9 @@ img,svg{display:block;max-width:100%}
   border-bottom:1px solid rgba(110,118,121,.2);
   color:var(--graphite);
 }
-.band--dark .kit__spec{color:var(--muted);border-bottom-color:rgba(214,221,226,.14)}
+:is(.band--dark,.night) .kit__spec{color:var(--muted);border-bottom-color:rgba(214,221,226,.14)}
 .kit__spec b{font-weight:400;color:var(--obsidian)}
-.band--dark .kit__spec b{color:var(--zinc-silver)}
+:is(.band--dark,.night) .kit__spec b{color:var(--zinc-silver)}
 
 /* Status is not a hover reward. "AWAITING DGDA" means this cannot
    legally be sold yet — hiding that behind a hover was wrong, so the
@@ -2293,8 +2644,8 @@ img,svg{display:block;max-width:100%}
 }
 .kit__state--pass{color:var(--pass)}
 .kit__state--warn{color:var(--warn)}
-.band--dark .kit__state--pass{color:var(--pass-lit)}
-.band--dark .kit__state--warn{color:var(--warn-lit)}
+:is(.band--dark,.night) .kit__state--pass{color:var(--pass-lit)}
+:is(.band--dark,.night) .kit__state--warn{color:var(--warn-lit)}
 
 @media (max-width:640px){
   .kit__item{min-height:20rem}
@@ -2343,7 +2694,7 @@ img,svg{display:block;max-width:100%}
   opacity:0;transform:translateY(1rem);
   transition:opacity .45s ease,transform .45s ease;
 }
-.band--dark .door-sub{color:var(--muted)}
+:is(.band--dark,.night) .door-sub{color:var(--muted)}
 .door-band:hover .door-sub,.door-band:focus-visible .door-sub{opacity:1;transform:translateY(0)}
 
 .plate{
@@ -2352,7 +2703,7 @@ img,svg{display:block;max-width:100%}
   transition:transform .9s var(--ease-out),opacity .6s ease,background .6s ease;
   will-change:transform;
 }
-.band--dark .plate{background:var(--graphite);opacity:.32}
+:is(.band--dark,.night) .plate{background:var(--graphite);opacity:.32}
 .door-band .plate--a{width:15vw;height:20vw;max-width:15rem;max-height:20rem;top:10%;left:5%}
 .door-band .plate--b{width:11vw;height:11vw;max-width:11rem;max-height:11rem;top:55%;right:8%}
 .door-band .plate--c{width:9vw;height:12vw;max-width:9rem;max-height:12rem;bottom:8%;left:22%}
@@ -2525,7 +2876,7 @@ img,svg{display:block;max-width:100%}
 .home__mark{position:relative;display:block;width:1.7rem;height:1.7rem}
 .home__mark .mark{width:100%;height:100%}
 .mark__body{fill:var(--obsidian)}
-.band--dark .mark__body{fill:var(--zinc-silver)}
+:is(.band--dark,.night) .mark__body{fill:var(--zinc-silver)}
 .mark .vessel__liquid{fill:#fff}      /* in the mask: white = the art shows */
 .home .vessel__level{transition-duration:.75s}
 /* full is 1.12, not 1: at level 1 the wave's troughs are still 10.5
@@ -2890,7 +3241,7 @@ img,svg{display:block;max-width:100%}
    full. Across on wide screens (stations at 0, .5 and 1 of the run),
    down on phones (0, .33, .67). Then the page's one ask before the
    end, because the proof is where the decision gets made. */
-.batch{position:relative;margin-top:var(--space-xl);--step:.5}
+.batch{position:relative;margin-top:var(--space-xl);--step:.42}
 .batch__rail{
   position:absolute;top:.55rem;height:2px;left:0;
   right:calc((100% - 2 * var(--space-lg)) / 3);
@@ -2916,7 +3267,7 @@ img,svg{display:block;max-width:100%}
 .batch .fact__t{max-width:28ch}
 .batch__action{margin-top:var(--space-xl)}
 @media (max-width:860px){
-  .batch{--step:.333}
+  .batch{--step:.28}
   .batch__rail{left:6px;right:auto;top:.55rem;bottom:0;width:2px;height:auto}
   .batch__flow{width:100%;height:calc(var(--p,1) * 100%);bottom:auto}
   .batch__stops{grid-template-columns:1fr}
@@ -2972,9 +3323,9 @@ img,svg{display:block;max-width:100%}
   .door.is-pointed .door__face--alt{opacity:1;transform:scale(1)}
 
   /* homepage kit — the card floods and its specs come up */
-  .band--dark .kit__item.is-pointed::before{top:-18%;animation-play-state:running}
-  .band--dark .kit__item.is-pointed .kit__code,
-  .band--dark .kit__item.is-pointed .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
+  :is(.band--dark,.night) .kit__item.is-pointed::before{top:-18%;animation-play-state:running}
+  :is(.band--dark,.night) .kit__item.is-pointed .kit__code,
+  :is(.band--dark,.night) .kit__item.is-pointed .kit__spec{color:var(--zinc-silver);transition:color .4s ease .3s}
   .kit__item.is-pointed .kit__fig{transform:translateY(-1.4rem) scale(1.03)}
   .kit__item.is-pointed .kit__specs{opacity:1;transform:none}
 
@@ -2993,6 +3344,6 @@ img,svg{display:block;max-width:100%}
 
   /* buttons fill while pressed */
   .btn:active::before{top:-46%;animation-play-state:running;transition-duration:.35s}
-  .band--dark .btn:active{color:var(--obsidian);transition-delay:0s}
-  .band--dark .btn--secondary:active{color:var(--zinc-wash)}
+  :is(.band--dark,.night) .btn:active{color:var(--obsidian);transition-delay:0s}
+  :is(.band--dark,.night) .btn--secondary:active{color:var(--zinc-wash)}
 }

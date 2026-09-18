@@ -146,7 +146,7 @@
         is trace. Dense because trace means concentrated, not spread thin.
       </p>
       <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">This page is the handoff. Every component on the site is here with the reason it is the way it is; the decision log in <code>docs/ZINSTIM.md</code> has the history. Take it from here.</p>
-      <nav class="sg-toc" aria-label="Contents"><a href="#mark">The mark</a><a href="#colour">Colour</a><a href="#type">Type</a><a href="#space">Space</a><a href="#divider">The divider</a><a href="#motion">Motion</a><a href="#signals">Signals</a><a href="#button">Button</a><a href="#liquid">Liquid</a><a href="#scrub">Scroll pours</a><a href="#phones">Phones</a><a href="#views">Views</a><a href="#field">Field</a><a href="#radius">Radius and elevation</a><a href="#anatomy">Page anatomy</a><a href="#quality">Quality floor</a></nav>
+      <nav class="sg-toc" aria-label="Contents"><a href="#mark">The mark</a><a href="#colour">Colour</a><a href="#surfaces">Deep Carbon</a><a href="#type">Type</a><a href="#space">Space</a><a href="#divider">The divider</a><a href="#motion">Motion</a><a href="#signals">Signals</a><a href="#button">Button</a><a href="#liquid">Liquid</a><a href="#scrub">Scroll pours</a><a href="#phones">Phones</a><a href="#views">Views</a><a href="#field">Field</a><a href="#radius">Radius and elevation</a><a href="#anatomy">Page anatomy</a><a href="#quality">Quality floor</a></nav>
     </div>
   </section>
 
@@ -402,6 +402,89 @@
   </section>
 
   <!-- TYPE -->
+  <!-- DEEP CARBON -->
+  <section class="sg-section" id="surfaces">
+    <div class="shell">
+      <p class="sg-label">Deep Carbon</p>
+      <p class="t-head" style="max-width:24ch">Night is the brand. Day is the proof.</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-md);max-width:64ch">
+        A surface sets tokens and every component reads them, so a band changes character by
+        changing one class. <b>.night</b> carries the story &mdash; crimson where you act, the cut
+        in silver over oxblood, teal for live states. <b>.day</b> carries the numbers &mdash; sizes,
+        doses, lab panels, policy &mdash; and on Day nothing is crimson but the mark, because there
+        red still means failure. Nesting works: a <b>.day</b> inside a <b>.night</b> gets the light
+        values back.
+      </p>
+
+      <div class="sg-pair" style="margin-top:var(--space-lg)">
+        <div class="sg-demo night" style="padding:var(--space-md);border-radius:var(--radius-sm);align-items:flex-start">
+          <p class="sg-cap" style="color:var(--muted)">.night &mdash; the brand surface</p>
+          <p class="t-head" style="width:100%;margin-bottom:var(--space-sm)">Confidence is built.</p>
+          <a class="btn" href="#surfaces">Join the list</a>
+          <a class="btn btn--secondary" href="#surfaces">See the drop</a>
+          <p class="sg-cap" style="margin-top:var(--space-sm);color:var(--muted);display:flex;align-items:center;gap:.5rem">
+            <i style="width:5px;height:5px;border-radius:50%;background:var(--live);display:inline-block"></i>you are here
+          </p>
+        </div>
+        <div class="sg-demo day" style="padding:var(--space-md);border-radius:var(--radius-sm);align-items:flex-start;box-shadow:inset 0 0 0 1px var(--zinc-silver)">
+          <p class="sg-cap">.day &mdash; the specification surface</p>
+          <p class="t-head" style="width:100%;margin-bottom:var(--space-sm)">240 GSM, measured.</p>
+          <a class="btn" href="#surfaces">Join the list</a>
+          <a class="btn btn--secondary" href="#surfaces">See the drop</a>
+          <p class="sg-cap" style="margin-top:var(--space-sm);display:flex;align-items:center;gap:.5rem">
+            <i style="width:5px;height:5px;border-radius:50%;background:var(--live);display:inline-block"></i>you are here
+          </p>
+        </div>
+      </div>
+
+      <p class="sg-label" style="margin-top:var(--space-lg)">The cut</p>
+      <p class="t-body t-meta" style="margin-top:var(--space-sm);max-width:64ch">
+        One diagonal, two bands, silver leading and oxblood behind &mdash; the jar read as a graphic.
+        It runs off both edges, sits behind everything, and appears <b>once per page</b>. The bloom
+        is the one place light may glow on the dark; surfaces still get no gradient fills.
+      </p>
+      <div class="night has-cut" style="margin-top:var(--space-md);padding:var(--space-lg) var(--space-md);border-radius:var(--radius-sm);overflow:hidden">
+        <div class="cut" aria-hidden="true"></div>
+        <div class="cut cut--bloom" aria-hidden="true"></div>
+        <div class="above">
+          <p class="t-display" style="font-size:var(--step-3);max-width:12ch;line-height:var(--lh-tight)">Built, not worn.</p>
+          <p class="sg-cap" style="margin-top:var(--space-sm);color:var(--muted)">Hero band &mdash; the cut behind, the copy clear of it.</p>
+          <a class="btn" href="#surfaces" style="margin-top:var(--space-sm)">Join the list</a>
+        </div>
+      </div>
+
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:11rem">Angle</th><td>62&deg; from the horizontal, 28&deg; off vertical. Never rotated to suit a layout.</td></tr>
+        <tr><th>Leading band</th><td>Lid Silver <b>#80878D</b>, 6% of the frame's diagonal. Measured off the jar lid at L 62% and set in the brand's cool band. 5.3:1 on Obsidian.</td></tr>
+        <tr><th>Gap</th><td>3% &mdash; half the leading band.</td></tr>
+        <tr><th>Trailing band</th><td>Oxblood <b>#671E24</b>, 3%. 1.7:1 on its own, which is why the bloom sits behind it.</td></tr>
+        <tr><th>On a phone</th><td>Pushed out to 66% and narrowed, so nothing sits behind the copy. Automatic below 860px.</td></tr>
+        <tr><th>Markup</th><td><b>.has-cut</b> on the band, <b>.cut</b> and <b>.cut--bloom</b> inside it, content in <b>.shell</b> or <b>.above</b>.</td></tr>
+      </table>
+
+      <p class="sg-label" style="margin-top:var(--space-lg)">The tokens a surface sets</p>
+      <table class="sg-motion" style="margin-top:var(--space-sm)">
+        <tr><th style="width:11rem">Token</th><th style="width:11rem">Night</th><th>Day</th></tr>
+        <tr><th>--surface</th><td>Obsidian #0D0D0D</td><td>Zinc Wash #E9ECEE</td></tr>
+        <tr><th>--ink</th><td>Zinc Wash &middot; 16.4:1</td><td>Obsidian &middot; 16.4:1</td></tr>
+        <tr><th>--ink-2</th><td>Muted #828C90 &middot; 5.7:1</td><td>Graphite #6E7679 &middot; 3.9:1</td></tr>
+        <tr><th>--action</th><td>Crimson #AE4047</td><td>Obsidian</td></tr>
+        <tr><th>--action-label</th><td>Zinc Wash &middot; 4.9:1</td><td>Zinc Wash &middot; 16.4:1</td></tr>
+        <tr><th>--action-fill</th><td>#F29BA1, label flips to Obsidian &middot; 9.2:1</td><td>Elixir #0B6B5C, label holds &middot; 5.4:1</td></tr>
+        <tr><th>--live</th><td>Flame Teal &middot; 11.4:1</td><td>Elixir &middot; 5.4:1</td></tr>
+        <tr><th>--type-accent</th><td>#E87A82, display sizes only &middot; 7:1</td><td>Elixir</td></tr>
+        <tr><th>--bloom</th><td>Crimson radial, 42% at 16% 42%</td><td>none</td></tr>
+      </table>
+
+      <table class="sg-motion" style="margin-top:var(--space-md)">
+        <tr><th style="width:11rem">Rule</th><td><b>One crimson action per screen.</b> Crimson is what you touch; a second crimson thing that is not an action is wrong.</td></tr>
+        <tr><th></th><td><b>Crimson never carries small text.</b> 3.35:1 on Obsidian. Labels stay Zinc Wash; crimson type only at display size, in #E87A82.</td></tr>
+        <tr><th></th><td><b>Every error keeps a word.</b> Red now means &ldquo;act&rdquo; as well, so failure never rides on colour alone.</td></tr>
+        <tr><th></th><td><b>Teal stays under 3%.</b> No more than three teal things visible at once.</td></tr>
+      </table>
+    </div>
+  </section>
+
   <section class="sg-section" id="type">
     <div class="shell">
       <p class="sg-label">Type</p>
@@ -530,6 +613,17 @@
              is being filled — under the cursor or keyboard focus, or once as a
              page title fills on load — and settles when the cursor leaves. The
              homepage pour is driven by scroll, never by a timer.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="no">Copy never waits for the animation</h3>
+          <p>Motion may bring a line forward. It may not be the thing that makes
+             it readable. Where liquid crosses type &mdash; the homepage pour
+             &mdash; the <b>waterline</b> decides the colour, not the page: above
+             it the type is the page's ink, below it the type is Zinc Wash,
+             because measured against the flood black falls to 1.2:1 at depth
+             while wash rises to 13.3:1. That one rule holds on both grounds and
+             needs no second answer. Type that is invisible until a flood
+             arrives is a bug, not a reveal.</p>
         </div>
         <div class="rule-card">
           <h3 class="no">No fade-up on every section</h3>
@@ -904,7 +998,7 @@
         <li><span><b>Head.</b> Title, description, the SVG favicon, <code>theme-color</code>, <code>og:title</code> and <code>og:description</code>. Google Fonts, then <code>brand.css</code>. No page carries its own <code>&lt;style&gt;</code> &mdash; this guide is the only exception.</span></li>
         <li><span><b>Masthead.</b> The inline mark and the nav, identical markup on every page; <code>nav.js</code> marks the current page.</span></li>
         <li><span><b>Hero.</b> <code>h1.t-display.lines.lines--load</code>, the word in <code>.liq-type.liq-type--filled</code>, then <code>p.lede.settle</code>. Home (the hero line, then the pour) and Origin (the rollcall) have their own.</span></li>
-        <li><span><b>Bands.</b> <code>.band</code> is light, <code>.band.band--dark</code> is dark. Every change of ground is a fracture &mdash; <code>.cleave--dark</code> going into dark, <code>.cleave--light</code> coming back out. Never a dark band cutting straight to light.</span></li>
+        <li><span><b>Bands.</b> <code>.band</code> is light, <code>.band.band--dark</code> is dark. Every change of ground is a fracture &mdash; <code>.cleave--dark</code> going into dark, <code>.cleave--light</code> coming back out. Never a dark band cutting straight to light. On a <code>.night</code> page there is only one ground, so a fracture with nothing to break between collapses; it returns wherever Night meets a <code>.day</code> band, which is the only place it has a job.</span></li>
         <li><span><b>The ending.</b> <code>.cleave--dark</code> &rarr; <code>section.band.band--dark.join#waitlist</code> &rarr; <code>.cleave--light</code> &rarr; <code>.marquee</code> where the page has one &rarr; the dotmark.</span></li>
         <li><span><b>Footer.</b> <code>footer.foot</code> with <code>nav.foot__nav</code>. The current page's link carries <code>aria-current="page"</code> and gets the teal dot.</span></li>
         <li><span><b>Scripts.</b> <code>nav.js</code>, <code>site.js</code>, <code>dotmark.js</code>, all deferred. Every page reads and navigates without them.</span></li>

@@ -6,7 +6,7 @@
 <title>ZinStim</title>
 <meta name="description" content="Small things, repeated. A fitness brand built in Bangladesh.">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
-<meta name="theme-color" content="#E9ECEE">
+<meta name="theme-color" content="#0D0D0D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZinStim">
 <meta property="og:description" content="Small things, repeated. A fitness brand built in Bangladesh.">
@@ -15,7 +15,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/brand.css">
 </head>
-<body>
+<body class="night">
  
 <header class="masthead">
   <a class="home" href="index.html" aria-label="ZinStim — home">
@@ -40,7 +40,12 @@
 <main>
  
   <!-- HERO — one line. no product shot, no button. -->
-  <section class="hero">
+  <!-- THE CUT — one diagonal, silver leading and oxblood behind, with
+       the bloom on top. It runs off both edges, sits behind everything
+       and appears once on the page. See §surfaces in brand.css. -->
+  <section class="hero has-cut">
+    <div class="cut" aria-hidden="true"></div>
+    <div class="cut cut--bloom" aria-hidden="true"></div>
     <div class="shell">
       <h1 class="t-display lines lines--load">
         <span class="ln"><span>Small things,</span></span>
@@ -59,6 +64,17 @@
   <section class="pour" data-pour aria-labelledby="pour-claim">
     <div class="pour__stage">
 
+      <!-- The stream has its own layer, BEHIND the jar and behind the
+           flood, so each end is hidden by the thing it is leaving or
+           entering: it starts inside the collar and the jar covers its
+           source, and it ends under the surface and the flood covers
+           the join. Drawn on the same layer as the flood, both ends
+           were bare cuts — a wedge against the tilted lip at the top,
+           a flat chunk sitting on the pool at the bottom. -->
+      <svg class="pour__jet" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+        <path class="pour__stream" d=""/>
+      </svg>
+
       <svg class="pour__liquid" aria-hidden="true" focusable="false" preserveAspectRatio="none">
         <defs>
           <linearGradient id="pour-depth" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="1">
@@ -67,14 +83,26 @@
             <stop class="pour__g2" offset="1"/>
           </linearGradient>
         </defs>
-        <path class="pour__stream" d=""/>
         <path class="pour__flood" d="" fill="url(#pour-depth)"/>
+        <path class="pour__shards" d=""/>
       </svg>
 
+      <!-- The jar, lying over: the Zn 30 tub and its collar, not a
+           bottle. Drawn as one cut silhouette with chamfered corners
+           rather than rounded ones, because zinc cleaves.
+
+           The box is 270x120 and that is load-bearing, not taste. The
+           vessel is sized by WIDTH with height:auto, so the viewBox's
+           aspect decides how far down the page it hangs. At 230x130 it
+           rendered 323px tall and sat 52px ON TOP of the claim; this
+           is measured to clear it. .pour__mouth sits INSIDE the collar,
+           at x=240 against its outer face at 260, so the stream's
+           source is behind the metal and it emerges from under the lip
+           rather than starting as a cut in front of it. -->
       <div class="pour__vessel" aria-hidden="true">
-        <svg viewBox="0 0 280 120">
-          <path class="pour__body" d="M42,12 H170 C188,12 196,26 210,40 L222,46 H258 C266,46 270,50 270,58 V62 C270,70 266,74 258,74 H222 L210,80 C196,94 188,108 170,108 H42 C23,108 8,93 8,74 V46 C8,27 23,12 42,12 Z"/>
-          <rect class="pour__band" x="66" y="12" width="40" height="96"/>
+        <svg viewBox="0 0 270 120">
+          <path class="pour__body" d="M16,30 L38,8 H216 V112 H38 L16,90 Z"/>
+          <path class="pour__band" d="M212,0 H244 L260,16 V104 L244,120 H212 Z"/>
         </svg>
         <span class="pour__mouth"></span>
       </div>

@@ -4,7 +4,9 @@
 (function() {
   const canvas = document.querySelector('[data-dotmark-canvas]');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d', { alpha: false });
+  // alpha:false paints an opaque black canvas, which on a night page reads
+  // as a rectangle cut out of the ground. The canvas has to be see-through.
+  const ctx = canvas.getContext('2d');
   let particles = [];
   let mouse = { x: -9999, y: -9999, radius: 80 };
   let width, height;
@@ -16,7 +18,7 @@
   let dotColor = rootStyle.getPropertyValue('--graphite').trim() || '#6E7679';
   let bgColor = rootStyle.getPropertyValue('--zinc-wash').trim() || '#E9ECEE';
   
-  const isDark = canvas.closest('.band--dark') !== null;
+  const isDark = canvas.closest('.band--dark, .night') !== null;
   if (isDark) {
     dotColor = rootStyle.getPropertyValue('--muted').trim() || '#828C90';
     bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
@@ -89,8 +91,10 @@
   function animate() {
     if (!isRunning) return;
     
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, width, height);
+    // on a night page the canvas stays transparent, so the page's own
+    // ground and its bloom show through instead of a black rectangle
+    if (isDark) { ctx.clearRect(0, 0, width, height); }
+    else { ctx.fillStyle = bgColor; ctx.fillRect(0, 0, width, height); }
     
     ctx.fillStyle = dotColor;
     

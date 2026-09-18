@@ -171,8 +171,10 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
 
   var stage   = sec.querySelector('.pour__stage');
   var svg     = sec.querySelector('.pour__liquid');
+  var jet     = sec.querySelector('.pour__jet');
   var stream  = sec.querySelector('.pour__stream');
   var flood   = sec.querySelector('.pour__flood');
+  var shards  = sec.querySelector('.pour__shards');
   var grad    = sec.querySelector('#pour-depth');
   var vessel  = sec.querySelector('.pour__vessel');
   var mouthEl = sec.querySelector('.pour__mouth');
@@ -218,8 +220,12 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
   }
 
   function pose(p){
-    var inn = easeOut(seg(p, .04, .18)),   out   = easeIn(seg(p, .66, .78));
-    var tip = easeInOut(seg(p, .10, .24)), untip = easeInOut(seg(p, .64, .72));
+    var inn = easeOut(seg(p, .04, .18)),   out   = easeIn(seg(p, .67, .78));
+    // It rights itself only after the last of the pour has left the lip
+    // (.62-.70). Untipping from .64 swung the collar away from a stream
+    // that was still attached, and the stream's top was left hanging in
+    // the frame where the lip had been.
+    var tip = easeInOut(seg(p, .10, .24)), untip = easeInOut(seg(p, .66, .73));
     return {
       x: lerp(-150, 0, inn) + lerp(0, -170, out),
       y: lerp(-40, 0, inn)  + lerp(0, -210, out),
@@ -228,7 +234,7 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
       // the page edge while the hero was still being read
       // and gone by .75 on the way out: fading from .74 left a solid
       // sliver of it in the top corner as the flood closed in
-      o: seg(p, .03, .09) * (1 - seg(p, .70, .75))
+      o: seg(p, .03, .09) * (1 - seg(p, .71, .77))
     };
   }
   function applyPose(q){
@@ -243,6 +249,7 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     W = Math.max(1, stage.clientWidth);
     H = Math.max(1, stage.clientHeight);
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    if (jet) jet.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
 
     // The mouth while pouring. Once the vessel starts to leave, the
     // stream keeps THIS origin and lets go of it, instead of stretching
@@ -252,22 +259,93 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
 
     claim.style.setProperty('--c', '1');          // measure it unshifted
     var s = stage.getBoundingClientRect(), c = claim.getBoundingClientRect();
-    claimBox = { top: c.top - s.top, bottom: c.bottom - s.top, cx: c.left - s.left + c.width / 2 };
+    claimBox = { top: c.top - s.top, bottom: c.bottom - s.top,
+                 cx: c.left - s.left + c.width / 2,
+                 l: c.left - s.left, r: c.right - s.left };
+  }
+
+  // Stretches the stretch of fill that puts the surface inside the
+  // claim, leaving both ends monotone. DWELL is the share of the input
+  // the crossing gets; the band is usually about .21 of the range, so
+  // .40 slows it roughly twofold while it matters and speeds the rest.
+  var DWELL = .55;
+  function dwell(f){
+    if (!claimBox || H < 2) return f;
+    var span = H + 40;
+    var fb = clamp((H - claimBox.bottom) / span, 0, 1);   // surface at the claim's foot
+    var ft = clamp((H - claimBox.top)    / span, 0, 1);   // and at its head
+    var band = ft - fb;
+    if (band < .02 || band > .9) return f;                // nothing worth warping
+    var before = (1 - DWELL) * fb / (1 - band);
+    var after  = 1 - before - DWELL;
+    if (before <= 0 || after <= 0) return f;
+    // decelerate in, hold slow across the type, accelerate away. The
+    // easing lives in the two outer legs rather than over the whole
+    // curve, which is what an easeInOut across the lot got wrong: its
+    // fastest stretch is the middle, and the middle is the one part
+    // that has to be slow.
+    if (f < before)         return fb * easeOut(f / before);
+    if (f < before + DWELL) return fb + (f - before) / DWELL * band;
+    return ft + (1 - ft) * easeIn((f - before - DWELL) / after);
   }
 
   function render(p){
-    applyPose(pose(p));
-    var mouth = p < .64 ? inStage(mouthEl) : mouthPour;
+    var q = pose(p);
+    applyPose(q);
+    // the live lip for as long as the jar holds still over the pour;
+    // from .66 it rights itself, and the falling tail keeps the path
+    // it was already on rather than being dragged after the collar
+    var mouth = p < .66 ? inStage(mouthEl) : mouthPour;
 
     var landX  = mouthPour.x + clamp(W * .14, 90, 280);
-    var spread = easeOut(seg(p, .28, .52));
-    var fill   = easeInOut(seg(p, .42, .86));
+    // ── the pour's clock. There is ONE moment in it — IMPACT, when
+    //    the falling column reaches the floor — and everything else is
+    //    placed against that constant rather than against a number
+    //    typed separately. Before this the pool opened at .28 and the
+    //    chips flew at .26 while the column did not arrive until .36,
+    //    so the strike happened in mid-air with nothing under it and
+    //    the chips hung in the gap with nothing to have come from.
+    var IMPACT = .32;
+    // Nothing leaves the lip until the jar is past level. It tips from
+    // -24deg to 32deg across .10-.24 and crosses zero at about .163, so
+    // a drop forming at .13 hung off a jar that was still tilted up.
+    var head   = easeIn(seg(p, .17, IMPACT));   // accelerating: it is falling
+    // The let-go, in the order it happens: the flow ebbs (.58-.66), the
+    // last of it drops off the lip (.62-.70) while the jar is still in
+    // place over it, and only then does the jar right itself and leave.
+    var tail   = easeIn(seg(p, .62, .69));
+    var ebb    = easeIn(seg(p, .58, .66));
+    var landed = seg(head, .90, 1);             // 0 airborne, 1 arrived
+    // the front has to reach the walls before the level climbs: spread
+    // running to .54 while the fill began at .40 raised a pool whose
+    // leading edge was still out in the frame, and the level stood up
+    // behind it as a vertical wall of liquid
+    var spread = easeOut(seg(p, IMPACT, .47));
+    // The surface crosses the claim in about 130px of scroll if the fill
+    // is linear in p, which is too fast to read — and the crossing IS
+    // the section: the line is taken by the substance it is about. So
+    // the fill is warped to linger exactly across the claim's own band,
+    // computed from its measured box rather than from a guessed number,
+    // and monotone either side so scrolling back still drains it.
+    // .40, not .34: the pool has to SPREAD before it rises, or the
+    // stream lands on a slab that is already half way up the frame
+    // and the mound has nothing to sit on. The reference started at
+    // .42 for the same reason; .40 buys back the scroll the dwell
+    // needs without letting the level run ahead of the spread.
+    var fRaw   = seg(p, .40, .94);
+    var fill   = dwell(fRaw);
     var sheet  = spread * clamp(H * .035, 14, 30);
     var rimAmp = clamp(W * .045, 40, 110);
     var level  = fill * (H + 40);
     // squared: decaying linearly, the mound was still 45% tall halfway
     // through the flood and the rising surface read as a lump
-    var hump   = spread * (1 - fill) * (1 - fill) * clamp(H * .2, 60, 190);
+    // decayed against the RAW fill, not the warped one. Warped, the
+    // dwell holds (1-fill) high for the whole crossing, so the mound
+    // was still standing when the surface reached the claim and the
+    // line got read across a lump. On the raw clock it is gone by then
+    // and the claim is crossed by a flat wave, which is the shape the
+    // reference settles into.
+    var hump   = spread * (1 - fRaw) * (1 - fRaw) * clamp(H * .2, 60, 190);
     var sigma  = W * .08 + spread * W * .14;
     var waveA  = (4 + 10 * fill) * spread;
     var k      = 2 * Math.PI / clamp(W * .45, 280, 700);
@@ -300,36 +378,192 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     grad.setAttribute('y1', top.toFixed(1));
     grad.setAttribute('y2', (top + H).toFixed(1));
 
-    // ── the stream: a ribbon along a falling curve, widening where it
-    //    lands; at the end it lets go of the mouth and falls away
-    var head = easeIn(seg(p, .16, .34)), tail = easeIn(seg(p, .66, .76));
-    if (head > tail + .002){
-      var P0x = mouth.x, P0y = mouth.y, P2x = landX, P2y = H - sheet * .5;
-      var P1x = P0x + (P2x - P0x) * .62, P1y = P0y + (P2y - P0y) * .06;
-      var w0 = clamp(W * .011, 9, 20) * (1 - .55 * tail);
-      var L = [], R = [], M = 28;
+    // ── the column: liquid leaving a lip.
+    //    Three things decide whether a pour reads as a pour, and the
+    //    version before this had all three backwards.
+    //
+    //    1. IT IS A PARABOLA. It leaves the lip with whatever sideways
+    //       speed the tip gives it and is pulled straight down from
+    //       there: x is linear in time, y is quadratic. The old curve
+    //       was a bezier with a control point placed by hand, which
+    //       reads as an arc someone drew rather than something falling.
+    //
+    //    2. IT NECKS. Continuity — the same volume crosses every
+    //       section each second — so where the liquid is faster it is
+    //       thinner, and it is faster the further it has fallen:
+    //       v = sqrt(v0^2 + 2gh) gives w = w0 / sqrt(1 + k*s^2). The
+    //       old one got WIDER on the way down, which is the single
+    //       thing that made it read as a hose instead of a pour.
+    //
+    //    3. IT LANDS ON THE LIQUID, NOT ON THE FLOOR. The fall is
+    //       measured to the live surface at the landing column, so as
+    //       the pool fills the stream shortens and necks less, the way
+    //       it does into a glass that is filling.
+    //
+    //    The facets are gone from here. Zinc cleaves, and the section
+    //    edges and the strike chips say so; a falling liquid does not,
+    //    and faceting it read as a torn scribble hanging off the lip.
+    var li2   = clamp(Math.round((landX + 2) / (W + 4) * N), 0, N);
+    var surfY = Math.min(spread > 0 ? ys[li2] : H, H);
+    // It ends UNDER the surface, not on it. The flood is the layer in
+    // front, so the part below the waterline is hidden and the reader
+    // sees the stream go into the liquid, where ending on the surface
+    // left a flat end sitting on top of the pool. Before the pool
+    // exists it runs off the stage floor.
+    var landY = surfY + clamp(H * .045, 18, 40);
+    // Once the flood has climbed past the lip there is nothing below to
+    // fall into, and a parabola solved against a target above its own
+    // origin bends back up the frame. The source is inside the collar,
+    // so the last pixels before this cuts are already behind the metal.
+    if (head > tail + .002 && surfY > mouth.y + 4){
+      var drop  = landY - mouth.y;
+      var runX  = landX - mouth.x;
+      // It leaves along the JAR's axis, not horizontally. The tangent at
+      // t=0 is the jar's own tilt, so the first cross-section runs
+      // parallel to the collar's face; leaving flat, it cut across the
+      // tilted lip at an angle and left a wedge of gap on one side.
+      // Gravity supplies the rest, never less than 15% of the drop, or
+      // the curve straightens into a ramp.
+      var tilt  = Math.tan(clamp(q.r, 0, 70) * Math.PI / 180);
+      var va    = clamp(runX * tilt, 0, drop * .85);
+      var ga    = drop - va;
+      // the flow ebbs before it lets go — the jar is running out — but
+      // only to half. Thinned to 28% it detached as a hairline, and a
+      // hairline falling reads as a scratch on the frame, not liquid.
+      var w0    = clamp(W * .019, 15, 32) * (1 - .5 * ebb);
+      var NECK  = 4.6;                       // how hard it thins on the way down
+      // The bead is a share of the column, and it has to be a share of
+      // the column that EXISTS. Fixed at .11 it was longer than the
+      // whole stub for the first third of the fall, so the entire
+      // thing rendered as tip profile and what left the lip was a
+      // lump rather than a drop.
+      var TIP   = Math.max(.012, Math.min(.11, (head - tail) * .45));
+      var fall  = 1 - landed;                // 1 while airborne, 0 once it has arrived
+      var L = [], R = [], M = 40, UC = .45, BULGE = 1.5;
+      var plen  = Math.sqrt(runX * runX + drop * drop) || 1;
+      var CAPT  = clamp(w0 * .6 / plen, .004, .11);   // the tail's cap, in path units
       for (var j = 0; j <= M; j++){
-        var t = tail + (head - tail) * j / M, u = 1 - t;
-        var bx = u * u * P0x + 2 * u * t * P1x + t * t * P2x;
-        var by = u * u * P0y + 2 * u * t * P1y + t * t * P2y;
-        var dx = 2 * u * (P1x - P0x) + 2 * t * (P2x - P1x);
-        var dy = 2 * u * (P1y - P0y) + 2 * t * (P2y - P1y);
+        // Sampled densest at BOTH ends, on cosine spacing. Each end
+        // carries a curve a few pixels long on a path hundreds long —
+        // the bead at the head, the round cap at the tail — and at even
+        // spacing either one got a single point. Packing only the head
+        // fixed the bead and left the tail's cap as a flat cut.
+        var f = j / M;
+        var t = tail + (head - tail) * (.5 - .5 * Math.cos(Math.PI * f));
+        var bx = mouth.x + runX * t;
+        var by = mouth.y + va * t + ga * t * t;
+        var dx = runX, dy = va + 2 * ga * t;  // the parabola's own tangent
         var len = Math.sqrt(dx * dx + dy * dy) || 1;
-        var hw = w0 * (.72 + .45 * t) * (1 + 1.6 * smooth(.78, 1, t)) * .5;
+        var hw = w0 / Math.sqrt(1 + NECK * t * t) * .5;
+
+        // THE HEAD. A hanging drop is a thread that swells into a round
+        // bulb, and both joins have to be smooth or the silhouette
+        // notches. Before UC it swells on a smoothstep, which leaves
+        // the slope at zero where the two meet; after UC it is a
+        // circle, which closes with a vertical tangent — a round cap,
+        // not a point. The old profile was a sine times a quartic: it
+        // peaked, pinched, then closed, and the pinch was the notch.
+        var u = clamp((t - (head - TIP)) / TIP, 0, 1);
+        var bead;
+        if (u <= UC){
+          bead = 1 + (BULGE - 1) * smooth(0, UC, u);
+        } else {
+          var x = (u - UC) / (1 - UC);
+          bead = BULGE * Math.sqrt(Math.max(0, 1 - x * x));
+        }
+        // and where the pool takes it instead, it spreads into it
+        hw *= fall * bead + (1 - fall) * (1 + 1.5 * smooth(.84, 1, t));
+
+        // THE TAIL. Once the pour stops, the last of it lets go of the
+        // lip and falls as a slug, and a slug is round at its top end
+        // too — the flat cut it had there is what made it read as a
+        // sliver hanging in the frame rather than liquid dropping away.
+        // A quarter circle, switched on only once the tail has left the
+        // lip — and as LONG as the stream is wide, because that is what
+        // makes an end round. Sized as a share of the path instead, it
+        // was 11% of ~400px on a thread the ebb had thinned to ~8px,
+        // and the end drew out into a needle.
+        var capOn = seg(tail, 0, .04);
+        var v = clamp((t - tail) / CAPT, 0, 1);
+        hw *= 1 - capOn * (1 - Math.sqrt(Math.max(0, 1 - (1 - v) * (1 - v))));
         L.push((bx - dy / len * hw).toFixed(1) + ',' + (by + dx / len * hw).toFixed(1));
         R.push((bx + dy / len * hw).toFixed(1) + ',' + (by - dx / len * hw).toFixed(1));
       }
+      // No opacity fade. It used to fade out as the surface climbed to
+      // the lip, because both ends were exposed; behind the jar and the
+      // flood, the rising surface simply covers it from below until the
+      // collar is all that is left in front of it.
       stream.setAttribute('d', 'M' + L.join(' L') + ' L' + R.reverse().join(' L') + ' Z');
     } else {
       stream.setAttribute('d', '');
+    }
+
+    // ── chips, where the column lands
+    //    Zinc fractures on impact, so the landing throws flats rather
+    //    than droplets. Eight of them, each on its own fixed vector,
+    //    alive only across the strike and gone before the flood is
+    //    deep enough to have a surface they would be sitting on.
+    // Gated on LANDED, not on a p window of its own: chips exist
+    // because the column arrived, so they cannot precede it.
+    var strike = landed * (1 - seg(p, IMPACT + .08, IMPACT + .18));
+    if (strike > .004){
+      // off the LIVE surface at the landing column, not off the floor:
+      // by the time the chips are up the flood has risen past the floor,
+      // and anchored down there they read as grit in the pool instead
+      // of as something the strike threw
+      var li = clamp(Math.round((landX + 2) / (W + 4) * N), 0, N);
+      var sd = '', sy = Math.min(ys[li], H) - 4;
+      // thrown from the point of impact and pulled back down, so they
+      // read as something the strike knocked loose. They used to open
+      // to ±420px on a fan of their own and hang there, which is why
+      // they looked like drifting confetty rather than splash.
+      var throwP = seg(p, IMPACT, IMPACT + .16);
+      for (var q = 0; q < 8; q++){
+        var ang = -2.55 + q * .27;                // a fan, thrown upward
+        // the radius steps on a stride co-prime with the fan, so the
+        // short throws do not all land on the same side of the strike
+        var rq  = (18 + ((q * 3) % 5) * 14) * (.3 + 1.35 * throwP);
+        var cxq = landX + Math.cos(ang) * rq * 1.5;
+        var cyq = sy + Math.sin(ang) * rq * .85 + throwP * throwP * 34;  // gravity takes them back
+        var sq  = (5 + (q % 3) * 2.6) * strike;
+        // a four-sided chip, off-square so no two read as the same flat
+        sd += 'M' + (cxq - sq).toFixed(1) + ',' + cyq.toFixed(1) +
+              ' L' + cxq.toFixed(1) + ',' + (cyq - sq * 1.35).toFixed(1) +
+              ' L' + (cxq + sq * 1.2).toFixed(1) + ',' + (cyq + sq * .35).toFixed(1) +
+              ' L' + (cxq - sq * .3).toFixed(1) + ',' + (cyq + sq).toFixed(1) + ' Z';
+      }
+      shards.setAttribute('d', sd);
+      shards.style.opacity = (strike * .9).toFixed(3);
+    } else {
+      shards.setAttribute('d', '');
     }
 
     // ── the claim surfaces exactly as far as the liquid covers it
     var ci = clamp(Math.round((claimBox.cx + 2) / (W + 4) * N), 0, N);
     var surf = spread > 0 ? ys[ci] : H + 2;
     var cover = clamp((claimBox.bottom - surf) / Math.max(1, claimBox.bottom - claimBox.top), 0, 1);
+    // --c is how far the liquid has come through the claim, eased: it
+    // drives the focus, the opacity and the rise. Measured at the
+    // claim's middle, which is where a reader's eye is.
     claim.style.setProperty('--c', easeOut(cover).toFixed(3));
-    claim.classList.toggle('is-lit', cover > .98);
+
+    // --wl is where the split sits, as a fraction of the claim's own
+    // height from its top: 1 is bone dry, 0 is fully under. It is cut
+    // against the LOWEST point of the surface across the claim's width,
+    // not the surface at its middle, because the surface is a wave and
+    // the split is a straight line: measured at the middle, a trough
+    // out at the last word puts wash type on a ground the liquid has
+    // not reached yet — which is the very failure this rule exists to
+    // stop. Taking the low point means wash only ever appears where
+    // there is liquid behind it. Raw, not eased: a position, not a
+    // feeling, and easing it would float the split off the surface.
+    var il = clamp(Math.floor((claimBox.l + 2) / (W + 4) * N), 0, N);
+    var ir = clamp(Math.ceil((claimBox.r + 2) / (W + 4) * N), 0, N);
+    var low = -1e9;
+    for (var m = il; m <= ir; m++) if (ys[m] > low) low = ys[m];
+    if (spread <= 0) low = H + 2;
+    var safe = clamp((claimBox.bottom - low) / Math.max(1, claimBox.bottom - claimBox.top), 0, 1);
+    claim.style.setProperty('--wl', (1 - safe).toFixed(3));
   }
 
   function progress(){
