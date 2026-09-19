@@ -276,12 +276,32 @@
       transparent 70%);
 }
 .has-cut .cut--bloom{background:var(--bloom)}
+/* The bloom leaves with its headline (site.js writes --exit, 0 in view
+   to 1 gone). It drifts down against the scroll, so it moves up the
+   screen slower than the words, and dims as it goes: light going out,
+   not a sticker pushed off the page. The hero clips it, or the drift
+   would carry the glow down into the flat black of the next section,
+   which is the one place it must never be. clip, not hidden: it clips
+   without making the hero a scroll container. */
+.has-cut{overflow:hidden;overflow:clip}
+.has-cut .cut--bloom{
+  opacity:calc(1 - var(--exit, 0) * .9);
+  transform:translateY(calc(var(--exit, 0) * 38%));
+  will-change:transform,opacity;
+}
 .has-cut .shell,.has-cut .shell--full,.above{position:relative;z-index:1}
 
 /* a phone is too narrow for two bands and a text column: one band,
-   pushed further out, so nothing sits behind the copy */
+   pushed further out, so nothing sits behind the copy.
+   NOT the bloom div. It is also a .cut, and this rule comes after the
+   bloom's with the same specificity, so for as long as it matched both
+   the bloom div painted a second copy of the stripes instead of its
+   glow — the red and green had never shown on a phone at all. The two
+   copies sat exactly on top of each other, so nobody could see it
+   until the bloom began to drift on the way out and the copy peeled
+   away as a ghost. */
 @media (max-width:860px){
-  .has-cut .cut{
+  .has-cut .cut:not(.cut--bloom){
     background:linear-gradient(118deg,
       transparent 0 66%,
       var(--lid-silver) 66% 73%,
@@ -336,8 +356,16 @@
   --ink:var(--zinc-wash);--dry:rgba(233,236,238,.55);--sw:var(--wave-pale);
 }
 
-/* the door cards become the raised surface */
-.night .doors__set[data-set="1"] .door-card{background:#161618}
+/* The door cards keep the MATERIAL each category was given on the
+   light page, lit for a dark one: Wear is cloth and steel, so the
+   jar lid's silver; Fuel is the substance, so Elixir, the colour the
+   viewer's block and the pour's surface are; Instruments keeps its
+   blue. They had been dropped to #161618, the "raised surface" —
+   1.08:1 on Obsidian, which on a phone meant a category could be
+   chosen and bring in four cards nobody could see. Now 5.3:1, 3.0:1
+   and 3.4:1: three colour events, each one plainly there. */
+.night .doors__set[data-set="0"] .door-card{background:var(--lid-silver)}
+.night .doors__set[data-set="1"] .door-card{background:var(--elixir)}
 
 /* ── night corrections, second pass ───────────────────────────
    Audited in one go rather than found one screenshot at a time:
@@ -347,9 +375,7 @@
 /* grounds */
 .night .shout{background:transparent}
 .night .kit__item{background:transparent}
-.night .door-card,
-.night .plate,
-.night .doors__set[data-set="0"] .door-card{background:#161618}
+.night .plate{background:#161618}
 
 /* inks that were Obsidian on a white page */
 .night .fuel-tub .vessel{color:var(--zinc-silver)}
@@ -2522,11 +2548,43 @@ img,svg{display:block;max-width:100%}
 .doors__set[data-set="2"] .door-card:nth-child(3){left:16%;top:8%;--r:-2deg}
 .doors__set[data-set="2"] .door-card:nth-child(4){right:6%;top:12%;--r:4deg}
 
+/* PHONES. The field used to be switched off below 860 — "no room,
+   and nothing to gain" — so on a phone the doors were three words and
+   the cards never existed. There is room; it is just in different
+   places. Measured at 390: the section is 408px tall, under half the
+   screen, so whenever a word is on the middle line (which is what
+   chooses it on touch — site.js) the WHOLE section is in view and
+   every card in it is seen. "Wear" and "Fuel" are narrow and leave
+   ~120px either side; there are bands above and below the stack. The
+   cards go in that space, sized to the phone, rather than on the
+   desktop's wide margins, which at this width landed behind the words.
+   The words you are not on dim, so the one you are on is plain. */
 @media (max-width:860px){
   .doors{padding:var(--space-xl) 0}
-  .doors__field{display:none}          /* no room, and nothing to gain */
-  .doors:hover .door,
-  .doors[data-active] .door{opacity:1;filter:none}
+  .doors:hover .door{opacity:1;filter:none}
+  .doors[data-active] .door{opacity:.32;filter:none}
+  .doors[data-active] .door.is-active{opacity:1}
+
+  .door-card:nth-child(1){width:21vw;height:27vw}
+  .door-card:nth-child(2){width:16vw;height:20vw}
+  .door-card:nth-child(3){width:13vw;height:17vw}
+  .door-card:nth-child(4){width:18vw;height:12vw}
+
+  .doors__set .door-card{left:auto;right:auto;top:auto;bottom:auto}
+  .doors__set[data-set="0"] .door-card:nth-child(1){left:5%;top:20%}
+  .doors__set[data-set="0"] .door-card:nth-child(2){right:6%;top:8%}
+  .doors__set[data-set="0"] .door-card:nth-child(3){left:18%;bottom:4%}
+  .doors__set[data-set="0"] .door-card:nth-child(4){right:8%;bottom:12%}
+
+  .doors__set[data-set="1"] .door-card:nth-child(1){right:5%;top:22%}
+  .doors__set[data-set="1"] .door-card:nth-child(2){left:7%;top:6%}
+  .doors__set[data-set="1"] .door-card:nth-child(3){right:16%;bottom:5%}
+  .doors__set[data-set="1"] .door-card:nth-child(4){left:8%;bottom:11%}
+
+  .doors__set[data-set="2"] .door-card:nth-child(1){left:4%;top:18%}
+  .doors__set[data-set="2"] .door-card:nth-child(2){right:7%;top:26%}
+  .doors__set[data-set="2"] .door-card:nth-child(3){left:22%;top:3%}
+  .doors__set[data-set="2"] .door-card:nth-child(4){right:10%;bottom:6%}
 }
 
 /* movement removed, information kept: the cards still arrive and
@@ -3346,4 +3404,53 @@ img,svg{display:block;max-width:100%}
   .btn:active::before{top:-46%;animation-play-state:running;transition-duration:.35s}
   :is(.band--dark,.night) .btn:active{color:var(--obsidian);transition-delay:0s}
   :is(.band--dark,.night) .btn--secondary:active{color:var(--zinc-wash)}
+}
+
+
+/* ═══ phones ═════════════════════════════════════════════════
+   §touch above gives every hover a touch equivalent. This covers the
+   rest of what a phone needs: things a thumb can land on, type that
+   reads at arm's length, and gestures that are the phone's own.
+   Measured on every page at 390 as a touch device (hover:none,
+   pointer:coarse) before any of it was written.                   */
+
+@media (hover:none){
+  /* TARGETS. 44px on the axis a thumb comes down on. The footer links
+     measured 28px tall on all seven pages, Wear's piece tabs 35px. */
+  .foot__nav a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding-inline:.3rem}
+  .vtab{height:2.75rem}
+  .vtab__pill{height:2.75rem;width:2.75rem}
+
+  /* iOS zooms the whole page into any field set under 16px when it is
+     focused, and leaves the reader zoomed in after they have typed */
+  .signup input,.field__input{font-size:max(16px,1em)}
+
+  /* GESTURES. Both of these hand vertical drags to the page, so neither
+     can ever steal a scroll: sideways on the viewer flicks between
+     pieces (site.js), sideways across the wordmark scatters its dots
+     (dotmark.js). */
+  .viewer__stage{touch-action:pan-y}
+  .dotmark-canvas{touch-action:pan-y}
+
+  /* a tapped page title pours the rest of the way, then settles back
+     to half (site.js) */
+  .is-ready .liq-type.is-poured{--liq-level:1;transition:--liq-level .8s var(--ease-out)}
+  .liq-type.is-poured::after{animation:liq-drift-b 1.1s linear infinite}
+}
+
+/* COPY THAT NAMES A GESTURE names the one the device has. The kit's
+   line said "Hover one" to phones, which cannot. */
+.on-touch{display:none}
+@media (hover:none){
+  .on-point{display:none}
+  .on-touch{display:inline}
+}
+
+/* READING. The mono captions are the brand's register at .62rem, 9.9px,
+   and at a phone's reading distance that is under what reads. They get
+   an 11px floor on narrow screens and keep every other property. */
+@media (max-width:860px){
+  .vpanel__code,.vpanel__caption,.vtab__code,.vpanel__next-word,
+  .piece__code,.piece__spec,.piece__word,.kit__state,.element__cap,
+  .fuel-tub figcaption{font-size:max(11px,.62rem)}
 }

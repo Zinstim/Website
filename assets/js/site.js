@@ -139,6 +139,23 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
   doors.addEventListener('mouseleave', function(){
     if (!doors.contains(document.activeElement)) clear();
   });
+
+  // Phones. There is no hover to bring the cards in with, so the
+  // middle of the screen does it — the same 1% line that swaps each
+  // word's face (§touch, at the end of this file). The last word to
+  // cross it HOLDS until another one does: clearing whenever the line
+  // sat between two words made the cards flash out and back in on
+  // every word. The section clears only when it leaves the screen.
+  if (window.matchMedia && window.matchMedia('(hover: none)').matches &&
+      'IntersectionObserver' in window){
+    var line = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) activate(e.target); });
+    }, {rootMargin:'-49.5% 0px -49.5% 0px'});
+    links.forEach(function(l){ line.observe(l); });
+    new IntersectionObserver(function(es){
+      if (!es[0].isIntersecting) clear();
+    }).observe(doors);
+  }
 })();
 
 
@@ -761,6 +778,31 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     })(i);
   }
 
+  // Phones: swipe the piece. The rail and the action are still there,
+  // but the thumb's own gesture for "the next one" is a flick across
+  // the thing itself. A flick counts when it travels more than 48px,
+  // mostly sideways, inside 700ms. The stage is touch-action:pan-y
+  // (brand.css), so an upward or downward drag is handed to the page
+  // and can never be mistaken for a swipe or steal a scroll.
+  var stage = sec.querySelector('.viewer__stage');
+  if (stage && window.PointerEvent){
+    var sx = 0, sy = 0, st = 0, track = false;
+    stage.addEventListener('pointerdown', function(e){
+      if (e.pointerType !== 'touch') return;
+      track = true; sx = e.clientX; sy = e.clientY; st = Date.now();
+    }, {passive:true});
+    stage.addEventListener('pointerup', function(e){
+      if (!track) return;
+      track = false;
+      var dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.4 || Date.now() - st > 700) return;
+      var cur = 0;
+      for (var n = 0; n < tabs.length; n++) if (tabs[n].getAttribute('aria-selected') === 'true') cur = n;
+      open((cur + (dx < 0 ? 1 : tabs.length - 1)) % tabs.length);
+    }, {passive:true});
+    stage.addEventListener('pointercancel', function(){ track = false; }, {passive:true});
+  }
+
   // views: each piece's strip swaps that piece's own display. Per panel,
   // so every piece remembers the view it was left on.
   for (var p = 0; p < panels.length; p++){
@@ -805,4 +847,52 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     entries.forEach(function(e){ e.target.classList.toggle('is-pointed', e.isIntersecting); });
   }, {rootMargin:'-49.5% 0px -49.5% 0px'});
   els.forEach(function(el){ io.observe(el); });
+})();
+
+
+/* liquid titles, on a phone. The page titles pour to half on load and
+   on a desktop the rest of the way under the cursor. With no cursor, a
+   tap does it: the word fills, holds for a moment, and settles back to
+   half, which is where the page left it. Only titles that are not
+   inside a link — a linked one navigates on the tap, so there would be
+   nothing left on screen to watch fill. */
+(function(){
+  if (!window.matchMedia || !window.matchMedia('(hover: none)').matches) return;
+  var titles = document.querySelectorAll('.liq-type');
+  for (var i = 0; i < titles.length; i++){
+    (function(t){
+      if (t.closest('a')) return;
+      t.addEventListener('click', function(){
+        t.classList.add('is-poured');
+        clearTimeout(t._settle);
+        t._settle = setTimeout(function(){ t.classList.remove('is-poured'); }, 1900);
+      });
+    })(titles[i]);
+  }
+})();
+
+
+/* the bloom leaves with its headline. It belongs to the hero — one
+   glow, behind one line — so it does NOT follow the reader down the
+   page: lit everywhere, it would point at nothing, and the sections
+   below are meant to be flat black. But scrolled away at the speed of
+   the text it read as a sticker being pushed off the page. So it
+   drifts at a fraction of the scroll and dims as the hero goes, and
+   what the reader sees is light going out rather than an object
+   leaving. Writes --exit, 0 in view to 1 gone; brand.css spends it. */
+(function(){
+  var hero = document.querySelector('.has-cut');
+  if (!hero || !hero.querySelector('.cut--bloom')) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var raf = 0;
+  function update(){
+    raf = 0;
+    var r = hero.getBoundingClientRect();
+    var exit = Math.max(0, Math.min(1, -r.top / Math.max(1, r.height)));
+    hero.style.setProperty('--exit', exit.toFixed(3));
+  }
+  window.addEventListener('scroll', function(){
+    if (!raf) raf = requestAnimationFrame(update);
+  }, {passive:true});
+  update();
 })();
