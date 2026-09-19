@@ -15,6 +15,7 @@
   const touch  = !!(window.matchMedia && window.matchMedia('(hover: none)').matches);
   let mouse = { x: -9999, y: -9999, radius: coarse ? 105 : 80 };
   let width, height;
+  let stacked = false;
   let isRunning = false;
   let asleep = false;
   let animFrame;
@@ -45,10 +46,13 @@
     // source, which killed the whole script. Bail quietly instead; the
     // resize handler calls init again once the layout settles.
     if (width < 1) { particles = []; return; }
-    // Narrow screens get a taller band and a bigger word. At 390 the
-    // old proportions set the word at 54px and used 233 of 358px — a
-    // small barcode in the middle of the width it had.
-    height = Math.min(200, width * (width < 600 ? 0.26 : 0.2));
+    // Narrow screens set the word on TWO lines — ZIN over STIM, zinc and
+    // stimulus, the two halves the name is made of — so each half can be
+    // as large as the width allows. On one line at 360 it was a 54px
+    // word in a 70px strip; stacked it is ~140px a line in a band nearly
+    // as tall as the screen is wide, which is the room a sign-off needs.
+    stacked = width < 600;
+    height = stacked ? Math.round(width * 0.86) : Math.min(200, width * 0.2);
     canvas.width = width * devicePixelRatio;
     canvas.height = height * devicePixelRatio;
     canvas.style.width = width + 'px';
@@ -68,21 +72,38 @@
     offscreen.width = width;
     offscreen.height = height;
     
-    const fontSize = Math.min(height * 0.8, width * (width < 600 ? 0.185 : 0.15));
-    octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
-    octx.textAlign = 'center';
-    octx.textBaseline = 'middle';
     octx.fillStyle = 'white';
-    octx.letterSpacing = '-0.04em';
-    
-    // Polyfill letterSpacing for older canvas API if needed, but modern browsers support it
-    octx.fillText('ZINSTIM', width / 2, height / 2);
+    if (stacked) {
+      // Fit the longer half to the width by MEASURING it, then set both
+      // halves at that size, flush left like every headline on a phone.
+      // The two lines sit one cap height plus a small gap apart, centred
+      // in the band (Archivo at 900 has a cap height of about .72em).
+      octx.font = '900 100px "Archivo", system-ui, sans-serif';
+      octx.letterSpacing = '-0.04em';
+      const wide = Math.max(octx.measureText('STIM').width, octx.measureText('ZIN').width);
+      const fs = Math.floor(100 * (width * 0.97) / wide);
+      octx.font = `900 ${fs}px "Archivo", system-ui, sans-serif`;
+      octx.letterSpacing = '-0.04em';
+      octx.textAlign = 'left';
+      octx.textBaseline = 'alphabetic';
+      const cap = fs * 0.72, gap = fs * 0.14;
+      const top = (height - (cap * 2 + gap)) / 2;
+      octx.fillText('ZIN', 0, top + cap);
+      octx.fillText('STIM', 0, top + cap * 2 + gap);
+    } else {
+      const fontSize = Math.min(height * 0.8, width * 0.15);
+      octx.font = `900 ${fontSize}px "Archivo", system-ui, sans-serif`;
+      octx.textAlign = 'center';
+      octx.textBaseline = 'middle';
+      octx.letterSpacing = '-0.04em';
+      octx.fillText('ZINSTIM', width / 2, height / 2);
+    }
     
     const imgData = octx.getImageData(0, 0, width, height).data;
-    // Denser on a small word, or the letterforms fall apart: at a 6px
-    // pitch a 54px word is nine rows of dots and reads as noise. Dot
-    // size follows the pitch so the coverage stays the same.
-    const step = width < 600 ? 4 : 6;
+    // A slightly finer pitch on the stacked word, so its ~140px letters
+    // carry six or so dots across every stroke. Dot size follows the
+    // pitch so the coverage stays the same.
+    const step = stacked ? 5 : 6;
     const dot  = step * 0.26;
     
     for (let y = 0; y < height; y += step) {

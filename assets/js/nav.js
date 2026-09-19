@@ -39,6 +39,20 @@
   capsule.addEventListener('mouseenter', open);
   capsule.addEventListener('mouseleave', close);
 
+  // The label is the group's HANDLE, not a link to a page. Under a
+  // mouse the group opens on the way to the word and the word hides,
+  // so it could never be clicked — which is why there was no way to
+  // reach an Elements page from a desktop. So a click on it (a touch
+  // laptop, a pen) or Enter from the keyboard opens the group as well.
+  // It only ever opens: on a touch screen the tap's own mouseenter has
+  // already opened it, and a toggle here would shut it again at once.
+  // Its href is kept for when this script has not loaded.
+  label.addEventListener('click', function (e) {
+    e.preventDefault();
+    open();
+    if (e.detail === 0 && links[0]) links[0].focus();
+  });
+
   origin.addEventListener('click', function (e) {
     if (origin.getAttribute('href') === '#') e.preventDefault();
     select('origin');
@@ -89,8 +103,8 @@
 
   var pages = [{ text: origin.textContent.trim(), href: origin.getAttribute('href'),
                  here: origin.classList.contains('is-here') }];
-  pages.push({ text: 'Elements', href: 'elements.html',
-               here: label.classList.contains('is-here') && label.getAttribute('href') === 'elements.html' });
+  // Elements heads the three it holds; it is not a page to go to.
+  pages.push({ text: 'Elements', group: true });
   links.forEach(function (l) {
     pages.push({ text: l.textContent.trim(), href: l.getAttribute('href'),
                  here: l.classList.contains('is-current'), sub: true });
@@ -122,6 +136,15 @@
   pages.forEach(function (p, k) {
     var li = document.createElement('li');
     li.className = 'navsheet__item' + (p.sub ? ' navsheet__item--sub' : '');
+    if (p.group) {
+      var g = document.createElement('span');
+      g.className = 'navsheet__group';
+      g.textContent = p.text;
+      g.style.setProperty('--k', k);
+      li.appendChild(g);
+      list.appendChild(li);
+      return;
+    }
     var a = document.createElement('a');
     a.className = 'navsheet__link' + (p.here ? ' is-here' : '');
     a.href = p.href;
@@ -152,7 +175,13 @@
   // a keyboard "click" on a button has detail 0; a tap or a mouse has 1
   toggle.addEventListener('click', function (e) { setOpen(!isOpen(), e.detail === 0); });
   sheet.addEventListener('click', function (e) {
-    if (e.target.closest && e.target.closest('a')) setOpen(false);
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    // the pill names the page you just chose while the liquid carries
+    // you there, so the choice is on screen the whole way across
+    toggleText.textContent = a.textContent;
+    toggleText.classList.add('is-here');
+    setOpen(false);
   });
   document.addEventListener('pointerdown', function (e) {
     if (isOpen() && !sheet.contains(e.target) && !toggle.contains(e.target)) setOpen(false);

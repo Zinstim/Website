@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<script>/* arriving from another page: cover it before the first paint (see transition in brand.css) */try{if(sessionStorage.getItem('zs-arrive')){sessionStorage.removeItem('zs-arrive');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
 <link rel="stylesheet" href="assets/css/brand.css">
 </head>
 <body class="night">
@@ -79,75 +80,75 @@
       </div>
       <p class="t-meta" style="margin-top:var(--space-xs);color:var(--muted)">Assay purity, batch CAT040126</p>
 
-      <table class="lab-table">
-        <thead>
-          <tr>
-            <th>Test</th>
-            <th>Result</th>
-            <th>Specification</th>
-            <th>Status</th>
+      <table class="lab-table" role="table">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader">Test</th>
+            <th role="columnheader">Result</th>
+            <th role="columnheader">Specification</th>
+            <th role="columnheader">Status</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Assay (Purity)</td>
-            <td class="lab-pending">Pending</td>
-            <td>&ge; 99.5%</td>
-            <td class="lab-pending">&mdash;</td>
+        <tbody role="rowgroup">
+          <tr role="row">
+            <td role="cell">Assay (Purity)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&ge; 99.5%</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Moisture</td>
-            <td class="lab-pending">Pending</td>
-            <td>&le; 12.0%</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Moisture</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&le; 12.0%</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>pH (1% solution)</td>
-            <td class="lab-pending">Pending</td>
-            <td>6.5 &ndash; 8.5</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">pH (1% solution)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">6.5 &ndash; 8.5</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Lead (Pb)</td>
-            <td class="lab-pending">Pending</td>
-            <td>&le; 0.1 ppm</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Lead (Pb)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&le; 0.1 ppm</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Arsenic (As)</td>
-            <td class="lab-pending">Pending</td>
-            <td>&le; 0.1 ppm</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Arsenic (As)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&le; 0.1 ppm</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Mercury (Hg)</td>
-            <td class="lab-pending">Pending</td>
-            <td>&le; 0.05 ppm</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Mercury (Hg)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&le; 0.05 ppm</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Cadmium (Cd)</td>
-            <td class="lab-pending">Pending</td>
-            <td>&le; 0.1 ppm</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Cadmium (Cd)</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">&le; 0.1 ppm</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Mesh Size</td>
-            <td class="lab-pending">Pending</td>
-            <td>200</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Mesh Size</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">200</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Dicyandiamide</td>
-            <td class="lab-pending">Pending</td>
-            <td>Not detected</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Dicyandiamide</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">Not detected</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
-          <tr>
-            <td>Dihydrotriazine</td>
-            <td class="lab-pending">Pending</td>
-            <td>Not detected</td>
-            <td class="lab-pending">&mdash;</td>
+          <tr role="row">
+            <td role="cell">Dihydrotriazine</td>
+            <td role="cell" class="lab-pending">Pending</td>
+            <td role="cell">Not detected</td>
+            <td role="cell" class="lab-pending">&mdash;</td>
           </tr>
         </tbody>
       </table>
@@ -239,7 +240,6 @@
       <a href="wear.html">Wear</a>
       <a href="fuel.html" aria-current="page">Fuel</a>
       <a href="instruments.html">Instruments</a>
-      <a href="elements.html">Elements</a>
     </nav>
     <span>&copy; 2026</span>
   </footer>

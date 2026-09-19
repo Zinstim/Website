@@ -1,5 +1,10 @@
-/* one page-load moment */
-requestAnimationFrame(function(){document.body.classList.add('is-ready')});
+/* one page-load moment. Arriving under the liquid (see the transition,
+   at the end of this file) it waits until the liquid has begun to
+   clear, or the headline would rise unseen beneath it. */
+requestAnimationFrame(function(){
+  var wait = document.documentElement.classList.contains('is-arriving') ? 280 : 0;
+  setTimeout(function(){ document.body.classList.add('is-ready'); }, wait);
+});
 
 /* reveal once, never re-animate */
 (function(){
@@ -895,4 +900,60 @@ requestAnimationFrame(function(){document.body.classList.add('is-ready')});
     if (!raf) raf = requestAnimationFrame(update);
   }, {passive:true});
   update();
+})();
+
+
+/* the transition — going from page to page (brand.css, transition).
+   A click on a link to another page of the site plays the liquid
+   rising under the nav, then navigates; a note in sessionStorage tells
+   the next page to open covered and play the rest. Everything else is
+   left alone: new tabs and modified clicks, anchors on this page,
+   downloads, other sites, mail links. The mark on the page it points
+   at glides back to the top instead of reloading. */
+(function(){
+  var root = document.documentElement;
+  var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  // arriving: the head line covered this page before it painted; the
+  // liquid clears in .76s, and taking the class off then drains the mark
+  if (root.classList.contains('is-arriving')){
+    setTimeout(function(){ root.classList.remove('is-arriving'); }, 800);
+  }
+
+  function page(a){
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return null;
+    var url;
+    try { url = new URL(a.getAttribute('href'), location.href); } catch (err) { return null; }
+    if (url.protocol !== location.protocol || url.host !== location.host) return null;
+    if (!/\.html$/i.test(url.pathname)) return null;
+    return url;
+  }
+
+  document.addEventListener('click', function(e){
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest ? e.target.closest('a[href]') : null;
+    var url = page(a);
+    if (!url) return;
+    var here = url.pathname === location.pathname;
+    if (here && url.hash) return;             // an anchor on this page: let it scroll
+    e.preventDefault();
+    if (here){                                 // the mark, on the page it points at
+      root.classList.add('is-home');
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+      setTimeout(function(){ root.classList.remove('is-home'); }, 1100);
+      return;
+    }
+    if (reduced){ location.href = url.href; return; }
+    try { sessionStorage.setItem('zs-arrive', '1'); } catch (err) {}
+    root.classList.add('is-leaving');
+    setTimeout(function(){ location.href = url.href; }, 380);
+  });
+
+  // Back and Forward restore a page exactly as it was left — covered —
+  // so uncover it, and drop the note it left for a page never opened
+  window.addEventListener('pageshow', function(e){
+    if (!e.persisted) return;
+    root.classList.remove('is-leaving');
+    try { sessionStorage.removeItem('zs-arrive'); } catch (err) {}
+  });
 })();
