@@ -913,11 +913,44 @@ requestAnimationFrame(function(){
 (function(){
   var root = document.documentElement;
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var going = false;
 
-  // arriving: the head line set this page up before it painted; the mark
-  // is gone by .80s, and taking the class off then drains the masthead's
+  // arriving: the head line set this page up before it painted, and gave
+  // the pass a negative delay so it resumes rather than restarts. A full
+  // pass from here is the longest it can still have to run; taking the
+  // class off then drains the masthead's mark.
   if (root.classList.contains('is-arriving')){
-    setTimeout(function(){ root.classList.remove('is-arriving'); }, 860);
+    setTimeout(function(){ root.classList.remove('is-arriving'); }, 1060);
+    /* The resume delay was worked out while this page was parsing, and
+       this page does not render for another 60-140ms — then loads fonts,
+       scripts and a canvas on the same thread the pass is animating on.
+       Left alone it arrives late and falls further behind. So the clock
+       drives it: every frame, if the mark is more than 8ms from where
+       the trip says it should be, it is put there. A frame that never
+       rendered is a frame nobody saw, so resuming ON TIME beats
+       resuming where it froze. */
+    if (window.zsStart && document.getAnimations){
+      var tick = function(){
+        var spent = Date.now() - window.zsStart, running = false;
+        document.getAnimations().forEach(function(a){
+          if (!a.animationName || a.animationName.indexOf('zs-mark-') !== 0) return;
+          var t = a.effect && a.effect.getTiming ? a.effect.getTiming() : null;
+          if (!t || !t.duration || spent >= t.duration) return;
+          running = true;
+          // currentTime counts the (negative) delay too, so the point
+          // that is `spent` into the pass sits at spent + delay here
+          var at = spent + (t.delay || 0);
+          if (at < 0) return;
+          // close the gap over a few frames rather than in one jump: a
+          // snap of 100ms is 150px of travel and reads as a flinch
+          var drift = at - a.currentTime;
+          if (drift > 40) drift = 40; else if (drift < -40) drift = -40;
+          if (drift > 4 || drift < -4) a.currentTime = a.currentTime + drift;
+        });
+        if (running) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
   }
 
   function page(a){
@@ -937,6 +970,7 @@ requestAnimationFrame(function(){
     var here = url.pathname === location.pathname;
     if (here && url.hash) return;             // an anchor on this page: let it scroll
     e.preventDefault();
+    if (going) return;                         // one leave at a time
     if (here){                                 // the mark, on the page it points at
       root.classList.add('is-home');
       window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
@@ -944,16 +978,41 @@ requestAnimationFrame(function(){
       return;
     }
     if (reduced){ location.href = url.href; return; }
-    try { sessionStorage.setItem('zs-arrive', '1'); } catch (err) {}
+    going = true;
+    // the clock the next page resumes the pass on, not a flag
+    try { sessionStorage.setItem('zs-arrive', String(Date.now())); } catch (err) {}
     root.classList.add('is-leaving');
-    setTimeout(function(){ location.href = url.href; }, 480);
+    // as soon as the page itself has faded out; the mark keeps moving
+    // through the fetch on this page and carries on over there
+    setTimeout(function(){ location.href = url.href; }, 380);
   });
+
+  /* The next document, fetched as soon as a link is pointed at or
+     touched — on a phone that is ~100ms before the tap even lands, and
+     on any connection it means the rise is not the only head start the
+     network gets. (The mark's own art needs no help: measured with
+     scripts off, the stylesheet fetches it at load like any other
+     background image, hidden element or not.) */
+  var warmed = {};
+  function warmDoc(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    var url = page(a);
+    if (!url || url.pathname === location.pathname || warmed[url.href]) return;
+    warmed[url.href] = 1;
+    var link = document.createElement('link');
+    link.rel = 'prefetch'; link.as = 'document'; link.href = url.href;
+    document.head.appendChild(link);
+  }
+  document.addEventListener('pointerover', warmDoc, {passive:true});
+  document.addEventListener('touchstart', warmDoc, {passive:true});
+
 
   // Back and Forward restore a page exactly as it was left — covered —
   // so uncover it, and drop the note it left for a page never opened
   window.addEventListener('pageshow', function(e){
     if (!e.persisted) return;
     root.classList.remove('is-leaving');
+    going = false;
     try { sessionStorage.removeItem('zs-arrive'); } catch (err) {}
   });
 })();

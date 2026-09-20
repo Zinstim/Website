@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
-<script>/* arriving from another page: cover it before the first paint (see transition in brand.css) */try{if(sessionStorage.getItem('zs-arrive')){sessionStorage.removeItem('zs-arrive');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
+<script>/* arriving from another page: before the first paint, resume the mark's pass at the point the clock says it has got to (see transition in brand.css) */try{var zs=+sessionStorage.getItem('zs-arrive')||0;if(zs){sessionStorage.removeItem('zs-arrive');window.zsStart=zs;var zd=Date.now()-zs;zd=zd<0?0:(zd>950?950:zd);document.documentElement.style.setProperty('--zs-resume',-zd+'ms');document.documentElement.classList.add('is-arriving')}}catch(e){}</script>
 <link rel="stylesheet" href="assets/css/brand.css">
 <style>
   .sg-section{padding:var(--space-xl) 0;border-top:1px solid var(--zinc-silver)}
@@ -620,13 +620,20 @@
         <div class="rule-card">
           <h3 class="yes">The mark carries you between pages</h3>
           <p>Choosing a page is a click that deserves a response too. The page
-             fades and lifts away while the mark rises from below the fold to the
-             middle of the screen, filling with its carbon fibre as it climbs
-             (.44s) &mdash; the reveal the logo does under a cursor, at the size of
-             the screen, and it is that literally: full bleed, running past every
-             edge at any window, so nothing else is left to look at. The next page opens with its
-             content held at nothing, and the mark carries on up and out behind the
-             nav (.76s) as that content settles in. The nav never moves, so the choice stays on screen the
+             fades and lifts away while the mark crosses the screen from below
+             the fold to off the top &mdash; one pass, .95s, filling with its
+             carbon fibre on the way up, the reveal the logo does under a cursor
+             at the size of a gesture. The carbon runs ahead of it: what reaches
+             the screen is a band of bare metal riding the mark's top edge,
+             closing as it climbs. <strong>The navigation happens inside that
+             pass, not between two halves of it</strong>: the next page starts
+             the same animation with a negative delay of however long the trip
+             has taken, so the mark picks up where it would have been rather than
+             starting again, and a frame of arithmetic keeps it on the clock
+             while the new page is still loading. It used to stop dead in the
+             middle for as long as the fetch took. What hides the swap is not the
+             mark but the page itself, at nothing by .34s, over a ground every
+             page shares. The nav never moves, so the choice stays on screen the
              whole way, the phone's pill already naming the page tapped. It was a
              curtain of elixir first: the mark is better, because colour here is
              the substance and a screen of it on every navigation is the one thing
