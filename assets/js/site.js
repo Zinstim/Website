@@ -904,8 +904,8 @@ requestAnimationFrame(function(){
 
 
 /* the transition — going from page to page (brand.css, transition).
-   A click on a link to another page of the site plays the liquid
-   rising under the nav, then navigates; a note in sessionStorage tells
+   A click on a link to another page of the site sends the mark up
+   the screen, then navigates; a note in sessionStorage tells
    the next page to open covered and play the rest. Everything else is
    left alone: new tabs and modified clicks, anchors on this page,
    downloads, other sites, mail links. The mark on the page it points
@@ -914,10 +914,10 @@ requestAnimationFrame(function(){
   var root = document.documentElement;
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-  // arriving: the head line covered this page before it painted; the
-  // liquid clears in .76s, and taking the class off then drains the mark
+  // arriving: the head line set this page up before it painted; the mark
+  // is gone by .80s, and taking the class off then drains the masthead's
   if (root.classList.contains('is-arriving')){
-    setTimeout(function(){ root.classList.remove('is-arriving'); }, 800);
+    setTimeout(function(){ root.classList.remove('is-arriving'); }, 860);
   }
 
   function page(a){
@@ -946,7 +946,7 @@ requestAnimationFrame(function(){
     if (reduced){ location.href = url.href; return; }
     try { sessionStorage.setItem('zs-arrive', '1'); } catch (err) {}
     root.classList.add('is-leaving');
-    setTimeout(function(){ location.href = url.href; }, 380);
+    setTimeout(function(){ location.href = url.href; }, 480);
   });
 
   // Back and Forward restore a page exactly as it was left — covered —

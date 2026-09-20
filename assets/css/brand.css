@@ -3559,75 +3559,105 @@ img,svg{display:block;max-width:100%}
 }
 
 /* ═══ transition ═════════════════════════════════════════════
-   Going from page to page. The site is separate pages, so every
-   choice — a page in the nav, the mark — used to swap the whole
-   screen in a single frame, and the choice itself never registered.
-   Now the substance carries the reader across, UNDER THE NAV:
+   Going from page to page, the MARK carries the reader across. The
+   site is separate pages, so every choice used to swap the screen in
+   one frame and never register.
 
-     leaving   the elixir rises from the bottom over the page being
-               left, the pour's own wave on its crest (.38s). The nav
-               stays above it, so the choice is still on screen — the
-               phone's pill already shows the page that was tapped —
-               and the mark fills with its carbon fibre as it rises.
-     arriving  the next page opens already covered below the nav and
-               the liquid carries on up and out through the top (.62s),
-               so one movement spans the navigation. The mark drains.
+     leaving   the page fades and lifts away, and the mark rises from
+               below the fold to the middle of the screen, FILLING with
+               its carbon fibre as it climbs (.44s) — the reveal the
+               logo does under a cursor, at the size of the screen.
+     arriving  it carries on up and out behind the nav (.76s), and the
+               new page settles in under it.
 
-   The mark tapped on the page it points at does not reload: it fills
-   and the page glides back to the top.
+   IT COVERS THE SCREEN: sized by whichever of the two fills is larger,
+   so it runs past both edges and no ground shows around it at any
+   window. That crops it — 1920x945 keeps the middle 55% of its height,
+   a 360x780 phone the middle 41% of its width — and Kash asked for
+   exactly that twice: the Z full screen, covering everything, the way
+   the elixir used to. It survives the crop because what is left is
+   still the diagonal, in carbon, moving.
 
-   site.js adds .is-leaving and leaves a note in sessionStorage; one
-   line in every page's head reads the note and adds .is-arriving
-   before the first paint, so a new page never flashes up uncovered.
-   z-index 39 is one under the masthead's 40: over every page, under
-   the nav. Without the script, or with reduced motion, pages simply
-   change. */
-html::after{
-  content:"";position:fixed;left:0;right:0;top:-24px;bottom:-24px;
-  z-index:39;pointer-events:none;visibility:hidden;
-  background:linear-gradient(180deg,var(--elixir) 0,var(--elixir-deep) 24%,var(--elixir-void) 100%);
-  /* A wave on BOTH edges: the crest that leads it up the page being
-     left, and the tail that trails it off the page being opened.
-     With only a crest, leaving read as liquid and arriving as a blind
-     going up — the edge the reader watches on arrival is the bottom
-     one. The solid middle stops one pixel into each wave. */
-  --tail:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M0 7Q12.5 0 25 7T50 7T75 7T100 7V0H0Z'/%3E%3C/svg%3E");
-  -webkit-mask:var(--wave-ink) 0 0 / 120px 24px repeat-x,
-               linear-gradient(#000,#000) 0 23px / 100% calc(100% - 46px) no-repeat,
-               var(--tail) 0 100% / 120px 24px repeat-x;
-          mask:var(--wave-ink) 0 0 / 120px 24px repeat-x,
-               linear-gradient(#000,#000) 0 23px / 100% calc(100% - 46px) no-repeat,
-               var(--tail) 0 100% / 120px 24px repeat-x;
-  transform:translateY(100%);
+   Its art is the 2200px logo cut to its own edges: 1361px, every pixel
+   the source has, 109KB of WebP where that same cut as a PNG is a
+   megabyte. The 128px one the masthead uses would be a fifteenfold
+   blow-up at this size. Art and
+   outline are each stretched to the same box: their aspects differ by
+   half a percent, which is a six-pixel sliver of bare silhouette
+   along one edge if they are merely centred, and half a percent of
+   stretch nobody can see if they are not.
+
+   It was a curtain of elixir before. The mark is better: colour on
+   this site is the substance, and spending a screen of it on every
+   navigation is the one thing the budget cannot afford — and the mark
+   is the shape the brand owns, so the move says the name. Nothing
+   here is a new colour: the silhouette is the metal the masthead's
+   mark is cut from, and what fills it is the carbon fibre art itself.
+
+   Built on two pseudo-elements of body, so no page carries any markup
+   for it: ::before is the silhouette, ::after the carbon fibre clipped
+   to the level it has filled to, both masked to the mark's outline
+   (inlined here so the transition never waits on a file). They sit at
+   z-index 39, one under the masthead's 40, so the mark passes behind
+   the nav and the nav stays put. Every animation is `forwards` or
+   `both`: if a page's script never runs, they still finish and the
+   page is left visible. Reduced motion: pages simply change. */
+body::before,body::after{
+  content:"";position:fixed;z-index:39;pointer-events:none;
+  left:50%;top:50%;translate:-50% -50%;
+  width:max(100vw,calc(100vh * 128 / 114));aspect-ratio:128 / 114;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 114'%3E%3Cpath d='M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 114'%3E%3Cpath d='M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat;
+  visibility:hidden;
 }
-html.is-leaving::after{
+/* the silhouette: the metal the masthead's mark is cut from */
+body::before{background:var(--obsidian)}
+body.night::before{background:var(--zinc-silver)}
+/* and the carbon fibre, revealed from the bottom as it rises */
+body::after{
+  background:url(../img/zinstim-mark-lg.webp) 0 0 / 100% 100% no-repeat;
+  clip-path:inset(100% 0 0 0);
+}
+
+html.is-leaving body::before{
+  visibility:visible;animation:zs-mark-in .44s cubic-bezier(.4,0,.2,1) forwards;
+}
+html.is-leaving body::after{
   visibility:visible;
-  animation:zs-rise-in .38s cubic-bezier(.5,0,.75,0) forwards;
+  animation:zs-mark-in .44s cubic-bezier(.4,0,.2,1) forwards,
+            zs-mark-fill .44s cubic-bezier(.4,0,.2,1) forwards;
 }
-/* the brand's moving curve, not its arriving one: --ease-out does
-   80% of the travel in the first 150ms, and the new page popped out
-   from under the liquid instead of being uncovered. This holds a beat
-   on the new page beneath it, then sweeps. */
-html.is-arriving::after{
-  visibility:visible;
-  animation:zs-rise-out .72s var(--ease-move) .04s both;
+html.is-arriving body::before{
+  visibility:visible;animation:zs-mark-out .76s var(--ease-move) .04s both;
 }
-/* the waves drift as they climb, so they read as a surface */
-@keyframes zs-rise-in{
-  from{transform:translateY(100%);
-       -webkit-mask-position:0 0,0 23px,0 100%;mask-position:0 0,0 23px,0 100%}
-  to{transform:translateY(0);
-     -webkit-mask-position:-60px 0,0 23px,40px 100%;mask-position:-60px 0,0 23px,40px 100%}
+html.is-arriving body::after{
+  visibility:visible;clip-path:inset(0 0 0 0);
+  animation:zs-mark-out .76s var(--ease-move) .04s both;
 }
-@keyframes zs-rise-out{
-  from{transform:translateY(0);
-       -webkit-mask-position:-60px 0,0 23px,40px 100%;mask-position:-60px 0,0 23px,40px 100%}
-  to{transform:translateY(-100%);
-     -webkit-mask-position:-150px 0,0 23px,130px 100%;mask-position:-150px 0,0 23px,130px 100%}
+/* half the screen plus half of itself is exactly off the edge, at any
+   size — the % is of its own height, so this holds as it grows */
+@keyframes zs-mark-in{
+  from{transform:translateY(calc(50vh + 50%)) scale(.97)}
+  to{transform:translateY(0) scale(1)}
+}
+@keyframes zs-mark-out{
+  from{transform:translateY(0) scale(1)}
+  to{transform:translateY(calc(-50vh - 50%)) scale(1.03)}
+}
+@keyframes zs-mark-fill{
+  from{clip-path:inset(100% 0 0 0)}
+  to{clip-path:inset(0 0 0 0)}
 }
 
-/* the mark is the vessel that carries you: full as the page goes, full
-   as the next one opens, draining once it has */
+/* the page itself. The footer sits inside main on every page, so this
+   is everything but the masthead — which stays, holding the choice. */
+html.is-leaving main{animation:zs-page-out .34s var(--ease-move) forwards}
+html.is-arriving main{animation:zs-page-in .50s var(--ease-out) .14s both}
+@keyframes zs-page-out{to{opacity:0;transform:translateY(-1.1rem)}}
+@keyframes zs-page-in{from{opacity:0;transform:translateY(1.1rem)}to{opacity:1;transform:none}}
+
+/* the masthead's own mark fills as the big one rises, and drains as
+   the new page comes up — the same gesture at both sizes */
 html.is-leaving .home .mark,
 html.is-arriving .home .mark,
 html.is-home .home .mark{--vessel-level:1.12}
@@ -3635,6 +3665,6 @@ html.is-leaving .home .vessel__liquid,
 html.is-home .home .vessel__liquid{animation-play-state:running}
 
 @media (prefers-reduced-motion:reduce){
-  html::after{display:none}
+  body::before,body::after{display:none}
+  html.is-leaving main,html.is-arriving main{animation:none}
 }
-
