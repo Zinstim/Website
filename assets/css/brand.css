@@ -622,6 +622,23 @@ img,svg{display:block;max-width:100%}
 :is(.band--dark,.night) .marquee__track span:nth-child(even){color:var(--zinc-wash)}
 :is(.band--dark,.night) .marquee__track span{-webkit-text-stroke-color:var(--muted)}
 
+/* A line split into two words that trade places cannot be done by
+   parity — every odd span would be the same word. So the spans say
+   which they are, and these sit after the nth-child rules because they
+   match them for specificity exactly. */
+.marquee__track span.mq-fill{color:var(--obsidian);-webkit-text-stroke:0}
+.marquee__track span.mq-hollow{color:transparent;-webkit-text-stroke:1.5px var(--graphite)}
+:is(.band--dark,.night) .marquee__track span.mq-fill{color:var(--zinc-wash)}
+:is(.band--dark,.night) .marquee__track span.mq-hollow{
+  /* the colour too, not only the stroke: the nth-child rule above is
+     one specificity step higher than the plain class and was painting
+     every even span solid, so a hollow word in an even slot came out
+     filled AND outlined */
+  color:transparent;-webkit-text-stroke-color:var(--muted);
+}
+/* the gap inside a phrase is a word space, not the gap between phrases */
+.marquee__track span.mq-lead{padding-right:.22em}
+
 
 /* ═══ nav ════════════════════════════════════════════════════ */
 
@@ -1861,7 +1878,11 @@ img,svg{display:block;max-width:100%}
 /* 78vh left 417px of measured dead space around 253px of content.
    Still generous, no longer a void. */
 .hero{min-height:62vh;display:flex;align-items:center}
-.hero__bn{font-size:var(--step-4);color:var(--graphite);margin-top:var(--space-md)}
+.hero__bn{font-size:var(--step-2);color:var(--graphite);margin-top:var(--space-sm);
+  font-variation-settings:"wdth" var(--wdth-bn),"wght" 500;opacity:.72}
+/* the line at home, under the line. A signature, not a second
+   headline: at display size it fought the English and ran into
+   the diagonal cut behind it. */
 
 /* the one page-load moment. nothing else on the site does this. */
 .settle{opacity:0;transform:translateY(.5em)}
@@ -2391,6 +2412,17 @@ img,svg{display:block;max-width:100%}
      the claim is still down there the jar clears its top by 14px. At
      1.4rem the jar sat on the words. */
   transform:translateY(calc((1 - var(--c,1)) * 1.75rem));
+  /* The descender of the y in "you" was being cut off flat. At
+     line-height .82 the glyphs overflow their own line box, and the
+     gradient below paints THROUGH the text from the element's
+     background box — so anything hanging below that box gets no paint
+     at all and simply is not there. The padding gives the background
+     somewhere to reach; the negative margin hands the space straight
+     back, so the claim sits exactly where it sat and the jar still
+     clears its top. The waterline is unaffected: site.js measures the
+     same box the gradient resolves against, so the split still lands
+     on the surface. */
+  padding-bottom:.17em;margin-bottom:-.17em;
 }
 @supports ((background-clip:text) or (-webkit-background-clip:text)){
   .pour__claim{
@@ -2913,6 +2945,38 @@ img,svg{display:block;max-width:100%}
    Links that were underlined inline styles are buttons now, so every
    action on the site uses the one liquid component.                */
 .teaser__action{margin-top:var(--space-lg)}
+
+/* The origin teaser: a hook and a picture, side by side. The plate is
+   cut on the same diagonal as the hero's, leaning the same way, so a
+   photograph dropped into it arrives already belonging to the page —
+   and it is a plate, not a frame, because the image bleeds to its own
+   edges. It stacks below 860px, where two columns would make both of
+   them too small to be worth having. */
+.teaser__grid{
+  display:grid;gap:var(--space-lg);align-items:center;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+}
+.teaser__copy .t-body{max-width:38ch}
+.teaser__lede{margin-top:var(--space-md);color:var(--muted)}
+.teaser__plate{
+  margin:0;aspect-ratio:5 / 4;
+  background:linear-gradient(160deg,
+    color-mix(in srgb,var(--surface) 88%,var(--zinc-wash)),
+    var(--surface));
+  clip-path:polygon(13% 0,100% 0,87% 100%,0 100%);
+  display:grid;place-items:center;overflow:hidden;
+}
+.teaser__plate img{width:100%;height:100%;object-fit:cover;display:block}
+/* the drawing, which has to live inside the middle 74% — the only band
+   of the plate the diagonal never cuts across */
+.teaser__plate--art{color:var(--zinc-silver)}
+.teaser__plate--art svg{width:68%;height:auto;display:block}
+.teaser__plate--art .ill__link{stroke:var(--flame-teal);opacity:.9}
+
+@media (max-width:860px){
+  .teaser__grid{grid-template-columns:1fr}
+  .teaser__plate{aspect-ratio:16 / 10}
+}
 .doors-open__lede{margin-top:var(--space-md);color:var(--graphite)}
 .doors-open__actions{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
 
