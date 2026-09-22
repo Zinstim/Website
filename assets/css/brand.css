@@ -607,11 +607,22 @@ img,svg{display:block;max-width:100%}
   display:flex;gap:0;white-space:nowrap;
   will-change:transform;
 }
+/* The track sits in a shell. The band is full bleed and clips at the
+   window, but the TRACK starts on the same line every headline on the
+   page starts on — so the first thing you read as it rises into view
+   is a whole phrase, lined up with the column above it, and the slide
+   begins from there instead of from an edge nothing else touches. */
+.marquee .shell{overflow:visible}
+/* Caps: an outline is at its best on letters that all stand on the
+   same line and stop at the same height. Lower case put descenders
+   through the band, and a hollow y is mostly a loose stroke. Caps at
+   -.03em crowd, so the tracking opens to -.01em. */
 .marquee__track span{
   font-family:var(--face-display);
   font-variation-settings:"wdth" 70,"wght" 900;
   font-size:clamp(3rem,10vw,9rem);
-  line-height:1;letter-spacing:-.03em;
+  line-height:1;letter-spacing:-.01em;word-spacing:.04em;
+  text-transform:uppercase;
   padding-right:.35em;
   color:transparent;
   -webkit-text-stroke:1.5px var(--graphite);
@@ -622,22 +633,26 @@ img,svg{display:block;max-width:100%}
 :is(.band--dark,.night) .marquee__track span:nth-child(even){color:var(--zinc-wash)}
 :is(.band--dark,.night) .marquee__track span{-webkit-text-stroke-color:var(--muted)}
 
-/* A line split into two words that trade places cannot be done by
-   parity — every odd span would be the same word. So the spans say
-   which they are, and these sit after the nth-child rules because they
-   match them for specificity exactly. */
+/* A two-part line — the first part solid, the second outline, then the
+   same again, every time. Never flipped: a flip puts two outlines side
+   by side at a join, and two words in the same treatment read as one
+   unit whatever sits between them. The spans say which they are rather
+   than relying on parity, and these match the nth-child rules above
+   for specificity exactly, so they sit after them to win. */
 .marquee__track span.mq-fill{color:var(--obsidian);-webkit-text-stroke:0}
 .marquee__track span.mq-hollow{color:transparent;-webkit-text-stroke:1.5px var(--graphite)}
 :is(.band--dark,.night) .marquee__track span.mq-fill{color:var(--zinc-wash)}
-:is(.band--dark,.night) .marquee__track span.mq-hollow{
-  /* the colour too, not only the stroke: the nth-child rule above is
-     one specificity step higher than the plain class and was painting
-     every even span solid, so a hollow word in an even slot came out
-     filled AND outlined */
-  color:transparent;-webkit-text-stroke-color:var(--muted);
-}
-/* the gap inside a phrase is a word space, not the gap between phrases */
-.marquee__track span.mq-lead{padding-right:.22em}
+:is(.band--dark,.night) .marquee__track span.mq-hollow{color:transparent;-webkit-text-stroke-color:var(--muted)}
+
+/* THE GAPS, built rather than tuned. Inside a phrase the space is a
+   real one: the first half ends in a no-break space, so the join
+   between BUILT INTO and YOUR EVERYDAY is exactly the space between
+   BUILT and INTO — there is nothing at the seam that is not already
+   in the words. Between phrases, a little under three of those, which
+   is enough to read as a new phrase and not so much that the band
+   falls apart into islands. */
+.marquee__track span.mq-lead{padding-right:0}
+.marquee__track span.mq-tail{padding-right:.62em}
 
 
 /* ═══ nav ════════════════════════════════════════════════════ */
