@@ -31,6 +31,33 @@
     bgColor = rootStyle.getPropertyValue('--obsidian').trim() || '#0D0D0D';
   }
 
+  /* THE Z IS THE MARK, where a page asks for it. The path is read out
+     of the masthead rather than copied in here, so the two can never
+     drift apart, and it is scaled to the cap height of the letters
+     beside it and sampled by the same grid — so it arrives as dots in
+     the same one tone as the letters, which is how the wordmark reads
+     on every other page. No attribute, or no masthead: nothing
+     changes. */
+  const markSrc = canvas.hasAttribute('data-dotmark-mark')
+                ? document.querySelector('.mark__body') : null;
+  const markD = markSrc ? markSrc.getAttribute('d') : null;
+  /* GAP is the space between the mark and the I. OVER is an optical
+     correction: the mark's top is a point and its bottom is a point,
+     so set to the letters' exact cap height it reads a size small
+     against six flat-topped capitals. */
+  const MARK_W = 128, MARK_H = 114, REF = 100, CAP = 0.72, GAP = 0.09, OVER = 1.05;
+
+  // returns the width it took, so the letters know where to start
+  function paintMark(c, x, baseline, capH){
+    const k = (capH * OVER) / MARK_H;
+    c.save();
+    c.translate(x, baseline - capH);
+    c.scale(k, k);
+    c.fill(new Path2D(markD));
+    c.restore();
+    return MARK_W * k;
+  }
+
   function init() {
     const parent = canvas.parentElement;
     // clientWidth INCLUDES the container's padding, so using it raw makes
@@ -73,7 +100,43 @@
     offscreen.height = height;
     
     octx.fillStyle = 'white';
-    if (stacked) {
+    if (markD) {
+      // measured at a reference size, then scaled once to fit — the
+      // mark's width follows the cap height, so it has to be in the
+      // measurement, not added after it
+      octx.font = '900 ' + REF + 'px "Archivo", system-ui, sans-serif';
+      octx.letterSpacing = '-0.04em';
+      octx.textAlign = 'left';
+      octx.textBaseline = 'alphabetic';
+      const capRef  = REF * CAP;
+      const markRef = capRef * OVER * (MARK_W / MARK_H);
+      const gapRef  = REF * GAP;
+
+      if (stacked) {
+        const headRef = markRef + gapRef + octx.measureText('IN').width;
+        const wideRef = Math.max(headRef, octx.measureText('STIM').width);
+        const fs   = Math.floor(REF * (width * 0.97) / wideRef);
+        const k    = fs / REF, cap = fs * CAP, gap = fs * GAP;
+        const rows = cap * 2 + fs * 0.14;
+        const top  = (height - rows) / 2;
+        octx.font = '900 ' + fs + 'px "Archivo", system-ui, sans-serif';
+        octx.letterSpacing = '-0.04em';
+        let x = paintMark(octx, 0, top + cap, cap);
+        octx.fillText('IN', x + gap, top + cap);
+        octx.fillText('STIM', 0, top + cap * 2 + fs * 0.14);
+      } else {
+        const restRef  = octx.measureText('INSTIM').width;
+        const totalRef = markRef + gapRef + restRef;
+        const fs  = Math.min(height * 0.8, width * 0.94 * REF / totalRef);
+        const k   = fs / REF, cap = fs * CAP, gap = fs * GAP;
+        const baseline = height / 2 + cap / 2;
+        let x = (width - totalRef * k) / 2;
+        octx.font = '900 ' + fs + 'px "Archivo", system-ui, sans-serif';
+        octx.letterSpacing = '-0.04em';
+        x += paintMark(octx, x, baseline, cap);
+        octx.fillText('INSTIM', x + gap, baseline);
+      }
+    } else if (stacked) {
       // Fit the longer half to the width by MEASURING it, then set both
       // halves at that size, flush left like every headline on a phone.
       // The two lines sit one cap height plus a small gap apart, centred

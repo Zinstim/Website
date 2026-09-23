@@ -188,6 +188,7 @@
         <tr><th>Checked</th><td>Chrome, Edge and Firefox, opened from disk over <code>file://</code>, with a real pointer: no red at rest, the fibre rising from the bottom, the whole artwork showing within about half a second, and no red again once the cursor has left.</td></tr>
         <tr><th>Size</th><td>1.7rem in the nav. Holds at 16px as the favicon; smaller than that, the gap between blade and wedge closes.</td></tr>
         <tr><th>Files</th><td><code>assets/img/zinstim-favicon.png</code> &mdash; the tab icon, the red artwork at 64px (the tab shows the colour; the nav reveals it). <code>assets/img/zinstim-mark.svg</code> &mdash; the flat vector master. <code>assets/img/zinstim-mark.png</code> &mdash; the carbon-fibre artwork the liquid uncovers, 128&times;114, so it sits exactly on the vector. To change what the mark fills with, replace this file with art of the same 128:114 proportions. Larger sources are in the repo root (<code>ZinstimLogo_mark.png</code>, 512px).</td></tr>
+        <tr><th>In the wordmark</th><td>The dotted sign-off above every footer spells ZINSTIM with the mark in place of the Z &mdash; same path, read out of the masthead at run time rather than copied into <code>dotmark.js</code>, so the two can never drift apart. It is scaled to the cap height of the letters (&times;1.05: its top and bottom are points, so at exact cap height it reads a size small against six flat-topped capitals) and sampled by the same grid, so it arrives as dots like everything else, in the one Muted tone the letters are. Opt in per page with <code>data-dotmark-mark</code> on the canvas.</td></tr>
         <tr><th>Markup</th><td>Inline in every masthead, so it paints over <code>file://</code>. The carbon fibre comes in as an SVG <code>&lt;image&gt;</code> under an SVG <code>&lt;mask&gt;</code>, both inside that inline SVG &mdash; never CSS <code>mask-image</code>, which is what made the 07 Sep mark vanish when a page was opened from disk. Ids are unique per page: <code>mark-clip</code> and <code>mark-fill</code> in the masthead.</td></tr>
       </table>
     </div>
@@ -506,11 +507,7 @@
         </div>
         <div class="scale__row">
           <div class="scale__key">display</div>
-          <div class="t-head">Small things, <em>repeated.</em></div>
-        </div>
-        <div class="scale__row">
-          <div class="scale__key">bangla</div>
-          <div class="t-bn" style="font-size:var(--step-3)" lang="bn">ছোট জিনিস, বারবার।</div>
+          <div class="t-head">Your next <em>level.</em></div>
         </div>
         <div class="scale__row">
           <div class="scale__key">ui</div>
@@ -543,10 +540,30 @@
              everywhere.</p>
         </div>
         <div class="rule-card">
-          <h3 class="yes">Bangla sits beside English</h3>
-          <p>Not beneath it as a translation, and not behind a toggle. Equal
-             standing, same compression logic. Bangladesh is the first
-             audience.</p>
+          <h3 class="no">No Bangla without a native ear on it</h3>
+          <p>The site carried one line in Bangla, set beside the English at
+             equal standing. It came down on 22 Sep because a founder read it
+             out loud and it landed crudely &mdash; a reading no translation
+             check and no amount of care from outside the language would have
+             caught. Bangladesh is still the first audience and the line can
+             come back, but only in wording a native speaker has said aloud and
+             approved. The face is still loaded and <code>.t-bn</code> still
+             works.</p>
+        </div>
+        <div class="rule-card">
+          <h3 class="yes">The band line is caps, in two tones</h3>
+          <p>The line that runs across a band &mdash; <code>.marquee</code>
+             &mdash; is set in capitals, because an outline is at its best on
+             letters that stand on one line and stop at one height; lower case
+             put descenders through it and a hollow <em>y</em> is mostly a loose
+             stroke. It is split in two: the first half solid, the second
+             outline, the same way every time and never flipped &mdash; two
+             words in the same treatment read as one unit whatever sits between
+             them, so a flip makes every join misread. Inside the phrase the
+             gap is a real space carried by the first half; between phrases it
+             is about four of those. The track starts at the shell, so the
+             first thing you read as the band rises is a whole phrase, in line
+             with the column above it.</p>
         </div>
       </div>
     </div>
@@ -565,6 +582,13 @@
       <p class="t-meta" style="margin-top:var(--space-md);max-width:44ch">
         Six steps, no more. The 2xl step exists only to surround a divider — if
         it feels like too much air, it is probably correct.
+      </p>
+      <p class="t-meta" style="margin-top:var(--space-sm);max-width:52ch">
+        Below 861px the top two steps come down: <b>xl</b> from 6rem to 3.5rem
+        and <b>2xl</b>'s floor from 8rem to 5rem. A band padded 96px top and
+        bottom spends a quarter of a 780px screen on nothing, twice, between
+        every two things worth reading &mdash; and a divider band spent a third.
+        The bars above are live, so they show this page's own width.
       </p>
     </div>
   </section>
@@ -877,6 +901,7 @@
         <tr><th>The pour fill</th><td>Three backgrounds clipped to the type: a wave tile on the surface (<code>--sw</code>, sized with <code>--sw-w</code> and <code>--sw-h</code>), the substance (<code>--ink</code>) and the dry state (<code>--dry</code>, <code>transparent</code> for hollow type with a stroke). Size the crest to the type: at .15em a 220px glyph grows a 33px wave.</td></tr>
         <tr><th>Pinning</th><td>Pinned sections only get their tall height and sticky stage under <code>html.has-scrub</code>, which the script adds. The stage sits under the masthead at <code>var(--mast-h)</code>, measured by the script.</td></tr>
         <tr><th>Reduced motion, no JS</th><td>Reduced motion writes each element's rest value once (default 1) and never adds <code>has-scrub</code>, so nothing pins and every section shows its finished state. Without the script <code>--p</code> is unset and falls back to 1 &mdash; the same finished states.</td></tr>
+        <tr><th>How long a pin runs</th><td>A pinned section holds for its height LESS one stage, so the height is the only control over how much scrolling a reader spends on it. Origin's thesis is 175vh and its gesture 160vh &mdash; on a 390&times;780 phone that was still 657px and 540px, three or four flicks for one paragraph, so below 861px they are 148vh and 136vh, or 447px and 353px: about one swipe each. Check the read still completes inside a shorter pin &mdash; at the end of the thesis <code>--p</code> reads .995 and the last of its 32 words resolves to a full fill.</td></tr>
         <tr><th>Cost</th><td>One passive scroll listener and one animation frame per scroll: every rectangle is read first, then only changed values are written, so a frame costs one layout.</td></tr>
         <tr><th>Sizing large type</th><td>Size a single unbreakable word to its column, not the viewport: <code>container-type:inline-size</code> on the column and <code>cqi</code> on the word. UNLEASH sized in <code>vw</code> stretched its grid track until the copy beside it ran to 7px from a phone's edge.</td></tr>
         <tr><th>Checked</th><td>Chrome and Firefox from disk, 360 to 1920 wide: every section at exact progress values, no element past its column, no sideways scroll, reduced motion and no-JS finished states.</td></tr>
@@ -907,10 +932,11 @@
         <tr><th>The wordmark</th><td>The dots answer a finger as they answer a cursor (pointer events &mdash; they were mouse-only, so on a phone the word was a still picture), over a wider circle for a fingertip. Rub sideways across it and they scatter; drag up or down and the page scrolls. Most readers scroll past rather than touch it, so each time it comes well into view the dots are thrown out and pour back together. It is taller and denser below 600px &mdash; at 390 it had been a 54px word on a 6px grid, nine rows of dots &mdash; and it stops drawing once every dot is home.</td></tr>
         <tr><th>Titles</th><td>A page title that is not a link pours the rest of the way when tapped, holds, and settles back to half.</td></tr>
         <tr><th>Targets</th><td>Anything a thumb lands on is at least 44 &times; 44px on touch: the footer links were 28px tall, Wear's piece tabs 35px, this page's contents 21px. Links inside running text are exempt, as the accessibility rules allow.</td></tr>
+        <tr><th>Scale</th><td>The hero has to stay the biggest thing on the page, and on a phone it did not: at 390 Origin's rollcall measured 35px against 37px section headings and a 37px manifesto, because the hero scales on flat 9vw while those two ride clamps that flatten out early and overtake it. Fixed by steepening their middle terms rather than adding a breakpoint, with each new curve passing through the old value where the old one topped out &mdash; headings 37 to 28, the manifesto 37 to 30, and 1280 unchanged to the pixel. Measure a new headline against the hero at 390 before shipping it.</td></tr>
         <tr><th>Reading</th><td>Mono captions get an 11px floor below 861px (they were 9.9&ndash;10.9px). Form fields are at least 16px on touch, or iOS zooms the page into them on focus. Copy that names a gesture names the device's own, with <code>.on-point</code> and <code>.on-touch</code> spans &mdash; the kit said &ldquo;Hover one&rdquo; to phones.</td></tr>
         <tr><th>Short screens</th><td>Below 34rem of height Origin's thesis and gesture sections do not pin &mdash; on a phone held sideways the pinned stage was shorter than the text. Their pours still run as they scroll past.</td></tr>
         <tr><th>On Night</th><td>The pill's words are Zinc Wash and its dot is a Zinc Wash disc with ink bars; the sheet that grows out of the dot is the same Zinc Wash, so the dot is seen to open into it. It had been Obsidian on the Obsidian masthead, words and dot alike: after choosing a page a reader saw a teal dot and two bars, and the name of the page they were on printed black on black.</td></tr>
-        <tr><th>Room</th><td>The footer keeps the page gutter (it had none: <code>padding:X 0</code> on <code>.foot</code> overrode the shell's sides) and stacks below 641px. The wordmark signs off on two lines below 600px &mdash; ZIN over STIM, fitted to the width by measuring it &mdash; with a stretch of dark above and below. Inner-page heroes are taller, so the headline and the cut are not packed together. Tables stack their rows rather than squeeze: Fuel's lab table below 481px, this page's spec tables below 641px.</td></tr>
+        <tr><th>Room</th><td>The footer keeps the page gutter (it had none: <code>padding:X 0</code> on <code>.foot</code> overrode the shell's sides) and stacks below 641px. The wordmark signs off on two lines below 600px &mdash; the mark and IN over STIM, fitted to the width by measuring the wider of the two &mdash; with a stretch of dark above and below. Inner-page heroes are taller, so the headline and the cut are not packed together. Tables stack their rows rather than squeeze: Fuel's lab table below 481px, this page's spec tables below 641px.</td></tr>
         <tr><th>Checked</th><td>Real taps in Chrome's touch emulation at 360&times;640, 390&times;844 and 844&times;390 on every page; a real click in Firefox on a narrow window; each touch state probed at the middle of the screen; desktop nav unchanged at 1440. The second pass drove every new behaviour with real touch events at 390 &mdash; each door on the line with its cards counted, three swipes and a vertical drag on Wear, a tapped title, the wordmark's arrival, sleep and a rub &mdash; and audited every page for targets under 44px, text under 11px and horizontal overflow.</td></tr>
       </table>
     </div>

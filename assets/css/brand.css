@@ -149,7 +149,7 @@
   --step-0:  1rem;
   --step-1:  1.125rem;
   --step-2:  clamp(1.5rem,  1.2rem + 1.4vw,  2.1rem);
-  --step-3:  clamp(2.2rem,  1.5rem + 3.4vw,  4rem);
+  --step-3:  clamp(1.7rem,  0.63rem + 4.58vw, 4rem);
   --step-4:  clamp(3.2rem,  1.8rem + 6.6vw,  7rem);
   --display: clamp(3.2rem,  1rem   + 10vw,   9.5rem);
   --divider: clamp(2.8rem,  0.5rem + 8.5vw,  8.5rem);
@@ -577,8 +577,8 @@ img,svg{display:block;max-width:100%}
    Used for every headline on the site — it is the house move.
 
      <h1 class="t-display lines" data-reveal>
-       <span class="ln"><span>Small things,</span></span>
-       <span class="ln"><span>repeated.</span></span>
+       <span class="ln"><span>Your next</span></span>
+       <span class="ln"><span>level.</span></span>
      </h1>                                                        */
 
 .lines{display:block}
@@ -977,6 +977,23 @@ img,svg{display:block;max-width:100%}
 
 .shell{width:100%;max-width:78rem;margin:0 auto;padding:0 var(--space-lg)}
 @media (max-width:860px){.shell{padding:0 var(--space-md)}}
+
+/* ── the phone ───────────────────────────────────────────────
+   A band padded 96px top and bottom spends a quarter of a 780px
+   screen on nothing, twice, between every two things worth reading —
+   and the divider bands spend a third. Section air scales down here;
+   the type scale already does it on its own curves.
+
+   The pinned reads come down with it. A pin lasts its section's
+   height LESS one stage, so on a phone 175vh was 657px of scrolling
+   for one paragraph and 160vh was 540px. 148 and 136 make those 447
+   and 383 — about one swipe each, which is what Kash asked for. */
+@media (max-width:860px){
+  :root{
+    --space-xl:3.5rem;
+    --space-2xl:clamp(5rem,14vw,15rem);
+  }
+}
 
 /* drops the 78rem measure cap and keeps only the page gutter. For
    display type that needs the full width — the measure exists to
@@ -3221,7 +3238,12 @@ img,svg{display:block;max-width:100%}
    poured: it is quiet, so it just arrives. */
 .manifesto{position:relative;background:var(--zinc-wash)}
 .manifesto__stage{padding:var(--space-xl) 0}
-.has-scrub .manifesto{height:250vh;height:250svh}
+/* The pin lasts the section's height LESS one stage, so 250vh meant
+   150vh of scrolling to get through one paragraph — three flicks on
+   a phone, which is where Kash gave up. 175 leaves 75vh: still a
+   deliberate read, about half the swiping. The words stay filled
+   once they are filled, so nothing is lost by arriving sooner. */
+.has-scrub .manifesto{height:175vh;height:175svh}
 .has-scrub .manifesto__stage{
   position:sticky;top:var(--mast-h,0px);
   height:calc(100vh - var(--mast-h,0px));height:calc(100svh - var(--mast-h,0px));
@@ -3230,7 +3252,10 @@ img,svg{display:block;max-width:100%}
 .manifesto__text{
   font-family:var(--face-display);
   font-variation-settings:"wdth" var(--wdth-head),"wght" var(--wght-head);
-  font-size:clamp(2.3rem,.9rem + 3.9vw,5.2rem);
+  /* steeper below a tablet so it never overtakes the hero, which
+     scales on flat 9vw: at 390 this is 30px against the hero's 35,
+     and at 1280 it is the same 64px it always was. */
+  font-size:clamp(1.6rem,.95rem + 3.77vw,5.2rem);
   line-height:1.06;letter-spacing:-.022em;
   max-width:22ch;
   --n:1;
@@ -3354,6 +3379,9 @@ img,svg{display:block;max-width:100%}
 .name__vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .name__fail{margin-top:var(--space-lg);max-width:40ch;font-size:var(--step-1)}
 .name__idea{margin-top:var(--space-md);max-width:40ch;font-size:var(--step-1);color:var(--muted)}
+/* the second half of the name, at full strength: it is the turn the
+   section has been building to, not a footnote to it */
+.name__stim{margin-top:var(--space-lg);max-width:40ch;font-size:var(--step-1)}
 /* a held beat under the last line on wide screens: the tile rides for
    as long as the copy column lasts, and without it the tile had already
    left when the sliver came back */
@@ -3377,7 +3405,19 @@ img,svg{display:block;max-width:100%}
   --r:clamp(0, (var(--p,1) - .55) * 3.2, 1);
 }
 .shout__stage{padding:var(--space-xl) 0}
-.has-scrub .shout{height:230vh;height:230svh}
+/* the same complaint applies here — same device, same fix */
+.has-scrub .shout{height:160vh;height:160svh}
+
+/* On a phone, shorter still. A pin lasts its section's height LESS one
+   stage, so 175vh was 657px of scrolling for one paragraph and 160vh
+   was 540px; these make them 447 and 383 — about one swipe each. This
+   has to sit AFTER the rules above: a media query adds no specificity,
+   so with both at (0,2,0) it is source order that decides, and the
+   same pair written up beside the shell's phone gutter simply lost. */
+@media (max-width:860px){
+  .has-scrub .manifesto{height:148vh;height:148svh}
+  .has-scrub .shout{height:136vh;height:136svh}
+}
 .has-scrub .shout__stage{
   position:sticky;top:var(--mast-h,0px);
   height:calc(100vh - var(--mast-h,0px));height:calc(100svh - var(--mast-h,0px));
