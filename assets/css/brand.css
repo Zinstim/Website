@@ -4365,7 +4365,17 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
   display:block;text-decoration:none;color:inherit;min-width:0;
   position:relative;
 }
+/* display:block is load-bearing. This is a <span>, so without it the
+   frame is an inline box — and aspect-ratio, height and overflow do
+   not apply to a non-replaced inline box at all. They were being
+   dropped silently: the frame took the image's own height, the body
+   sat outside the card's border box, and the grid sized its rows from
+   a card shorter than its contents, so a second row of cards printed
+   over the first row's names and prices. With two pieces there was
+   never a second row, so nothing looked wrong. It also means the
+   hover crop never clipped. */
 .card__frame{
+  display:block;
   position:relative;overflow:hidden;aspect-ratio:4/5;
   background:color-mix(in srgb,var(--ink) 7%,var(--surface));border-radius:var(--radius-sm);
 }
