@@ -183,9 +183,10 @@
     <div class="drawer__foot">
       <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
       <button class="btn" type="button" data-bag-checkout>Checkout</button>
-      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
-           send it. The form stays shut until you ask to pay, so the
-           bag is still a bag. -->
+      <!-- A name, a way to reach you and somewhere to send it. The form
+           stays shut until you ask to check out, so the bag is still a
+           bag. Nothing here takes money: the order is placed and we
+           ring to arrange payment. -->
       <!-- novalidate: the browser blocks submit on an invalid form, so
      the submit handler never ran and the shopper got a native
      bubble instead of the sentence written for that field. The
@@ -206,7 +207,7 @@
         <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
           data-say="Which city?"></label>
         <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
-        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Place order</button>
         <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
       </form>
       <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>

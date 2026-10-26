@@ -1,10 +1,11 @@
 /* ─────────────────────────────────────────────────────────────────
    receipt.js — order.html
 
-   Where SSLCommerz sends people back to. /api/confirm has already
-   called the validator API and decided whether the payment is real;
-   this file REPORTS that decision and never makes one. A ?state in
-   the URL is not evidence of anything — anyone can type one.
+   What the checkout lands on. This file REPORTS a decision made
+   elsewhere and never makes one. A ?state in the URL is not evidence
+   of anything — anyone can type one — which is exactly why "placed"
+   claims nothing about money. "paid" is kept for when a gateway is
+   wired up and /api/confirm has validated a real payment.
 
    The line items come from a snapshot the checkout wrote to this
    browser before handing off to the gateway, because there is no
@@ -47,8 +48,8 @@
   try { order = JSON.parse(localStorage.getItem('zs-order-v1') || 'null'); }
   catch (e) { /* no storage: the reference carries it */ }
 
-  /* ── anything other than a confirmed payment is not a receipt ──── */
-  if (state !== 'paid') {
+  /* ── neither a placed order nor a confirmed payment ────────────── */
+  if (state !== 'paid' && state !== 'placed') {
     var said = {
       fail:   ['That one did not go through.',
                'Nothing has been charged. Your bag is still here — try again, or pay another way.'],
@@ -80,19 +81,19 @@
   }
   var who = order && order.customer ? firstName(order.customer.name) : '';
 
-  /* A preview reaches this page without a gateway, and reads exactly
-     like the real thing — it is the same page, seen on a local host,
-     by the people building it. The guard that matters is upstream:
-     the preview branch in shop.js is gated on the hostname, so a
-     customer on the live site can only arrive here after
-     /api/confirm has validated a real payment with SSLCommerz. */
-  /* the only thing this still changes is whether the bag is emptied;
-     the page itself reads the same either way */
-  var preview = /^PREVIEW-/.test(ref);
+  var phone = order && order.customer && order.customer.phone;
 
   $('[data-r-thanks]').textContent = who ? 'Thank you, ' + who + '.' : 'Thank you.';
-  $('[data-r-lede]').textContent =
-    'Paid in full. We are packing it now, and you will hear from us when it ships.';
+  /* Nothing has been charged, and the page says so in the first line
+     rather than leaving someone to work it out from the absence of a
+     card number. The call is the next thing that happens to them, so
+     it is the next thing they read. */
+  $('[data-r-lede]').textContent = state === 'placed'
+    ? (phone
+        ? 'Order received. Nothing has been charged \u2014 we will call you on ' + phone +
+          ' to confirm and arrange payment before anything ships.'
+        : 'Order received. Nothing has been charged \u2014 we will be in touch to confirm and arrange payment before anything ships.')
+    : 'Paid in full. We are packing it now, and you will hear from us when it ships.';
 
   var lines = (order && order.lines) || [];
   if (lines.length) {
@@ -117,7 +118,7 @@
 
   var meta = [];
   if (ref) meta.push(['Reference', ref]);
-  meta.push(['Paid', stamp(order && order.at)]);
+  meta.push([state === 'placed' ? 'Placed' : 'Paid', stamp(order && order.at)]);
   if (order && order.customer) {
     var c = order.customer;
     var to = [c.address, c.city, c.postcode].filter(Boolean).join(', ');
@@ -131,8 +132,8 @@
 
   var email = order && order.customer && order.customer.email;
   $('[data-r-note]').textContent = email
-    ? 'A copy is on its way to ' + email + '. Keep it — it is your proof of purchase.'
-    : 'A copy is on its way to the address you paid with.';
+    ? 'A copy is on its way to ' + email + '. Keep the reference — it is how we find your order.'
+    : 'A copy is on its way to the address you gave us.';
 
   $('[data-r-act]').innerHTML =
     '<a class="btn" href="wear.html">Back to the drop</a>' +
@@ -141,10 +142,9 @@
   var pr = $('[data-r-print]');
   if (pr) pr.addEventListener('click', function () { window.print(); });
 
-  /* The bag empties only here, on a confirmed payment, and only once
-     bag.js has actually run — this file is deferred alongside it. */
-  /* a preview has not bought anything, so the bag stays */
-  if (!preview && window.ZSBag) { try { window.ZSBag.clear(); } catch (e) {} }
+  /* The bag empties only here, on an order that actually landed, and
+     only once bag.js has run — this file is deferred alongside it. */
+  if (window.ZSBag) { try { window.ZSBag.clear(); } catch (e) {} }
 
   /* The snapshot stays, so a refresh or a back-button still shows the
      receipt. The next checkout overwrites it. */

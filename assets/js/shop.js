@@ -37,27 +37,55 @@
     var sum   = dlg.querySelector('[data-bag-sum]');
     var count = open.querySelector('[data-bag-count]');
     var note  = dlg.querySelector('[data-bag-note]');
+    var go    = dlg.querySelector('[data-bag-checkout]');
+    var form  = dlg.querySelector('[data-checkout]');
 
     function render(items){
       open.classList.toggle('is-full', items.length > 0);
       count.textContent = window.ZSBag.count();
+
+      /* An empty bag used to leave Checkout bright red and live, and
+         pressing it did nothing whatsoever: the handler wrote "Your bag
+         is empty." into the checkout form's status line, and that form
+         is still hidden at that point. The one button in the drawer was
+         a dead click with no explanation. It is disabled while there is
+         nothing to buy, and the empty line carries the way out. */
+      if (go) go.disabled = !items.length;
+
       if (!items.length){
-        list.innerHTML = '<li class="drawer__empty t-body">Nothing in it yet.</li>';
+        /* If the last line was removed while the form was open, fold
+           the form away too — otherwise Pay sits over an empty cart. */
+        if (form && !form.hidden){ form.hidden = true; if (go) go.hidden = false; }
+        list.innerHTML = '<li class="drawer__empty t-body">Nothing in it yet. ' +
+                         '<a href="wear.html">See the drop</a></li>';
         sum.textContent = '—';
         note.textContent = 'Your bag is kept on this device.';
         return;
       }
       list.innerHTML = items.map(function(it){
+        var label = it.name || it.code;
+        /* the line total, not the unit price: two of a thing should not
+           read as the price of one */
+        var amt = typeof it.price === 'number' ? money(it.price * it.qty) : null;
         return '<li class="line">' +
           (it.img ? '<img src="' + esc(it.img) + '" alt="">' : '<span></span>') +
-          '<span><span class="line__name">' + esc(it.name || it.code) + '</span>' +
+          '<span class="line__head">' +
+            '<span class="line__name">' + esc(label) + '</span>' +
+            '<span class="line__amt">' + (amt || '—') + '</span>' +
+          '</span>' +
           '<span class="line__meta">' + esc(it.code) + ' · ' + esc(it.size) + '</span>' +
-          '<span class="line__qty">' +
-            '<button class="line__step" type="button" data-less="' + esc(it.id) + '" aria-label="One fewer">−</button>' +
-            '<span class="line__meta">' + it.qty + '</span>' +
-            '<button class="line__step" type="button" data-more="' + esc(it.id) + '" aria-label="One more">+</button>' +
-          '</span></span>' +
-          '<span class="line__meta">' + (money(it.price) || '—') + '</span>' +
+          '<span class="line__ctl">' +
+            '<span class="line__qty">' +
+              '<button class="line__step" type="button" data-less="' + esc(it.id) + '"' +
+                (it.qty <= 1 ? ' disabled' : '') +
+                ' aria-label="One fewer ' + esc(label) + '">\u2212</button>' +
+              '<span class="line__n">' + it.qty + '</span>' +
+              '<button class="line__step" type="button" data-more="' + esc(it.id) + '"' +
+                ' aria-label="One more ' + esc(label) + '">+</button>' +
+            '</span>' +
+            '<button class="line__rm" type="button" data-rm="' + esc(it.id) + '"' +
+              ' aria-label="Remove ' + esc(label) + ' from your bag">Remove</button>' +
+          '</span>' +
         '</li>';
       }).join('');
       var s = window.ZSBag.subtotal();
@@ -69,12 +97,24 @@
         : 'Delivered across Bangladesh. Your bag is kept on this device.';
     }
 
+    /* − used to delete the line when it ran out of numbers to take away,
+       which is how a bag could empty itself without anyone meaning it.
+       It stops at 1 now; Remove is the only way a line leaves. */
     list.addEventListener('click', function(e){
-      var less = e.target.getAttribute && e.target.getAttribute('data-less');
-      var more = e.target.getAttribute && e.target.getAttribute('data-more');
-      var all = window.ZSBag.items(), i;
-      if (less) for (i = 0; i < all.length; i++) if (all[i].id === less) window.ZSBag.setQty(less, all[i].qty - 1);
-      if (more) for (i = 0; i < all.length; i++) if (all[i].id === more) window.ZSBag.setQty(more, all[i].qty + 1);
+      var t = e.target;
+      if (!t || !t.getAttribute) return;
+      var id = t.getAttribute('data-less') || t.getAttribute('data-more') || t.getAttribute('data-rm');
+      if (!id) return;
+
+      if (t.hasAttribute('data-rm')){ window.ZSBag.remove(id); return; }
+
+      var all = window.ZSBag.items();
+      for (var i = 0; i < all.length; i++){
+        if (all[i].id !== id) continue;
+        var n = all[i].qty + (t.hasAttribute('data-more') ? 1 : -1);
+        if (n >= 1) window.ZSBag.setQty(id, n);
+        return;
+      }
     });
 
     open.addEventListener('click', function(){
@@ -97,41 +137,9 @@
 
   /* ── checkout ────────────────────────────────────────────────────
      The browser sends codes, sizes and quantities and nothing else.
-     Every price and the total are worked out again in /api/checkout
-     from the catalogue, because a number that arrives from a page
-     anyone can edit is not a price. */
-  /* Running from a file server with no /api — Live Server, file:// —
-     there is nothing to take a payment. Rather than dead-end there,
-     the Pay button walks the rest of the flow so the receipt can be
-     seen and worked on. Gated on the hostname, never on a failed
-     request: a 404 from the real site means something is broken and
-     must look broken. */
-  function isPreview(){
-    if (location.protocol === 'file:') return true;
-    if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)) return true;
-    /* Set by ?demo=1, read back for the rest of the tab. */
-    try { return sessionStorage.getItem('zs-demo') === '1'; }
-    catch (e) { return false; }
-  }
-
-  /* ?demo=1 on any page turns the walk-through on for THIS TAB ONLY and
-     then gets out of the URL, so the flow can be seen on the deployed
-     site before the gateway keys exist. Read once here, at load, and
-     not inside isPreview(): paint() rewrites the query string with
-     history.replaceState, so by the time Pay is pressed the flag is
-     long gone from location.search.
-
-     Deliberately not automatic on a live host. A stranger who adds a
-     tee, types their address and their phone number must never be
-     told they paid for something nobody is going to send — they would
-     have to know this flag and type it. */
-  (function armDemo(){
-    try {
-      if (/[?&]demo=1(?:&|$)/.test(location.search)) sessionStorage.setItem('zs-demo', '1');
-      if (/[?&]demo=0(?:&|$)/.test(location.search)) sessionStorage.removeItem('zs-demo');
-    } catch (e) {}
-  }());
-
+     Every price and the total are worked out again in /api/order from
+     the catalogue, because a number that arrives from a page anyone
+     can edit is not a price. */
   function checkout(dlg, sum){
     var open = dlg.querySelector('[data-bag-checkout]');
     var form = dlg.querySelector('[data-checkout]');
@@ -145,20 +153,21 @@
       state.classList.toggle('is-bad', !!bad);
     }
 
-    function toPreview(){
-      /* the snapshot was written before the request, so the receipt
-         shows the real bag */
-      location.href = 'order.html?state=paid&ref=PREVIEW-' +
-        Date.now().toString(36).toUpperCase();
-    }
-
     open.addEventListener('click', function(){
-      if (!window.ZSBag.count()){ say('Your bag is empty.', true); return; }
+      /* render() disables this button on an empty bag, so this is belt
+         and braces — and it writes to the note, which is the one line
+         in the drawer that is always visible. The form's status line
+         is not, which is how this used to say nothing at all. */
+      if (!window.ZSBag.count()){
+        var n = dlg.querySelector('[data-bag-note]');
+        if (n) n.textContent = 'Your bag is empty — nothing to check out yet.';
+        return;
+      }
       form.hidden = false;
       open.hidden = true;
       var first = form.querySelector('input');
       if (first) first.focus();
-      if (go) go.textContent = 'Pay ' + (sum ? sum.textContent : '');
+      if (go) go.textContent = 'Place order \u00b7 ' + (sum ? sum.textContent : '');
     });
 
     form.addEventListener('submit', function(e){
@@ -196,12 +205,12 @@
       if (!cart.length){ say('Your bag is empty.', true); return; }
 
       if (go){ go.disabled = true; }
-      say('Opening the payment page\u2026');
+      say('Placing your order\u2026');
 
       /* Snapshot the order before we hand off to the gateway. There is
          no order store yet (see the decision log), and the bag is
-         cleared the moment a payment confirms — without this the
-         receipt would have nothing to show but a reference number.
+         cleared the moment the order lands — without this the receipt
+         would have nothing to show but a reference number.
          It is this browser's copy of its own order, nothing more. */
       try {
         localStorage.setItem('zs-order-v1', JSON.stringify({
@@ -215,10 +224,15 @@
         }));
       } catch (e) { /* private window: the receipt falls back to the ref */ }
 
-      fetch('/api/checkout', {
+      /* `method` is the seam. Today the endpoint always invoices and
+         answers with a reference; when the gateway is turned on it
+         answers with a redirect instead, and the only line that has to
+         change is the one that sends the method. Both replies are
+         handled here, so the front end is already finished. */
+      fetch('/api/order', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ cart: cart, customer: customer })
+        body: JSON.stringify({ cart: cart, customer: customer, method: 'invoice' })
       }).then(function(r){
         /* Read it as text first. A 404 from a plain file server is an
            HTML page, and r.json() on that throws a parser error that
@@ -229,26 +243,20 @@
           return { ok: r.ok, status: r.status, j: j };
         });
       }).then(function(out){
-        /* A real session always wins, so `vercel dev` against the real
-           gateway still redirects even on a local host. */
-        if (out.j && out.j.url) { location.href = out.j.url; return; }
-        /* Anything that is not a checkout session, in preview: walk the
-           rest of the flow. Pinning this to 404/405 was too narrow —
-           python's http.server answers POST with 501, Live Server with
-           something else again — and a 503 from our own endpoint with
-           no gateway keys behind it is the same situation. The gate is
-           preview, not the status code. */
-        if (isPreview()) { toPreview(); return; }
-        if (out.j && out.j.error) throw new Error(out.j.error);
-        throw new Error('Could not reach the payment page. Try again in a moment.');
+        /* later: the gateway hands back somewhere to go */
+        if (out.j && out.j.redirect){ location.href = out.j.redirect; return; }
+        if (out.ok && out.j && out.j.ref){
+          location.href = 'order.html?state=placed&ref=' + encodeURIComponent(out.j.ref);
+          return;
+        }
+        throw new Error((out.j && out.j.error) ||
+          'We could not place that order. Try again in a moment.');
       })['catch'](function(err){
-        /* the request never landed at all — still a preview */
-        if (isPreview()) { toPreview(); return; }
         if (go) go.disabled = false;
         /* a sentence a shopper can act on, never a parser message */
         var m = err && err.message;
         if (!m || /JSON|parse|Unexpected|NetworkError|Failed to fetch/i.test(m)) {
-          m = 'Could not reach the payment page. Check your connection and try again.';
+          m = 'We could not reach the shop just then. Check your connection and try again.';
         }
         say(m, true);
       });

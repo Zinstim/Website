@@ -4231,21 +4231,74 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
   margin:0;padding:0;list-style:none;
 }
 .drawer__empty{margin:var(--space-lg) 0;color:var(--ink-2)}
+/* A bag line used to be `4rem 1fr auto` with the name, the code, the
+   size AND the stepper all stacked inside that middle 1fr, in a drawer
+   that is never wider than 26rem. Everything touched everything. It is
+   two columns and three rows now: the thumbnail runs down the side, the
+   name and the line total share the top row, the code and size sit
+   under them, and the controls get a row to themselves. */
 .line{
-  display:grid;grid-template-columns:4rem 1fr auto;
-  gap:var(--space-sm);align-items:start;
-  padding:var(--space-sm) 0;border-bottom:1px solid var(--rule-c);
+  display:grid;
+  grid-template-columns:4.5rem minmax(0,1fr);
+  grid-template-areas:
+    "img head"
+    "img meta"
+    "img ctl";
+  column-gap:var(--space-sm);row-gap:.25rem;
+  align-items:start;
+  padding:var(--space-md) 0;border-bottom:1px solid var(--rule-c);
 }
-.line img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius-sm)}
-.line__name{font-variation-settings:"wdth" 90,"wght" 700;display:block}
-.line__meta{color:var(--ink-2);font-size:var(--step--1)}
-.line__qty{display:inline-flex;align-items:center;gap:.4rem;margin-top:.4rem}
+.line img{
+  grid-area:img;align-self:start;
+  width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius-sm);
+}
+.line__head{
+  grid-area:head;display:flex;align-items:baseline;
+  justify-content:space-between;gap:var(--space-sm);
+}
+.line__name{font-variation-settings:"wdth" 90,"wght" 700}
+.line__meta{grid-area:meta;color:var(--ink-2);font-size:var(--step--1)}
+.line__amt{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* stepper on the left, Remove on the far right — far enough apart that
+   neither is hit by accident, which is the whole reason − no longer
+   deletes the line when it runs out of numbers to subtract. */
+.line__ctl{
+  grid-area:ctl;margin-top:.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:var(--space-sm);
+}
+.line__qty{display:inline-flex;align-items:center;gap:.5rem}
 .line__step{
-  width:1.5rem;height:1.5rem;border:1px solid var(--rule-c);
+  width:2rem;height:2rem;flex:0 0 auto;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--rule-c);
   border-radius:var(--radius-sm);background:none;color:var(--ink);
   cursor:pointer;font:inherit;line-height:1;
+  transition:border-color var(--dur-base) var(--ease-out),
+             color var(--dur-base) var(--ease-out);
 }
-.line__step:hover{border-color:var(--action)}
+.line__step:hover:not(:disabled){border-color:var(--action)}
+.line__step:disabled{opacity:.35;cursor:not-allowed}
+.line__n{min-width:1.25rem;text-align:center;font-variant-numeric:tabular-nums}
+
+/* A labelled button, not an icon. An x in a 1.5rem box next to + is
+   exactly the crowding this block was rebuilt to get rid of. */
+.line__rm{
+  border:0;background:none;padding:.35rem 0;
+  font:inherit;font-size:var(--step--1);
+  color:var(--ink-2);cursor:pointer;
+  text-decoration:underline;text-underline-offset:.2em;
+  text-decoration-color:var(--rule-c);
+  transition:color var(--dur-base) var(--ease-out);
+}
+.line__rm:hover{color:var(--crimson-type);text-decoration-color:currentColor}
+
+/* coarse pointers get a target worth aiming at */
+@media (pointer:coarse){
+  .line__step{width:2.5rem;height:2.5rem}
+  .line__rm{padding:.5rem 0}
+}
 .drawer__foot{padding-top:var(--space-md);display:grid;gap:var(--space-sm)}
 .drawer__sum{
   display:flex;justify-content:space-between;align-items:baseline;
@@ -4720,18 +4773,25 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
 /* ── checkout, inside the bag drawer ─────────────────────────────
    Shut until asked for. A bag that opens on a form is a form, and
    most of the time someone opening the bag is counting, not buying. */
+/* This was `1fr 1fr` with a `max-width:420px` collapse — but the drawer
+   itself is `min(26rem,100vw)`, so the media query measured the window
+   while the cramping happened in a 416px box, and at larger text the
+   fields ran off the edge. auto-fit measures the space the fields are
+   actually in. */
 .checkout{
-  display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));
+  gap:var(--space-sm);
   margin-top:var(--space-md);
 }
 .checkout--wide{grid-column:1 / -1}
-.checkout label{display:grid;gap:.3rem}
+.checkout label{display:grid;gap:.3rem;min-width:0}
 .checkout label span{
   font-family:var(--face-text);font-size:.68rem;letter-spacing:.14em;
   color:var(--ink-2);
 }
 .checkout input{
-  width:100%;padding:.6rem .7rem;font:inherit;
+  width:100%;min-width:0;padding:.6rem .7rem;font:inherit;
   color:var(--ink);background:none;
   border:1px solid var(--rule-c);border-radius:var(--radius-sm);
   transition:border-color var(--dur-base) var(--ease-out);
@@ -4750,7 +4810,6 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
 .checkout input:user-invalid{border-color:var(--crimson)}
 .checkout [data-checkout-state]{margin:0;color:var(--ink-2);min-height:1.2em}
 .checkout [data-checkout-state].is-bad{color:var(--crimson-type)}
-@media (max-width:420px){ .checkout{grid-template-columns:1fr} }
 
 /* the panel takes focus on open so the heading is announced first;
    it is a container, not a control, so it shows no ring */
