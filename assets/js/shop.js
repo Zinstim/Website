@@ -22,6 +22,19 @@
     for (var i = 0; i < d.pieces.length; i++) if (d.pieces[i].code === code) return d.pieces[i];
     return null;
   }
+  /* One piece per design — the first colourway listed. Both the Wear
+     grid and "more from the drop" show designs; the colour is chosen
+     on the design's own page. */
+  function firstOfEachDesign(d){
+    var seen = {}, out = [];
+    for (var i = 0; i < d.pieces.length; i++){
+      var q = d.pieces[i], k = q.design || q.slug;
+      if (seen[k]) continue;
+      seen[k] = 1; out.push(q);
+    }
+    return out;
+  }
+
   function bySlug(d, slug){
     for (var i = 0; i < d.pieces.length; i++) if (d.pieces[i].slug === slug) return d.pieces[i];
     return null;
@@ -241,7 +254,7 @@
           customer: customer,
           lines: window.ZSBag.items().map(function(it){
             return { code: it.code, name: it.name, size: it.size,
-                     qty: it.qty, price: it.price };
+                     qty: it.qty, price: it.price, img: it.img };
           }),
           total: window.ZSBag.subtotal()
         }));
@@ -296,14 +309,15 @@
   function grid(d, host){
     /* The label used to be typed into the page and said "three pieces"
        for a day after Coral was removed. It counts what it renders. */
+    var shown = firstOfEachDesign(d);
     var label = document.querySelector('[data-grid-count]');
     if (label){
-      var n = d.pieces.length;
-      var word = n === 1 ? 'one piece' : n === 2 ? 'two pieces' :
-                 n === 3 ? 'three pieces' : n + ' pieces';
-      label.textContent = 'Drop 01 \u00b7 ' + word;
+      var n = shown.length;
+      var word = ['', 'one', 'two', 'three', 'four', 'five', 'six'][n] || String(n);
+      label.textContent = 'Drop 01 \u00b7 ' + word + ' design' + (n === 1 ? '' : 's') +
+                          ', black and white';
     }
-    host.innerHTML = d.pieces.map(function(p){
+    host.innerHTML = shown.map(function(p){
       var price = money(p.price);
       return '<a class="card" href="piece.html?p=' + esc(p.slug) + '">' +
         '<span class="card__frame">' +
@@ -356,7 +370,7 @@
       unset(true);
       state('');
 
-      document.title = p.code + ' ' + p.name + ' — ZinStim';
+      document.title = p.code + ' ' + p.name + ' ' + (p.colour || '') + ' — ZinStim';
       root.querySelector('[data-p-code]').textContent = p.code;
       root.querySelector('[data-p-name]').textContent = p.name;
 
@@ -383,7 +397,11 @@
                '</td><td role="cell">' + esc(p.specs[k]) + '</td></tr>';
       }).join('');
 
-      if (othersEl) othersEl.innerHTML = d.pieces.filter(function(q){ return q.slug !== p.slug; })
+      /* The other DESIGNS, one card each — not the other seven pieces,
+         which would list this garment's own white twin back at you
+         under "more from the drop". */
+      if (othersEl) othersEl.innerHTML = firstOfEachDesign(d)
+        .filter(function(q){ return q.design !== p.design; })
         .map(function(q){
           return '<a class="card" href="piece.html?p=' + esc(q.slug) + '">' +
             '<span class="card__frame"><img src="' + esc(q.images[0].src) + '" alt="' + esc(q.code + ' ' + q.name) + '" loading="lazy"></span>' +
@@ -400,12 +418,19 @@
 
     /* buttons, not links: a colourway is a change of view, not a
        change of page */
-    coloursEl.innerHTML = d.pieces.map(function(q){
-      return '<button class="swatchbtn" type="button" aria-pressed="false"' +
-        ' data-slug="' + esc(q.slug) + '" aria-label="' + esc(q.name) + '">' +
-        '<span class="swatch" style="background:' + esc(q.swatch) + '"></span>' +
-        '<span class="t-meta">' + esc(q.name) + '</span></button>';
-    }).join('');
+    /* Only the colourways of the design being looked at. With four
+       designs in two colours each, mapping every piece put eight
+       swatches under one garment and offered the other designs as if
+       they were colours of this one. */
+    coloursEl.innerHTML = d.pieces
+      .filter(function(q){ return q.design === p.design; })
+      .map(function(q){
+        var c = q.colour || q.name;
+        return '<button class="swatchbtn" type="button" aria-pressed="false"' +
+          ' data-slug="' + esc(q.slug) + '" aria-label="' + esc(c) + '">' +
+          '<span class="swatch" style="background:' + esc(q.swatch) + '"></span>' +
+          '<span class="t-meta">' + esc(c) + '</span></button>';
+      }).join('');
     coloursEl.addEventListener('click', function(e){
       var b = e.target.closest && e.target.closest('.swatchbtn');
       if (!b) return;

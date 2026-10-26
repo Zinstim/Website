@@ -4879,6 +4879,63 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
   font-variant-numeric:tabular-nums;letter-spacing:-.02em;
 }
 .receipt__meta{margin:0}
+
+/* ═══ THE STACK ═════════════════════════════════════════════════
+   A handful of prints of what was just bought, dropped beside the
+   thank you. The ledger on the right says what it was; this shows
+   it. Four at most — a fifth stops reading as a handful and starts
+   reading as a list, which the ledger already is.
+
+   The rotations are per-position, not random: a receipt that
+   reshuffles its own photos when the page re-renders reads as
+   broken. The paper is pinned to --zinc-wash rather than --surface
+   so a print stays a print on both themes.                        */
+.stack{
+  display:flex;align-items:flex-start;
+  margin-top:var(--space-xl);padding-left:var(--space-xs,.5rem);
+}
+.stack__print{
+  flex:0 0 auto;width:clamp(4.4rem,7vw,6rem);margin:0;position:relative;
+  padding:.35rem .35rem 1rem;            /* the wide chin of a real print */
+  background:var(--zinc-wash);
+  box-shadow:0 .7rem 1.6rem rgba(0,0,0,.55), 0 .1rem .25rem rgba(0,0,0,.45);
+  transform-origin:50% 85%;
+  transition:transform var(--dur-base) var(--ease-out);
+}
+.stack__print + .stack__print{margin-left:-1.9rem}
+.stack__print img{
+  display:block;width:100%;aspect-ratio:4/5;object-fit:cover;
+  background:var(--graphite);
+}
+.stack__n{
+  position:absolute;right:.3rem;bottom:.2rem;
+  font-family:var(--face-text);font-size:.6rem;letter-spacing:.1em;
+  color:var(--obsidian);
+}
+.stack__more{
+  align-self:center;margin:0 0 0 var(--space-md);
+  color:var(--ink-2);white-space:nowrap;
+}
+
+/* the pile, as dealt */
+.stack__print:nth-child(1){transform:rotate(-7deg)}
+.stack__print:nth-child(2){transform:rotate(4.5deg) translateY(.25rem)}
+.stack__print:nth-child(3){transform:rotate(-2.5deg) translateY(.1rem)}
+.stack__print:nth-child(4){transform:rotate(7.5deg) translateY(.3rem)}
+
+/* riffle them apart on hover — the gesture the picture invites */
+.stack:hover .stack__print:nth-child(1){transform:rotate(-10deg) translate(-.5rem,-.3rem)}
+.stack:hover .stack__print:nth-child(2){transform:rotate(2deg) translateY(-.15rem)}
+.stack:hover .stack__print:nth-child(3){transform:rotate(-1deg) translate(.5rem,-.25rem)}
+.stack:hover .stack__print:nth-child(4){transform:rotate(10deg) translate(1rem,-.1rem)}
+
+@media (prefers-reduced-motion:reduce){
+  .stack__print{transition:none}
+  .stack:hover .stack__print{transform:none}
+}
+
+/* a receipt is printed in black on white; the pile is decoration */
+@media print{ .stack{display:none} }
 .receipt__row{
   display:grid;grid-template-columns:auto 1fr;gap:var(--space-md);
   align-items:baseline;padding:.5rem 0;

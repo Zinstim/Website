@@ -1,12 +1,12 @@
 {
-  "_note": "Drop 01 is two pieces, Black and White. ZS—03 (Coral) was removed on 26 Oct — Kash: there is no Coral. Swatch hexes are sampled from assets/img/product/rack.webp, the one frame where all five pieces sit under the same light. price is 690 BDT across Drop 01, set by Kash on 25 Oct as a working figure. stock is null where it is not known; a size with stock 0 renders struck through.",
+  "_note": "Four designs, each in black and white: eight sellable pieces, grouped by `design` so the piece page only offers the colourways of the design you are looking at. PLACEHOLDER: designs two to four reuse the ZS-01/ZS-02 photographs and the names One..Four until the real shots are picked off the Drive. Swap `name` and `images` per design; nothing else needs to move.",
   "currency": "BDT",
   "drop": "Drop 01",
   "pieces": [
     {
       "code": "ZS—01",
       "slug": "zs-01",
-      "name": "Black",
+      "name": "One",
       "swatch": "#171716",
       "price": 690,
       "state": "drop-01",
@@ -32,22 +32,22 @@
         {
           "src": "assets/img/product/zs01-full.webp",
           "tag": "FULL",
-          "alt": "ZS—01 Black, laid flat, wordmark down the back"
+          "alt": "ZS—01 One, black laid flat, wordmark down the back"
         },
         {
           "src": "assets/img/product/zs01-print.webp",
           "tag": "PRINT",
-          "alt": "ZS—01 Black, folded, the art of showing up"
+          "alt": "ZS—01 One, black folded, the art of showing up"
         },
         {
           "src": "assets/img/product/zs01-mark.webp",
           "tag": "MARK",
-          "alt": "ZS—01 Black, the mark close up"
+          "alt": "ZS—01 One, black the mark close up"
         },
         {
           "src": "assets/img/product/zs01-cloth.webp",
           "tag": "CLOTH",
-          "alt": "ZS—01 Black, the hem and the cloth"
+          "alt": "ZS—01 One, black the hem and the cloth"
         }
       ],
       "specs": {
@@ -55,12 +55,14 @@
         "Weight": "240 gsm",
         "Finish": "Garment-dyed",
         "Fit": "Trained"
-      }
+      },
+      "design": "d1",
+      "colour": "Black"
     },
     {
       "code": "ZS—02",
       "slug": "zs-02",
-      "name": "White",
+      "name": "One",
       "swatch": "#E9ECEE",
       "price": 690,
       "state": "drop-01",
@@ -86,22 +88,22 @@
         {
           "src": "assets/img/product/zs02-full.webp",
           "tag": "FULL",
-          "alt": "ZS—02 White, laid flat, wordmark down the back"
+          "alt": "ZS—02 One, white laid flat, wordmark down the back"
         },
         {
           "src": "assets/img/product/zs02-print.webp",
           "tag": "PRINT",
-          "alt": "ZS—02 White, the mark across the chest"
+          "alt": "ZS—02 One, white the mark across the chest"
         },
         {
           "src": "assets/img/product/zs02-hang.webp",
           "tag": "HANG",
-          "alt": "ZS—02 White, on the hanger"
+          "alt": "ZS—02 One, white on the hanger"
         },
         {
           "src": "assets/img/product/zs02-cloth.webp",
           "tag": "CLOTH",
-          "alt": "ZS—02 White, the collar and the cloth"
+          "alt": "ZS—02 One, white the collar and the cloth"
         }
       ],
       "specs": {
@@ -109,7 +111,345 @@
         "Weight": "190 gsm",
         "Finish": "Washed",
         "Fit": "Boxed"
-      }
+      },
+      "design": "d1",
+      "colour": "White"
+    },
+    {
+      "code": "ZS—03",
+      "slug": "zs-03",
+      "name": "Two",
+      "swatch": "#171716",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs01-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—03 Two, black laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs01-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—03 Two, black folded, the art of showing up"
+        },
+        {
+          "src": "assets/img/product/zs01-mark.webp",
+          "tag": "MARK",
+          "alt": "ZS—03 Two, black the mark close up"
+        },
+        {
+          "src": "assets/img/product/zs01-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—03 Two, black the hem and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Long-staple cotton",
+        "Weight": "240 gsm",
+        "Finish": "Garment-dyed",
+        "Fit": "Trained"
+      },
+      "design": "d2",
+      "colour": "Black"
+    },
+    {
+      "code": "ZS—04",
+      "slug": "zs-04",
+      "name": "Two",
+      "swatch": "#E9ECEE",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs02-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—04 Two, white laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs02-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—04 Two, white the mark across the chest"
+        },
+        {
+          "src": "assets/img/product/zs02-hang.webp",
+          "tag": "HANG",
+          "alt": "ZS—04 Two, white on the hanger"
+        },
+        {
+          "src": "assets/img/product/zs02-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—04 Two, white the collar and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Combed cotton",
+        "Weight": "190 gsm",
+        "Finish": "Washed",
+        "Fit": "Boxed"
+      },
+      "design": "d2",
+      "colour": "White"
+    },
+    {
+      "code": "ZS—05",
+      "slug": "zs-05",
+      "name": "Three",
+      "swatch": "#171716",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs01-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—05 Three, black laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs01-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—05 Three, black folded, the art of showing up"
+        },
+        {
+          "src": "assets/img/product/zs01-mark.webp",
+          "tag": "MARK",
+          "alt": "ZS—05 Three, black the mark close up"
+        },
+        {
+          "src": "assets/img/product/zs01-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—05 Three, black the hem and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Long-staple cotton",
+        "Weight": "240 gsm",
+        "Finish": "Garment-dyed",
+        "Fit": "Trained"
+      },
+      "design": "d3",
+      "colour": "Black"
+    },
+    {
+      "code": "ZS—06",
+      "slug": "zs-06",
+      "name": "Three",
+      "swatch": "#E9ECEE",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs02-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—06 Three, white laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs02-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—06 Three, white the mark across the chest"
+        },
+        {
+          "src": "assets/img/product/zs02-hang.webp",
+          "tag": "HANG",
+          "alt": "ZS—06 Three, white on the hanger"
+        },
+        {
+          "src": "assets/img/product/zs02-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—06 Three, white the collar and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Combed cotton",
+        "Weight": "190 gsm",
+        "Finish": "Washed",
+        "Fit": "Boxed"
+      },
+      "design": "d3",
+      "colour": "White"
+    },
+    {
+      "code": "ZS—07",
+      "slug": "zs-07",
+      "name": "Four",
+      "swatch": "#171716",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs01-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—07 Four, black laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs01-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—07 Four, black folded, the art of showing up"
+        },
+        {
+          "src": "assets/img/product/zs01-mark.webp",
+          "tag": "MARK",
+          "alt": "ZS—07 Four, black the mark close up"
+        },
+        {
+          "src": "assets/img/product/zs01-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—07 Four, black the hem and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Long-staple cotton",
+        "Weight": "240 gsm",
+        "Finish": "Garment-dyed",
+        "Fit": "Trained"
+      },
+      "design": "d4",
+      "colour": "Black"
+    },
+    {
+      "code": "ZS—08",
+      "slug": "zs-08",
+      "name": "Four",
+      "swatch": "#E9ECEE",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        },
+        {
+          "label": "XXL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs02-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—08 Four, white laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs02-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—08 Four, white the mark across the chest"
+        },
+        {
+          "src": "assets/img/product/zs02-hang.webp",
+          "tag": "HANG",
+          "alt": "ZS—08 Four, white on the hanger"
+        },
+        {
+          "src": "assets/img/product/zs02-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—08 Four, white the collar and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Combed cotton",
+        "Weight": "190 gsm",
+        "Finish": "Washed",
+        "Fit": "Boxed"
+      },
+      "design": "d4",
+      "colour": "White"
     }
   ],
   "locked": [

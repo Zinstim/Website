@@ -90,9 +90,8 @@
      it is the next thing they read. */
   $('[data-r-lede]').textContent = state === 'placed'
     ? (phone
-        ? 'Order received. Nothing has been charged \u2014 we will call you on ' + phone +
-          ' to confirm and arrange payment before anything ships.'
-        : 'Order received. Nothing has been charged \u2014 we will be in touch to confirm and arrange payment before anything ships.')
+        ? 'Nothing has been charged. We will call you on ' + phone + ' to arrange payment.'
+        : 'Nothing has been charged. We will be in touch to arrange payment.')
     : 'Paid in full. We are packing it now, and you will hear from us when it ships.';
 
   var lines = (order && order.lines) || [];
@@ -137,8 +136,33 @@
 
   var email = order && order.customer && order.customer.email;
   $('[data-r-note]').textContent = email
-    ? 'A copy is on its way to ' + email + '. Keep the reference — it is how we find your order.'
+    ? 'A copy is on its way to ' + email + '.'
     : 'A copy is on its way to the address you gave us.';
+
+  /* The ledger says what was bought; this shows it. A pile of prints
+     of the actual pieces, dropped beside the thank you — four at most,
+     because a fifth stops reading as a handful and starts reading as a
+     list, which is what the column on the right is already for.
+     Rotations come from the index, never from Math.random(), so a
+     re-render does not reshuffle the pile under you. */
+  var stack = $('[data-r-stack]');
+  if (stack) {
+    var shots = [];
+    for (var li = 0; li < lines.length && shots.length < 4; li++) {
+      if (lines[li].img) shots.push(lines[li]);
+    }
+    if (shots.length) {
+      stack.innerHTML = shots.map(function (l) {
+        return '<figure class="stack__print">' +
+          '<img src="' + esc(l.img) + '" alt="' + esc(l.name || l.code) + ', ' + esc(l.size) + '">' +
+          (l.qty > 1 ? '<figcaption class="stack__n">\u00d7' + esc(l.qty) + '</figcaption>' : '') +
+        '</figure>';
+      }).join('');
+      var more = lines.length - shots.length;
+      if (more > 0) stack.innerHTML += '<p class="stack__more t-meta">+' + more + ' more</p>';
+      stack.hidden = false;
+    }
+  }
 
   $('[data-r-act]').innerHTML =
     '<a class="btn" href="wear.html">Back to the drop</a>' +
