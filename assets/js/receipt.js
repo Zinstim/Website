@@ -108,6 +108,11 @@
     }).join('');
     var total = (order && typeof order.total === 'number') ? order.total : null;
     $('[data-r-total]').textContent = money(total) || '—';
+    /* It read "Total paid" on a page whose own first line says nothing
+       has been charged. The markup now ships the neutral word and only
+       the confirmed-payment branch earns the other one. */
+    var tk = $('[data-r-totalk]');
+    if (tk) tk.textContent = state === 'paid' ? 'Total paid' : 'Order total';
   } else {
     /* opened somewhere the snapshot never existed */
     $('[data-r-lines]').innerHTML =

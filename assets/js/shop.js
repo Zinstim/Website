@@ -140,6 +140,22 @@
      Every price and the total are worked out again in /api/order from
      the catalogue, because a number that arrives from a page anyone
      can edit is not a price. */
+  /* Live Server, python -m http.server, file:// — a static server with
+     no /api at all, which is what the site is opened on while it is
+     being built. There is nothing there to place an order with, so the
+     flow would dead-end at "we could not place that order" on every
+     local run.
+
+     Gated on the HOSTNAME and nothing else. Not a flag, not a status
+     code: on a real deployment /api/order exists, so this can never
+     fire there, and the one thing that must never happen — a stranger
+     typing their address and being told an order was placed when none
+     was — cannot happen on a host that has a backend. */
+  function localDev(){
+    return location.protocol === 'file:' ||
+      /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
+  }
+
   function checkout(dlg, sum){
     var open = dlg.querySelector('[data-bag-checkout]');
     var form = dlg.querySelector('[data-checkout]');
@@ -151,6 +167,13 @@
       if (!state) return;
       state.textContent = msg || '';
       state.classList.toggle('is-bad', !!bad);
+    }
+
+    /* the snapshot was written before the request, so the receipt shows
+       the real bag whichever way we got here */
+    function land(prefix){
+      location.href = 'order.html?state=placed&ref=' + (prefix || '') +
+        Date.now().toString(36).toUpperCase();
     }
 
     open.addEventListener('click', function(){
@@ -249,9 +272,15 @@
           location.href = 'order.html?state=placed&ref=' + encodeURIComponent(out.j.ref);
           return;
         }
+        /* A real error from a real endpoint is still an error — but a
+           404 or a 501 from a static file server is not an error, it is
+           the absence of a backend. On a local host, walk on. */
+        if (localDev()){ land('LOCAL-'); return; }
         throw new Error((out.j && out.j.error) ||
           'We could not place that order. Try again in a moment.');
       })['catch'](function(err){
+        /* the request never landed at all — still local */
+        if (localDev()){ land('LOCAL-'); return; }
         if (go) go.disabled = false;
         /* a sentence a shopper can act on, never a parser message */
         var m = err && err.message;
