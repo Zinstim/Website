@@ -107,9 +107,30 @@
      request: a 404 from the real site means something is broken and
      must look broken. */
   function isPreview(){
-    return location.protocol === 'file:' ||
-      /^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
+    if (location.protocol === 'file:') return true;
+    if (/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname)) return true;
+    /* Set by ?demo=1, read back for the rest of the tab. */
+    try { return sessionStorage.getItem('zs-demo') === '1'; }
+    catch (e) { return false; }
   }
+
+  /* ?demo=1 on any page turns the walk-through on for THIS TAB ONLY and
+     then gets out of the URL, so the flow can be seen on the deployed
+     site before the gateway keys exist. Read once here, at load, and
+     not inside isPreview(): paint() rewrites the query string with
+     history.replaceState, so by the time Pay is pressed the flag is
+     long gone from location.search.
+
+     Deliberately not automatic on a live host. A stranger who adds a
+     tee, types their address and their phone number must never be
+     told they paid for something nobody is going to send — they would
+     have to know this flag and type it. */
+  (function armDemo(){
+    try {
+      if (/[?&]demo=1(?:&|$)/.test(location.search)) sessionStorage.setItem('zs-demo', '1');
+      if (/[?&]demo=0(?:&|$)/.test(location.search)) sessionStorage.removeItem('zs-demo');
+    } catch (e) {}
+  }());
 
   function checkout(dlg, sum){
     var open = dlg.querySelector('[data-bag-checkout]');
@@ -208,20 +229,21 @@
           return { ok: r.ok, status: r.status, j: j };
         });
       }).then(function(out){
+        /* A real session always wins, so `vercel dev` against the real
+           gateway still redirects even on a local host. */
         if (out.j && out.j.url) { location.href = out.j.url; return; }
-        /* a real error from a real endpoint is still an error, even here */
-        if (out.j && out.j.error) throw new Error(out.j.error);
-        /* Anything that is not a checkout session, on a local host: walk
-           the rest of the flow. Pinning this to 404/405 was too narrow —
+        /* Anything that is not a checkout session, in preview: walk the
+           rest of the flow. Pinning this to 404/405 was too narrow —
            python's http.server answers POST with 501, Live Server with
-           something else again. The hostname is the gate, not the code. */
+           something else again — and a 503 from our own endpoint with
+           no gateway keys behind it is the same situation. The gate is
+           preview, not the status code. */
         if (isPreview()) { toPreview(); return; }
+        if (out.j && out.j.error) throw new Error(out.j.error);
         throw new Error('Could not reach the payment page. Try again in a moment.');
       })['catch'](function(err){
-        /* the request never landed at all — still a preview locally */
-        if (isPreview() && err && /Failed to fetch|NetworkError|load failed/i.test(err.message || '')) {
-          toPreview(); return;
-        }
+        /* the request never landed at all — still a preview */
+        if (isPreview()) { toPreview(); return; }
         if (go) go.disabled = false;
         /* a sentence a shopper can act on, never a parser message */
         var m = err && err.message;
