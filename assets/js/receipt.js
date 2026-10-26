@@ -88,11 +88,18 @@
      rather than leaving someone to work it out from the absence of a
      card number. The call is the next thing that happens to them, so
      it is the next thing they read. */
-  $('[data-r-lede]').textContent = state === 'placed'
-    ? (phone
-        ? 'Nothing has been charged. We will call you on ' + phone + ' to arrange payment.'
-        : 'Nothing has been charged. We will be in touch to arrange payment.')
-    : 'Paid in full. We are packing it now, and you will hear from us when it ships.';
+  /* Kash's call: the placed state carries no lede. The ledger says
+     ORDER TOTAL rather than Total paid, and the confirmation email
+     spells out that nothing was charged and that we will ring. */
+  var lede = $('[data-r-lede]');
+  if (state === 'placed') {
+    lede.textContent = '';
+    lede.hidden = true;
+  } else {
+    lede.hidden = false;
+    lede.textContent =
+      'Paid in full. We are packing it now, and you will hear from us when it ships.';
+  }
 
   var lines = (order && order.lines) || [];
   if (lines.length) {

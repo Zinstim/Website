@@ -863,6 +863,17 @@ img,svg{display:block;max-width:100%}
   .navgroup.has-sheet .origin,
   .navgroup.has-sheet .capsule{display:none}
 
+  /* .bag is position:absolute against the masthead and pinned to its
+     right edge; the toggle is in flow and justified to the same edge.
+     Below 860px, where the toggle appears, the bag was landing
+     entirely inside it — 83px of button on top of button, which is
+     the second circle behind the hamburger. Reserve the bag's width
+     so the two sit side by side. 83px of bag plus room for a
+     two-digit count and a gap. The root font-size is fluid, so this
+     value was measured at the breakpoints rather than worked out from
+     the bag's own rem padding. */
+  .navgroup.has-sheet .navtoggle{margin-right:8rem}
+
   .navtoggle{
     position:relative;z-index:2;
     display:inline-flex;align-items:center;gap:.75rem;
@@ -4176,6 +4187,21 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
 @media (max-width:760px){
   .bag{right:var(--space-md);height:2.5rem}
   .bag__label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  /* the label goes, so the bag is 51px and the toggle needs less room.
+     This block sits after the masthead's, so it wins on order. */
+  .navgroup.has-sheet .navtoggle{margin-right:4.5rem}
+}
+
+/* The toggle's label is the CURRENT PAGE's name, so its width is
+   whatever that page is called. "Instruments" is 176px — at 320 it
+   reached back under the logo, which is absolutely positioned over
+   the left of the same bar. Cap it against the space actually
+   available and let it ellipsis; the dot never shrinks, so the target
+   stays the size it was. In px, not rem: it is clearing a px-sized
+   logo and this root font-size is fluid. */
+@media (max-width:420px){
+  .navgroup.has-sheet .navtoggle{min-width:0;max-width:calc(100% - 136px)}
+  .navtoggle__label{min-width:0;overflow:hidden;text-overflow:ellipsis}
 }
 
 /* the drawer. A drawer and not a page, because adding something
