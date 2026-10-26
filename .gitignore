@@ -7,3 +7,6 @@ node_modules/
 *.log
 .env
 .env.*
+
+# local safety copies made before a bulk edit
+_backup-*/

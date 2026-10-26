@@ -36,6 +36,11 @@
       </ul>
     </div>
   </nav>
+  <button class="bag" type="button" data-bag-open aria-haspopup="dialog">
+    <span class="bag__label">Bag</span>
+    <span class="bag__count" data-bag-count aria-hidden="true">0</span>
+  </button>
+
 </header>
 
 <main>
@@ -77,6 +82,7 @@
     <div class="shell" style="text-align:center; position:relative; z-index:2">
       <h2 class="door-name t-display"><span class="liq-type" data-liq="Fuel">Fuel</span></h2>
       <p class="door-sub">What you take in.</p>
+      <span class="lock__flag"><span class="lock__dot" aria-hidden="true"></span>Not for sale yet</span>
     </div>
   </a>
 
@@ -94,6 +100,7 @@
     <div class="shell" style="text-align:center; position:relative; z-index:2">
       <h2 class="door-name t-display"><span class="liq-type" data-liq="Instruments">Instruments</span></h2>
       <p class="door-sub">What you use.</p>
+      <span class="lock__flag"><span class="lock__dot" aria-hidden="true"></span>Nothing here yet</span>
     </div>
   </a>
 
@@ -160,8 +167,54 @@
 </main>
 
 <script src="dotmark.js" defer></script>
+
+<!-- THE BAG — a drawer, not a page: adding something must not cost
+     you the grid you were reading. -->
+<dialog class="drawer" id="bag" aria-label="Your bag">
+  <div class="drawer__in">
+    <div class="drawer__head">
+      <p class="t-ui" style="margin:0">Your bag</p>
+      <button class="drawer__close" type="button" data-bag-close aria-label="Close bag">Close</button>
+    </div>
+    <ul class="drawer__list" data-bag-list></ul>
+    <div class="drawer__foot">
+      <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
+      <button class="btn" type="button" data-bag-checkout>Checkout</button>
+      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
+           send it. The form stays shut until you ask to pay, so the
+           bag is still a bag. -->
+      <!-- novalidate: the browser blocks submit on an invalid form, so
+     the submit handler never ran and the shopper got a native
+     bubble instead of the sentence written for that field. The
+     constraints stay on the inputs — :invalid and :user-invalid
+     still work — the script just does the telling. -->
+      <form class="checkout" data-checkout hidden novalidate>
+        <label><span>Name</span><input name="name" autocomplete="name" required minlength="2"
+          data-say="Please give your full name."></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required
+          data-say="That email address does not look right."></label>
+        <!-- at least seven digits, so a phone that cannot be rung does
+             not become a delivery nobody can arrange. Punctuation and a
+             country code are allowed; "1" is not. -->
+        <label><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+          data-say="A phone number we can reach you on — at least seven digits."></label>
+        <label class="checkout--wide"><span>Address</span><input name="address" autocomplete="street-address" required minlength="6"
+          data-say="A full street address, so this can actually be delivered."></label>
+        <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
+          data-say="Which city?"></label>
+        <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
+      </form>
+      <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>
+    </div>
+  </div>
+</dialog>
+
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/bag.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
 
 </body>
 </html>

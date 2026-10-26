@@ -512,6 +512,16 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 
+/* The UA gives [hidden] display:none at the lowest possible weight, so
+   any component that sets its own display silently outranks it — and
+   this file sets display on nearly everything. That is how the bag's
+   Checkout button stayed on screen next to Pay after the form opened,
+   with el.hidden === true the whole time. It had already been patched
+   twice one selector at a time (.seq__replay, .checkout); this is the
+   rule those were standing in for. !important is the point: an element
+   told to be hidden is hidden, whatever a component rule wants. */
+[hidden]{display:none!important}
+
 body{
   background:var(--zinc-wash);
   color:var(--obsidian);
@@ -605,6 +615,11 @@ img,svg{display:block;max-width:100%}
 .marquee{overflow:hidden;padding:var(--space-lg) 0;user-select:none}
 .marquee__track{
   display:flex;gap:0;white-space:nowrap;
+  /* The band is full-bleed but the track sits in a .shell, so it was
+     capped at the shell's width — narrower than the viewport, which
+     left a gap on the right no matter where the scroll put it. A
+     marquee has to be wider than what shows it. */
+  width:max-content;
   will-change:transform;
 }
 /* The track sits in a shell. The band is full bleed and clips at the
@@ -1367,7 +1382,22 @@ img,svg{display:block;max-width:100%}
    same asymmetry: leaves fast (.28s), arrives slow and late
    (--dur-slow after .28s). Holding specs behind hover is already
    the established pattern in §kit. */
-.piece__slot{display:block;overflow:hidden;height:1.5rem;margin-top:.5rem}
+/* The slot holds two lines and shows one. At rest it is the price —
+   these pieces have one now, and a drop teaser that will not say what
+   anything costs is a poster, not a shop front. The spec slides up
+   over it on hover, so the detail is the reward and the number is
+   never the thing you have to hunt for. */
+.piece__slot{position:relative;display:block;overflow:hidden;height:1.5rem;margin-top:.5rem}
+.piece__price{
+  display:block;line-height:1.5rem;
+  font-family:"Space Mono",ui-monospace,monospace;
+  font-size:.72rem;letter-spacing:.06em;color:var(--zinc-silver);
+  transition:transform .28s var(--ease-move),opacity .16s ease;
+}
+.piece:is(:hover,:focus-visible) .piece__price{
+  opacity:0;transform:translateY(-150%);
+}
+.piece__spec{position:absolute;inset:0}
 .piece__spec{
   display:block;line-height:1.5rem;
   font-family:"Space Mono",ui-monospace,monospace;
@@ -2306,8 +2336,10 @@ img,svg{display:block;max-width:100%}
   position:relative;
   /* the pin runs for the section's height less one stage: long
      enough to read the pour, short enough that it never feels like a
-     scroll-jack. 180 was tuned against the captured frames. */
-  height:180vh;height:180svh;
+     scroll-jack. 180 was tuned against the captured frames; it read
+     as roughly two screens of near-empty page, so it is 140 now —
+     the same pour, told faster. */
+  height:140vh;height:140svh;
   background:var(--zinc-wash);
   --mast-h:0px;                          /* written by site.js */
 }
@@ -2592,6 +2624,10 @@ img,svg{display:block;max-width:100%}
 
 .door-card{
   position:absolute;
+  /* clips the veil: a blurred, scaled image inside an unclipped card
+     spills past its edges and reads as a smudge on the page rather
+     than as something behind a pane */
+  overflow:hidden;
   border-radius:2px;
   background:var(--zinc-silver);
   box-shadow:0 1px 0 rgba(13,13,13,.05) inset,
@@ -2618,9 +2654,9 @@ img,svg{display:block;max-width:100%}
 .door-card:nth-child(odd){--dx:-1.1rem}
 .door-card:nth-child(even){--dx:1.1rem}
 
-/* the cards are empty on purpose — there is no photography yet.
-   When there is, put an <img> inside the card and it fills it:
-     <span class="door-card"><img src="…" alt=""></span>          */
+/* The Wear set carries photographs; Fuel's and Instruments' cards are
+   still empty plates, because those doors have nothing to photograph.
+   An <img> inside a card fills it. */
 .door-card img{
   width:100%;height:100%;
   object-fit:cover;display:block;
@@ -2716,8 +2752,18 @@ img,svg{display:block;max-width:100%}
    Technical product grid. Monospace codes, specs held back until
    hover. Utilitarian rather than boutique — the ASRV register.   */
 
+/* Same ceiling the product grid needed, and for the same reason: with
+   Creatine Mono hidden this is two tiles, and an uncapped 1fr track
+   handed each of them half the shell — 576 x 960px of register. */
 .kit{display:grid;gap:1px;background:rgba(110,118,121,.28);
-  grid-template-columns:repeat(auto-fit,minmax(17rem,1fr))}
+  grid-template-columns:repeat(auto-fit,minmax(16rem,22rem));
+  justify-content:start;
+  /* The background exists to show through the 1px gaps. Once the
+     tracks stopped filling the container it painted the empty space
+     to their right as a grey slab, so the container shrinks to the
+     tracks it actually has. */
+  width:fit-content;max-width:100%}
+@media (max-width:420px){ .kit{grid-template-columns:minmax(0,1fr)} }
 
 .kit__item{
   position:relative;background:var(--zinc-wash);
@@ -3819,3 +3865,1011 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
   body::before,body::after{display:none}
   html.is-leaving main,html.is-arriving main{animation:none}
 }
+
+
+/* ═══ rack ═══════════════════════════════════════════════════
+   One frame shows the whole drop: five pieces on the rail. It runs
+   the full width and its edges are MASKED rather than covered — an
+   ink overlay at anything under full opacity still leaves a visible
+   boundary, which is what made every earlier attempt read as a
+   pasted rectangle. Masking removes the pixels, so the frame ends
+   in the page however bright the cloth is at its edge.          */
+.rack{
+  margin:0;position:relative;
+  padding-block:var(--space-lg);
+}
+/* it sits under a sticky masthead, so it starts below it */
+.rack{scroll-margin-top:var(--mast-h)}
+.rack__img{
+  width:100%;height:auto;display:block;
+  --feather:4%;
+  -webkit-mask-image:
+    linear-gradient(to right,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent),
+    linear-gradient(to bottom,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent);
+  mask-image:
+    linear-gradient(to right,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent),
+    linear-gradient(to bottom,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+.rack__cap{
+  margin-top:var(--space-sm);
+  padding-left:var(--space-md);padding-right:var(--space-md);
+  color:var(--muted);
+}
+
+
+/* ═══ spread ═════════════════════════════════════════════════
+   The product display. Four frames of one piece, overlapped and
+   bleeding off the edges, held still by one vertical word reading
+   the direction the print runs down the back of the shirt.
+
+   Click a small frame and it TRAVELS into the big slot — measured
+   before and after, then animated between, so you can follow where
+   the thing went. Nothing cross-fades.
+
+   A thread runs from the word through every frame's centre and off
+   the edge, BEHIND them, so it shows only in the gaps. Drawn on
+   top in straight segments it read as scribble; underneath, as one
+   curve, it makes four scattered pictures look composed.        */
+.spread{padding-block:var(--space-lg) var(--space-xl)}
+
+.stage{
+  position:relative;width:100%;
+  aspect-ratio:16/9;min-height:26rem;
+  margin-top:var(--space-md);
+}
+@media (max-width:860px){ .stage{aspect-ratio:3/4;min-height:22rem} }
+
+.spine{
+  position:absolute;left:0;top:0;height:100%;width:9%;z-index:4;
+  display:flex;align-items:center;pointer-events:none;
+  background:linear-gradient(90deg,var(--surface) 55%,transparent);
+}
+.spine__word{
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 68,"wght" 900;
+  font-size:clamp(2rem,5.4vw,4.2rem);line-height:.86;
+  letter-spacing:.04em;text-transform:uppercase;margin:0;
+  color:var(--ink);
+  transition:opacity .5s var(--ease-out),transform .7s var(--ease-out);
+}
+.spine__word.is-out{opacity:0;transform:translateY(2.5rem)}
+
+.thread{position:absolute;inset:0;width:100%;height:100%;z-index:0;
+  pointer-events:none;overflow:visible}
+.thread path{
+  fill:none;stroke:var(--crimson-type);stroke-width:1;
+  stroke-linecap:round;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;opacity:.5;
+  transition:opacity .4s ease;
+}
+@media (max-width:860px){ .thread path{opacity:.3} }
+
+.frame{
+  position:absolute;margin:0;background:none;border:0;padding:0;
+  cursor:pointer;will-change:transform;
+  transition:filter .6s var(--ease-out);
+}
+.frame img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  --feather:13%;
+  -webkit-mask-image:
+    linear-gradient(to right,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent),
+    linear-gradient(to bottom,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent);
+  mask-image:
+    linear-gradient(to right,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent),
+    linear-gradient(to bottom,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+/* the hero is big enough that a smaller feather still dissolves */
+.frame--hero img{--feather:9%}
+.frame:not(.frame--hero){filter:grayscale(.35) brightness(.78)}
+.frame:not(.frame--hero):is(:hover,:focus-visible){filter:none}
+.frame:focus-visible{outline:1px solid var(--crimson-lit);outline-offset:2px}
+
+.frame__tag{
+  position:absolute;left:.7rem;bottom:.6rem;z-index:2;
+  font-family:var(--face-text);
+  font-size:.56rem;letter-spacing:.16em;color:var(--ink);
+  opacity:0;transform:translateY(.4rem);
+  transition:opacity .4s var(--ease-out),transform .5s var(--ease-out);
+}
+.frame:is(:hover,:focus-visible) .frame__tag{opacity:1;transform:none}
+
+/* four slots, deliberately uneven, deliberately off the edges */
+.s0{left:28%;top:2%;width:42%;height:94%;z-index:2}
+.s1{left:10%;top:34%;width:17%;height:42%;z-index:1}
+.s2{left:74%;top:5%;width:20%;height:34%;z-index:1}
+.s3{left:69%;top:55%;width:25%;height:41%;z-index:1}
+@media (max-width:860px){
+  .s0{left:14%;top:0;width:72%;height:50%}
+  .s1{left:0;top:52%;width:34%;height:23%}
+  .s2{left:62%;top:50%;width:34%;height:23%}
+  .s3{left:23%;top:72%;width:50%;height:27%}
+}
+
+.spread__rail{
+  display:flex;gap:var(--space-sm) var(--space-lg);flex-wrap:wrap;
+  align-items:baseline;margin-top:var(--space-md);
+  padding-top:var(--space-sm);border-top:1px solid var(--rule-c);
+}
+.spread__specs{display:flex;gap:var(--space-md);flex-wrap:wrap;min-width:0}
+
+@media (prefers-reduced-motion:reduce){
+  .frame,.spine__word,.frame__tag{transition:none}
+}
+
+
+/* ═══ lock ═══════════════════════════════════════════════════
+   Unreleased work is covered, not removed. The thing stays on the
+   page behind frosted glass — you see its shape and never its
+   detail — which is the site's own principle (reveal over display)
+   applied honestly: we are not pretending the product is further
+   along than it is, and not pretending it does not exist.
+
+   The blur is CSS, so with scripts off the cover still holds and
+   the seal still reads. It goes inert then, not broken.         */
+.lock{position:relative;isolation:isolate}
+.lock__under{
+  /* Tuned on the Night page, which is where it actually lives. At
+     .72 over near-black the covered panel read as empty page rather
+     than as something withheld — and a cover you cannot see is not a
+     tease, it is a gap. It lifts enough to show a shape and no more;
+     the words underneath stay unreadable, which is the point. */
+  filter:blur(11px) saturate(.72) contrast(1.04) brightness(1.22);
+  transform:scale(1.035);          /* hides the blur's soft edge */
+  opacity:.92;
+  transition:filter .7s var(--ease-out),opacity .7s ease;
+  pointer-events:none;user-select:none;
+}
+.lock:hover .lock__under,
+.lock:focus-within .lock__under{filter:blur(9px) saturate(.75);opacity:.85}
+
+.lock::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 45%,transparent 0%,rgba(13,13,13,.34) 76%),
+    rgba(13,13,13,.12);
+}
+
+.lock__seal{
+  position:absolute;z-index:2;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  display:inline-flex;align-items:center;gap:.7rem;
+  padding:.85rem 1.5rem .85rem 1.2rem;
+  border:1px solid var(--rule-c);border-radius:var(--radius-pill);
+  background:var(--surface);color:var(--ink);
+  font-family:var(--face-text);
+  font-variation-settings:"wdth" 90,"wght" 650;
+  font-size:var(--step--1);letter-spacing:.07em;
+  cursor:pointer;white-space:nowrap;
+  transition:transform .45s var(--ease-out),border-color .4s ease;
+}
+.lock__seal:hover{transform:translate(-50%,-50%) translateY(-2px);border-color:var(--crimson-lit)}
+.lock__seal:focus-visible{outline:1px solid var(--crimson-lit);outline-offset:4px}
+
+/* the dot is crimson, because this is a STATE. Flame Teal still
+   means "you are here" and nothing else. */
+.lock__dot{
+  width:7px;height:7px;border-radius:50%;flex:none;
+  background:var(--crimson-lit);
+}
+
+/* inline: the seal sitting in a line of text rather than over
+   something. Same object, no absolute positioning. */
+.lock__seal--inline{position:static;transform:none}
+.lock__seal--inline:hover{transform:translateY(-2px)}
+
+/* flag: the seal's look with none of its behaviour, for a place
+   that cannot hold a button — inside a door band, which is itself
+   a link, where a nested <button> would be invalid. */
+.lock__flag{
+  display:inline-flex;align-items:center;gap:.55rem;
+  margin-top:var(--space-sm);
+  padding:.45rem 1rem .45rem .8rem;
+  border:1px solid currentColor;border-radius:var(--radius-pill);
+  font-family:var(--face-text);
+  font-size:.66rem;letter-spacing:.12em;opacity:.62;
+}
+
+
+/* ═══ soon ═══════════════════════════════════════════════════
+   The dialog behind every lock. Native <dialog>, so focus trapping,
+   Escape and inertness come from the browser rather than from us
+   getting it right by hand.                                     */
+.soon{
+  border:0;padding:0;background:transparent;
+  max-width:min(34rem,calc(100vw - 2rem));
+  color:var(--zinc-wash);
+  inset:0;margin:auto;   /* the reset zeroes margins, which kills
+                            the UA's centring on an open modal */
+}
+.soon::backdrop{background:rgba(6,10,10,.72)}
+.soon__card{
+  background:var(--obsidian);
+  border:1px solid var(--rule-c);
+  border-radius:var(--radius-sm);
+  padding:var(--space-lg) var(--space-lg) var(--space-md);
+}
+.soon__eyebrow{
+  display:flex;align-items:center;gap:.6rem;
+  font-family:var(--face-text);
+  font-size:.68rem;letter-spacing:.16em;color:var(--muted);
+  margin:0 0 var(--space-md);
+}
+.soon__title{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 80,"wght" 850;
+  font-size:var(--step-2);line-height:1;letter-spacing:-.025em;
+  color:var(--zinc-wash);margin:0;
+}
+.soon__body{margin:var(--space-md) 0 0;max-width:46ch;color:var(--muted);line-height:var(--lh-body)}
+.soon__note{
+  margin:var(--space-md) 0 0;padding-top:var(--space-sm);
+  border-top:1px solid var(--rule-c);
+  font-family:var(--face-text);
+  font-size:.7rem;letter-spacing:.04em;color:var(--muted);
+}
+.soon__actions{margin-top:var(--space-lg);display:flex;gap:var(--space-md);align-items:center;flex-wrap:wrap}
+.soon__close{
+  border:1px solid var(--rule-c);background:transparent;color:var(--zinc-wash);
+  font:inherit;font-variation-settings:"wdth" 92,"wght" 600;
+  padding:.6rem 1.4rem;border-radius:var(--radius-pill);cursor:pointer;
+  transition:border-color .3s ease;
+}
+.soon__close:hover{border-color:var(--crimson-lit)}
+.soon__join{color:var(--crimson-type);font-size:var(--step--1);
+  text-decoration:underline;text-underline-offset:.3em}
+
+@media (prefers-reduced-motion:reduce){
+  .lock__under,.lock__seal{transition:none}
+}
+
+/* which doors are actually open, said in words beside them. It sits
+   outside the door links on purpose — the door words carry their own
+   crossfade and nothing may be nested inside them. */
+/* The field is z-index 1 and .doors__inner is 2, but this line was
+   neither — so the decorative cards painted over the one place the
+   section says which doors are open. Invisible while the cards were
+   grey plates on a dark page; obvious the moment they became
+   photographs. */
+.doors__state{
+  position:relative;z-index:2;
+  display:flex;gap:var(--space-sm) var(--space-lg);flex-wrap:wrap;
+  margin-top:var(--space-lg);color:var(--muted);
+}
+.doors__state > span{display:inline-flex;align-items:center;gap:.55rem}
+.lock__dot--live{background:var(--flame-teal)}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COMMERCE — added 25 Oct. Wear becomes a shop: a grid you browse,
+   a piece you open, a bag that remembers. Everything below takes
+   its colour from the tokens above; nothing here invents a value.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══ bag ════════════════════════════════════════════════════
+   The one control that never moves: far right of the masthead on
+   every page, mirroring .home on the left. It shows a count only
+   when it holds something, so an empty bag stays quiet.        */
+.bag{
+  position:absolute;right:var(--space-lg);top:var(--space-md);
+  height:3rem;display:inline-flex;align-items:center;gap:.5rem;
+  padding:0 .9rem;border:1px solid var(--rule-c);
+  border-radius:var(--radius-pill);
+  background:none;color:var(--ink);cursor:pointer;
+  font:inherit;font-variation-settings:"wdth" 92,"wght" 600;
+  font-size:var(--step--1);
+  transition:border-color var(--dur-base) var(--ease-out);
+}
+.bag:hover{border-color:var(--action)}
+.bag:focus-visible{outline:1px solid var(--action);outline-offset:3px}
+.bag__count{
+  min-width:1.25rem;height:1.25rem;padding:0 .3rem;
+  display:none;place-items:center;
+  border-radius:var(--radius-pill);
+  background:var(--action);color:var(--action-label);
+  font-size:.66rem;font-variant-numeric:tabular-nums;
+}
+.bag.is-full .bag__count{display:grid}
+@media (max-width:760px){
+  .bag{right:var(--space-md);height:2.5rem}
+  .bag__label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+}
+
+/* the drawer. A drawer and not a page, because adding something
+   must not cost you the grid you were reading. */
+/* The drawer was painted --surface, which IS the page on a dark
+   theme, over a flat 60% wash — so opening the bag read as the whole
+   page going grey rather than as a panel arriving. It sits on a
+   lifted surface now, with an edge and a shadow, and slides in. */
+.drawer{
+  border:0;padding:0;margin:0 0 0 auto;height:100%;max-height:100%;
+  width:min(26rem,100vw);
+  background:color-mix(in srgb,var(--ink) 7%,var(--surface));
+  color:var(--ink);
+  border-left:1px solid var(--rule-c);
+  box-shadow:-2rem 0 4rem rgba(0,0,0,.55);
+}
+/* The slide happens on the INNER panel, inside a dialog that clips.
+   Animating the dialog itself with translateX(100%) pushed it 416px
+   past the right edge of the viewport for the length of the
+   animation, and Firefox counts that as document overflow — you got
+   a horizontal scrollbar and the page jumped sideways every time the
+   bag opened. Nothing leaves the box now. */
+.drawer{overflow:hidden}
+.drawer[open] .drawer__in{animation:drawer-in .42s var(--ease-out)}
+@keyframes drawer-in{from{transform:translateX(100%)}to{transform:none}}
+@media (prefers-reduced-motion:reduce){ .drawer[open] .drawer__in{animation:none} }
+/* dark enough that the page is clearly behind glass, blurred so it
+   reads as depth rather than as a faded screenshot */
+.drawer::backdrop{
+  background:rgba(4,6,6,.74);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+}
+.drawer[open]::backdrop{animation:fade-in .42s var(--ease-out)}
+@keyframes fade-in{from{opacity:0}to{opacity:1}}
+.drawer__in{
+  height:100%;display:flex;flex-direction:column;
+  padding:var(--space-md);
+  padding-left:max(var(--space-md),env(safe-area-inset-left,0px));
+  padding-right:max(var(--space-md),env(safe-area-inset-right,0px));
+}
+.drawer__head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:var(--space-md);padding-bottom:var(--space-sm);
+  border-bottom:1px solid var(--rule-c);
+}
+.drawer__close{
+  border:0;background:none;color:var(--ink-2);font:inherit;
+  cursor:pointer;padding:.25rem .5rem;
+}
+.drawer__close:hover{color:var(--ink)}
+.drawer__list{
+  flex:1 1 auto;min-height:0;overflow-y:auto;
+  margin:0;padding:0;list-style:none;
+}
+.drawer__empty{margin:var(--space-lg) 0;color:var(--ink-2)}
+.line{
+  display:grid;grid-template-columns:4rem 1fr auto;
+  gap:var(--space-sm);align-items:start;
+  padding:var(--space-sm) 0;border-bottom:1px solid var(--rule-c);
+}
+.line img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius-sm)}
+.line__name{font-variation-settings:"wdth" 90,"wght" 700;display:block}
+.line__meta{color:var(--ink-2);font-size:var(--step--1)}
+.line__qty{display:inline-flex;align-items:center;gap:.4rem;margin-top:.4rem}
+.line__step{
+  width:1.5rem;height:1.5rem;border:1px solid var(--rule-c);
+  border-radius:var(--radius-sm);background:none;color:var(--ink);
+  cursor:pointer;font:inherit;line-height:1;
+}
+.line__step:hover{border-color:var(--action)}
+.drawer__foot{padding-top:var(--space-md);display:grid;gap:var(--space-sm)}
+.drawer__sum{
+  display:flex;justify-content:space-between;align-items:baseline;
+  font-variation-settings:"wdth" 90,"wght" 700;
+}
+.drawer__note{color:var(--ink-2);font-size:var(--step--1);margin:0}
+
+/* ═══ price ══════════════════════════════════════════════════
+   Tabular, so a column of prices lines up. Never shown beside
+   something that cannot be bought.                             */
+.price{
+  font-variant-numeric:tabular-nums;
+  font-variation-settings:"wdth" 92,"wght" 600;
+  white-space:nowrap;
+}
+.price--soon{color:var(--ink-2);font-variation-settings:"wdth" 92,"wght" 400}
+
+/* ═══ aperture ═══════════════════════════════════════════════
+   The category names itself with its own photography: real text,
+   selectable and resizing with the page, with the garment living
+   inside the letterforms.                                      */
+.aperture{
+  position:relative;display:grid;place-items:center;overflow:hidden;
+  padding-block:clamp(1rem,4vw,2.5rem);
+}
+.aperture__word{
+  margin:0;text-transform:uppercase;text-align:center;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 64,"wght" 900;
+  font-size:clamp(3.4rem,17vw,13rem);line-height:.78;letter-spacing:-.045em;
+  /* the frame is set on the element, not through a custom property:
+     a url() inside a var() resolves against the stylesheet, which
+     silently pointed every one of these at assets/css/assets/… */
+  background-size:138% auto;background-position:center 34%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:.5px var(--rule-c);
+  transition:background-position 1.1s var(--ease-out);
+}
+.aperture:hover .aperture__word{background-position:center 56%}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .aperture__word{color:var(--ink);background:none}
+}
+
+/* ═══ cardgrid ═══════════════════════════════════════════════
+   The shop. Three up, two on a tablet, one on a phone. A card is
+   the garment, the code, the name — and the price only once you
+   ask for it.                                                   */
+/* The track was minmax(16rem,1fr), which was right for three pieces
+   and wrong the moment the drop became two: auto-fit handed each card
+   half the shell and a 4/5 frame made that 564 x 839px — a billboard,
+   not a product card. The track has a ceiling now, so the grid fills
+   left to right and a short drop looks like a short drop instead of
+   two posters. */
+.cardgrid{
+  display:grid;gap:var(--space-lg) var(--space-md);
+  grid-template-columns:repeat(auto-fit,minmax(15rem,20rem));
+  justify-content:start;
+  margin-top:var(--space-lg);
+}
+@media (max-width:420px){
+  .cardgrid{grid-template-columns:minmax(0,1fr)}
+}
+.card{
+  display:block;text-decoration:none;color:inherit;min-width:0;
+  position:relative;
+}
+.card__frame{
+  position:relative;overflow:hidden;aspect-ratio:4/5;
+  background:color-mix(in srgb,var(--ink) 7%,var(--surface));border-radius:var(--radius-sm);
+}
+.card__frame img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .55s var(--ease-out),filter .55s var(--ease-out);
+}
+/* the crop tightens; the card does not grow and push its neighbours */
+.card:is(:hover,:focus-visible) .card__frame img{transform:scale(1.06)}
+.card:focus-visible{outline:1px solid var(--action);outline-offset:4px}
+
+.card__state{
+  position:absolute;left:.6rem;top:.6rem;z-index:2;
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:.3rem .7rem .3rem .55rem;border-radius:var(--radius-pill);
+  background:var(--surface);
+  font-family:var(--face-text);font-size:.62rem;letter-spacing:.14em;
+}
+.card__body{
+  display:grid;grid-template-columns:1fr auto;align-items:baseline;
+  gap:.3rem var(--space-sm);margin-top:var(--space-sm);
+}
+.card__code{
+  grid-column:1 / -1;font-family:var(--face-text);
+  font-size:.64rem;letter-spacing:.16em;color:var(--ink-2);
+}
+.card__name{
+  margin:0;font-variation-settings:"wdth" 86,"wght" 780;
+  font-size:var(--step-1);text-transform:uppercase;letter-spacing:-.01em;
+}
+/* The price is shown, not discovered. It used to rise in on hover,
+   which looked good and meant a desktop visitor scanning the grid saw
+   no money anywhere — a shop that will not say what things cost reads
+   as a shop that is not open. It lifts on hover instead. */
+.card__price{
+  overflow:hidden;
+  opacity:.72;transform:none;
+  transition:opacity .35s var(--ease-out),transform .45s var(--ease-out);
+}
+.card:is(:hover,:focus-visible) .card__price{opacity:1}
+
+
+.swatch{
+  width:.8rem;height:.8rem;border-radius:50%;
+  box-shadow:inset 0 0 0 1px var(--rule-c);
+}
+
+/* ═══ sizes ══════════════════════════════════════════════════ */
+.sizes{display:flex;gap:.5rem;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.size{
+  min-width:3rem;padding:.6rem .8rem;
+  border:1px solid var(--rule-c);border-radius:var(--radius-sm);
+  background:none;color:var(--ink);cursor:pointer;font:inherit;
+  font-variation-settings:"wdth" 92,"wght" 600;
+  font-variant-numeric:tabular-nums;
+  transition:border-color .3s ease,background .3s ease;
+}
+.size:hover{border-color:var(--action)}
+.size[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.size:hover{border-color:var(--action)}
+/* Until a size is picked, the label says so. The old page waited for
+   you to press Add to bag and only then admitted it needed one. */
+.piece-buy__pick [data-p-sizelabel]{color:var(--ink-2)}
+.piece-buy__pick.is-unset [data-p-sizelabel]::after{
+  content:' \2014 pick one';color:var(--crimson-type);
+}
+.size:focus-visible{outline:1px solid var(--action);outline-offset:3px}
+.size[disabled]{
+  cursor:default;color:var(--ink-2);opacity:.5;
+  text-decoration:line-through;
+}
+.size[disabled]:hover{border-color:var(--rule-c)}
+
+/* ═══ buybar ═════════════════════════════════════════════════
+   On a phone the decision to buy happens after the button has
+   scrolled away, so it comes back along the bottom with the price
+   beside it. The one floating control on the site.             */
+.buybar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  display:none;align-items:center;justify-content:space-between;
+  gap:var(--space-md);
+  padding:var(--space-sm) max(var(--space-md),env(safe-area-inset-left,0px));
+  padding-bottom:calc(var(--space-sm) + env(safe-area-inset-bottom,0px));
+  background:var(--surface);border-top:1px solid var(--rule-c);
+}
+.buybar.is-up{display:flex}
+@media (min-width:761px){ .buybar{display:none!important} }
+
+/* ═══ soonbar ════════════════════════════════════════════════
+   The locked pages announce themselves before anything else. It
+   moves with the scroll, like every other marquee here — never on
+   a timer, so it is still when the reader is.                   */
+.soonbar{
+  overflow:hidden;border-bottom:1px solid var(--rule-c);
+  padding-block:.55rem;
+}
+.soonbar__track{
+  display:flex;gap:2.5rem;white-space:nowrap;width:max-content;
+  transform:translate3d(var(--mq,0),0,0);
+}
+.soonbar__word{
+  font-family:var(--face-text);font-size:.68rem;letter-spacing:.3em;
+  color:var(--ink-2);
+}
+.soonbar__word b{color:var(--action);font-weight:inherit}
+
+@media (prefers-reduced-motion:reduce){
+  .card__frame img,.card__price,.aperture__word{transition:none}
+}
+
+
+/* ═══ flick ══════════════════════════════════════════════════
+   The gallery on a piece page. A strip of ticks under the frame,
+   one per shot, so the whole set is a shape before you touch it.
+   Nothing here transitions: a tick that fades is a tick still
+   showing you where you were.                                  */
+.flick{position:relative;background:var(--surface)}
+.flick__view{
+  position:relative;aspect-ratio:16/10;overflow:hidden;background:color-mix(in srgb,var(--ink) 7%,var(--surface));
+  border-radius:var(--radius-sm);
+}
+@media (max-width:760px){ .flick__view{aspect-ratio:4/5} }
+.flick__view img{width:100%;height:100%;object-fit:cover;display:block}
+.flick__meta{
+  position:absolute;left:var(--space-sm);top:var(--space-sm);z-index:2;
+  display:flex;gap:.9rem;align-items:baseline;margin:0;
+  font-variant-numeric:tabular-nums;
+}
+.flick__meta .t-meta{color:var(--zinc-wash)}
+
+.scrub{
+  position:relative;display:flex;align-items:stretch;gap:2px;
+  height:3rem;margin-top:2px;cursor:ew-resize;touch-action:pan-y;
+  background:color-mix(in srgb,var(--ink) 7%,var(--surface));
+}
+.scrub:focus-visible{outline:1px solid var(--action);outline-offset:3px}
+.scrub__tick{flex:1 1 0;min-width:0;background:color-mix(in srgb,var(--ink) 18%,var(--surface))}
+.scrub__tick.is-on{background:var(--action)}
+.scrub__head{
+  position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);
+  left:var(--p,0%);transform:translateX(-1px);pointer-events:none;
+}
+
+/* ═══ slit ═══════════════════════════════════════════════════
+   The cloth, found by a torch in a dark room. Reveal over
+   display, taken literally.                                    */
+.slit{
+  position:relative;aspect-ratio:21/9;overflow:hidden;
+  background:var(--obsidian);cursor:crosshair;--x:50%;touch-action:pan-y;
+  border-radius:var(--radius-sm);
+}
+@media (max-width:760px){ .slit{aspect-ratio:4/3} }
+.slit__layer{position:absolute;inset:0}
+.slit__layer img{width:100%;height:100%;object-fit:cover}
+.slit__layer--dim img{filter:grayscale(1) brightness(.17) contrast(1.3)}
+.slit__layer--lit{
+  -webkit-mask-image:linear-gradient(90deg,
+    transparent calc(var(--x) - 15%),#000 calc(var(--x) - 3%),
+    #000 calc(var(--x) + 3%),transparent calc(var(--x) + 15%));
+  mask-image:linear-gradient(90deg,
+    transparent calc(var(--x) - 15%),#000 calc(var(--x) - 3%),
+    #000 calc(var(--x) + 3%),transparent calc(var(--x) + 15%));
+}
+.slit__edge{
+  position:absolute;top:0;bottom:0;left:var(--x);width:1px;
+  background:var(--action);opacity:.6;transform:translateX(-.5px);
+}
+
+/* ═══ piece ══════════════════════════════════════════════════
+   Name, price and the two choices, side by side with the specs
+   below. Stacks at 860 where two columns make both too narrow
+   to decide in.                                                */
+.piece-buy{
+  display:grid;gap:var(--space-lg);align-items:start;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+}
+@media (max-width:860px){ .piece-buy{grid-template-columns:1fr} }
+.piece-buy__head .price{font-size:var(--step-1)}
+.piece-buy__pick{min-width:0}
+
+.swatchrow{display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-top:.5rem}
+.swatchbtn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.4rem .8rem .4rem .5rem;
+  border:1px solid var(--rule-c);border-radius:var(--radius-pill);
+  text-decoration:none;color:var(--ink-2);
+  /* These were <a>, so nothing reset the background. As <button> the
+     UA paints them #efefef — a hair off the chosen pill's fill, which
+     is how both colourways ended up looking equally selected. */
+  background:none;font:inherit;cursor:pointer;
+  transition:border-color .3s ease,color .3s ease,background .3s ease;
+}
+.swatchbtn:hover{border-color:var(--action);color:var(--ink)}
+/* Chosen is FILLED, exactly as a chosen size is. It used to be a
+   border-colour change from --rule-c to --ink, which on a dark page
+   is two greys a few percent apart — you could not tell which
+   colourway you were looking at. One "chosen" look across the page. */
+.swatchbtn.is-on{
+  background:var(--ink);color:var(--surface);border-color:var(--ink);
+}
+/* a white dot on a white pill needs an edge to exist at all */
+.swatchbtn .swatch{width:1rem;height:1rem;box-shadow:0 0 0 1px var(--rule-c)}
+.swatchbtn.is-on .swatch{box-shadow:0 0 0 1px var(--surface)}
+.swatchbtn:focus-visible{outline:1px solid var(--action);outline-offset:3px}
+
+
+/* ═══ specs ══════════════════════════════════════════════════
+   A piece's fabric and weight. Deliberately NOT .lab-table: that
+   one styles its values as teal monospace readings, which belongs
+   to an assay and not to a shirt.                               */
+.specs{width:100%;border-collapse:collapse}
+.specs td{padding:var(--space-sm) 0;border-bottom:1px solid var(--rule-c);vertical-align:baseline}
+.specs td:first-child{
+  width:10rem;color:var(--ink-2);
+  font-family:var(--face-text);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.specs td:last-child{font-variation-settings:"wdth" 92,"wght" 600}
+
+/* the hero's one action. It rolls in after the headline has settled,
+   so the line gets its moment first — same delay the lede uses. */
+.hero__act{margin-top:var(--space-lg)}
+.hero__act .btn{
+  animation:act-in .7s var(--ease-out) 1.15s backwards;
+}
+@keyframes act-in{
+  from{opacity:0;transform:translateY(1.1rem)}
+  to{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero__act .btn{animation:none}
+}
+
+/* ═══ ORIGIN · THE MARK ASSEMBLES ════════════════════════════════
+   Ported from the transition lab, experiment 03.
+
+   It sits directly after the NAME section, not at the top of the
+   page. The page has just finished explaining what the name means
+   — "We make the first half of the name. You bring the second." —
+   and the mark assembles on that sentence. Run as a cold open at
+   the top it would have been a logo animation; run here it is the
+   argument landing.
+
+   Two halves. The first is garments thrown at the screen one frame
+   at a time, SLOWING DOWN rather than speeding up — a reel running
+   out of tape. The second is the mark assembling. Nothing in the
+   first half transitions. Everything in the second half does,
+   slowly. That contrast is the whole effect.                     */
+/* Full bleed, full height. Held to 16/10 inside a .shell the frames
+   were being clipped by a box rather than running off the screen, and
+   a title card that sits in a frame is a picture of a title card. */
+.seq{
+  position:relative;overflow:hidden;isolation:isolate;
+  width:100%;height:100vh;height:100svh;min-height:30rem;
+  background:var(--obsidian);
+}
+/* short landscape windows: a full-height card leaves nothing to say
+   there is a page under it */
+@media (max-height:34rem){ .seq{height:30rem} }
+
+/* the thrown frames. hidden, not faded — nothing in the first half
+   eases, so visibility is the right property, not opacity. */
+.seq__cut{
+  position:absolute;left:50%;top:50%;
+  max-width:none;max-height:none;transform-origin:50% 50%;
+  visibility:hidden;will-change:transform;pointer-events:none;
+}
+.seq__cut.is-on{visibility:visible}
+
+/* two beats are the printed mark on cloth rather than a cut-out
+   garment — those run full bleed instead of being placed. */
+.seq__full{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  visibility:hidden;pointer-events:none;
+}
+.seq__full.is-on{visibility:visible}
+
+/* one frame of light between some of the early cuts */
+.seq__flash{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:var(--zinc-wash);opacity:0;mix-blend-mode:screen;
+}
+.seq__flash.is-red{background:var(--crimson)}
+.seq__flash.is-on{opacity:.26}
+
+/* the mark, assembling */
+/* The FINISHED lockup is the default state. Without JavaScript the
+   sequence cannot run, so the mark simply sits there assembled —
+   the same rule the locks follow: it goes inert, not broken. The
+   script arms the stage as its first act, and only an armed stage
+   is ever hidden. */
+.seq__mark{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.75rem;
+}
+.seq.is-armed .seq__mark{visibility:hidden}
+.seq.is-armed .seq__mark.is-on{visibility:visible}
+/* Sized for a full-screen card. These were tuned when the stage was a
+   16/10 panel inside a .shell; at full bleed the same numbers left the
+   mark floating in the middle of a lot of nothing. */
+.seq__z{
+  width:clamp(4.2rem,13vw,11rem);height:auto;display:block;
+  overflow:visible;will-change:transform;
+}
+.seq__word{
+  margin:0;display:flex;flex-direction:column;align-items:center;
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 70,"wght" 880;
+  font-size:clamp(1.9rem,6vw,4.1rem);line-height:.98;
+  /* optical: tracking pads the right edge, so the block is indented
+     by the same amount to keep it centred on the Z above it. */
+  letter-spacing:.14em;text-indent:.14em;
+  color:var(--zinc-wash);
+}
+.seq__word span{display:block;will-change:transform}
+
+.seq__code{
+  position:absolute;left:var(--space-lg);bottom:1rem;z-index:4;margin:0;
+  font-family:var(--face-text);font-size:.68rem;letter-spacing:.16em;
+  color:var(--muted);font-variant-numeric:tabular-nums;
+}
+.seq__replay{
+  position:absolute;right:var(--space-lg);bottom:1rem;z-index:4;
+  display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;
+  background:color-mix(in srgb,var(--obsidian) 60%,transparent);
+  color:var(--zinc-wash);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid color-mix(in srgb,var(--zinc-wash) 22%,transparent);
+  border-radius:var(--radius-pill);padding:.6rem 1.2rem;
+  font-family:var(--face-text);font-size:.62rem;letter-spacing:.16em;
+  transition:border-color var(--dur-base) var(--ease-out),
+             background var(--dur-base) var(--ease-out);
+}
+.seq__replay:is(:hover,:focus-visible){
+  border-color:var(--crimson);
+  background:color-mix(in srgb,var(--obsidian) 85%,transparent);
+}
+.seq__replay:focus-visible{outline:1px solid var(--crimson);outline-offset:3px}
+.seq__replay[disabled]{opacity:.55;cursor:default}
+
+@media (max-width:760px){
+  .seq__code,.seq__replay{font-size:.58rem}
+  .seq__code{left:var(--space-md)}
+  .seq__replay{right:var(--space-md)}
+}
+
+/* ── an aperture inside a cut band ───────────────────────────────
+   The cut diagonals were drawn behind a small, left-set headline and
+   they worked there. An aperture is 17vw of photographic letterform,
+   and the silver slash sits at almost exactly the value of white
+   cloth, so the right edge of a word like FUEL dissolved into the
+   decoration. Behind an aperture the cuts drop back: still present,
+   no longer competing. The lede centres to match the word above it,
+   because a centred display word over a flush-left line reads as two
+   unrelated things. */
+.has-cut:has(.aperture) .cut{opacity:.28}
+.has-cut .aperture{position:relative;z-index:1}
+.has-cut .aperture + .lede{text-align:center;max-width:none}
+
+/* A long name needs a smaller step. INSTRUMENTS is eleven characters;
+   at 17vw it ran past the shell and .aperture clips, so the page was
+   quietly showing INSTRUMEN. Clipping is the worst failure mode here
+   because nothing looks broken — it just reads as a different word. */
+.aperture__word--long{font-size:clamp(2rem,11.5vw,8.6rem)}
+
+/* Per-frame crop. The default lands at 34%, which on the white tee's
+   collar shot sits on the size label and the dark table edge. This
+   pushes in and down onto clean cloth. The value lives here, not in
+   the page, because it is a design value. */
+/* Both locked doors are filled with pale cloth from the same shoot,
+   so the two pages read as one system. Red is not a frame colour here
+   — it is the seal and the one call to action, and a red word on one
+   page beside a silver word on the other made them look unrelated.
+   Each photo gets its own crop because each has its own label, seam
+   and table edge to stay clear of. */
+.aperture__word--cloth{background-size:230% auto;background-position:center 38%}
+.aperture:hover .aperture__word--cloth{background-position:center 52%}
+.aperture__word--weave{background-size:260% auto;background-position:center 22%}
+.aperture:hover .aperture__word--weave{background-position:center 36%}
+
+/* A seal with nothing to cover sits on its own, centred. Instruments
+   has no sample, so there is no blur there — a blurred shape would
+   imply something exists behind it. */
+.seal-row{display:flex;justify-content:center}
+
+/* A covered plate should fill the frame it is covering. Fuel's splits
+   into copy and vessel, which gives the seal something to sit in the
+   middle of; Instruments is copy alone, and a narrow column with the
+   seal floating off its right edge reads as a mistake rather than as
+   something withheld. Two columns give it the same width and the same
+   centre. */
+.lock__under > .prose{max-width:none;columns:2;column-gap:var(--space-2xl)}
+@media (max-width:760px){ .lock__under > .prose{columns:1} }
+
+/* Wear's frame is the back of the white tee. The default crop lands on
+   the print; this pushes past it onto the shoulder and the cloth. */
+.aperture__word--rail{background-size:250% auto;background-position:center 64%}
+.aperture:hover .aperture__word--rail{background-position:center 76%}
+
+/* the title card carries its own full-bleed stage — no band padding,
+   no shell, nothing between it and the edges of the screen */
+.seq-band{position:relative;display:block}
+
+/* ── checkout, inside the bag drawer ─────────────────────────────
+   Shut until asked for. A bag that opens on a form is a form, and
+   most of the time someone opening the bag is counting, not buying. */
+.checkout{
+  display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm);
+  margin-top:var(--space-md);
+}
+.checkout--wide{grid-column:1 / -1}
+.checkout label{display:grid;gap:.3rem}
+.checkout label span{
+  font-family:var(--face-text);font-size:.68rem;letter-spacing:.14em;
+  color:var(--ink-2);
+}
+.checkout input{
+  width:100%;padding:.6rem .7rem;font:inherit;
+  color:var(--ink);background:none;
+  border:1px solid var(--rule-c);border-radius:var(--radius-sm);
+  transition:border-color var(--dur-base) var(--ease-out);
+}
+/* --action is crimson on Night, which is also the error colour — so a
+   focused field and a field you had got wrong were the same red and
+   you could not tell "you are here" from "this is broken". The
+   decision log already settles this: teal means you are here. */
+.checkout input:focus-visible{outline:none;border-color:var(--flame-teal)}
+/* :invalid:not(:placeholder-shown) was meant to hold the red back
+   until something had been typed — but these inputs carry no
+   placeholder, so :placeholder-shown never matches, the :not() is
+   always true, and every required field was red before the form had
+   even been looked at. :user-invalid is the selector that actually
+   means "they tried and it is wrong". */
+.checkout input:user-invalid{border-color:var(--crimson)}
+.checkout [data-checkout-state]{margin:0;color:var(--ink-2);min-height:1.2em}
+.checkout [data-checkout-state].is-bad{color:var(--crimson-type)}
+@media (max-width:420px){ .checkout{grid-template-columns:1fr} }
+
+/* the panel takes focus on open so the heading is announced first;
+   it is a container, not a control, so it shows no ring */
+.drawer__in:focus{outline:none}
+
+/* ═══ RECEIPT ════════════════════════════════════════════════════
+   One screen. A receipt is a document you check, not a page you
+   travel through, and scrolling to find the total is the one thing it
+   must never ask. Two columns on a desktop: what we are saying on the
+   left, what you bought on the right. One column on a phone, where
+   scrolling is simply how reading works.                           */
+.receipt-band{
+  /* the masthead measures 98px here; a 5rem fallback left 18px of
+     scroll on a receipt that is supposed to need none */
+  min-height:calc(100svh - var(--mast-h,6.2rem));
+  display:grid;align-items:center;padding-block:var(--space-lg);
+}
+.receipt{
+  display:grid;gap:var(--space-xl) var(--space-2xl);
+  grid-template-columns:minmax(0,1fr) minmax(0,22rem);
+  align-items:start;width:100%;
+}
+.receipt__thanks{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 72,"wght" 900;
+  /* sized to leave room for the ledger beside it, not to fill a page */
+  font-size:clamp(2.4rem,5.6vw,4.6rem);line-height:.9;letter-spacing:-.035em;
+  margin:0;color:var(--ink);text-wrap:balance;
+}
+.receipt__lede{
+  font-size:var(--step-0);color:var(--ink-2);
+  margin:var(--space-md) 0 0;max-width:34ch;
+}
+.receipt__act{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
+.receipt__note{margin-top:var(--space-md);color:var(--ink-2);max-width:40ch}
+
+/* the ledger: label left, figure hard right, a rule between rows */
+.receipt__list{list-style:none;margin:0;padding:0}
+.receipt__line{
+  display:grid;grid-template-columns:1fr auto auto;
+  gap:.4rem var(--space-md);align-items:baseline;
+  padding:.7rem 0;border-bottom:1px solid var(--rule-c);
+}
+.receipt__name{font-variation-settings:"wdth" 92,"wght" 700}
+.receipt__sub{
+  display:block;margin-top:.1rem;
+  font-family:var(--face-text);font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-2);
+}
+.receipt__qty,.receipt__amt{font-variant-numeric:tabular-nums;text-align:right}
+.receipt__qty{color:var(--ink-2);min-width:3ch}
+.receipt__amt{min-width:6ch}
+
+.receipt__total{
+  display:grid;grid-template-columns:1fr auto;gap:var(--space-md);
+  align-items:baseline;padding:var(--space-md) 0;
+  border-bottom:1px solid var(--rule-c);
+}
+.receipt__k{
+  font-family:var(--face-text);font-size:.68rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-2);
+}
+.receipt__sum{
+  font-family:var(--face-display);
+  font-variation-settings:"wdth" 80,"wght" 850;
+  font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1;
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+}
+.receipt__meta{margin:0}
+.receipt__row{
+  display:grid;grid-template-columns:auto 1fr;gap:var(--space-md);
+  align-items:baseline;padding:.5rem 0;
+  border-bottom:1px solid var(--rule-c);
+}
+.receipt__row dt,.receipt__row dd{margin:0}
+.receipt__v{
+  font-variant-numeric:tabular-nums;text-align:right;
+  font-size:var(--step--1);
+}
+
+@media (max-width:860px){
+  .receipt{grid-template-columns:minmax(0,1fr)}
+  .receipt-band{min-height:0}
+}
+
+/* printed, it is black on white and nothing comes with it */
+@media print{
+  .masthead,.foot,.buybar,.drawer,.cleave,.receipt__act{display:none!important}
+  .receipt-band{min-height:0;padding:0}
+  body{background:#fff!important;color:#000!important}
+  .receipt__thanks,.receipt__sum,.receipt__name,.receipt__v{color:#000!important}
+  .receipt__k,.receipt__sub,.receipt__lede,.receipt__note{color:#444!important}
+  .receipt__row,.receipt__line,.receipt__total{border-color:#bbb!important}
+}
+
+/* the panel takes focus on open so the heading is announced first;
+   it is a container, not a control, so it shows no ring */
+.drawer__in:focus{outline:none}
+
+/* A photographed piece in the register. Creatine Mono keeps its drawn
+   vessel because no photograph of it exists — so within one grid, a
+   photograph means the thing is real and a drawing means it is not
+   yet. That reads as a status, which is what the register is for. */
+.kit__shot{
+  width:100%;aspect-ratio:4/5;object-fit:cover;display:block;
+  border-radius:var(--radius-sm);
+}
+.kit__item:is(:hover,:focus-within) .kit__shot{filter:none}
+
+/* A veiled door: the cloth is there and you cannot read it. Blurred
+   this far it is texture, not a garment — which is the honest amount
+   to show for a category that has nothing in it yet, and the same
+   gesture .lock already uses for a thing that exists but is covered. */
+.doors__set--veiled .door-card img{
+  filter:blur(14px) saturate(.35) brightness(.55);
+  transform:scale(1.25);        /* hides the blur's soft edge */
+}
+.doors__set--veiled .door-card{background:var(--obsidian)}
+@media (prefers-reduced-motion:reduce){
+  .doors__set--veiled .door-card img{transform:scale(1.25)}
+}
+

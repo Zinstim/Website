@@ -1016,3 +1016,236 @@ requestAnimationFrame(function(){
     try { sessionStorage.removeItem('zs-arrive'); } catch (err) {}
   });
 })();
+
+
+/* spread — the product display on Wear. Four frames of one piece,
+   overlapped and bleeding; one vertical word holding them still.
+
+   The pieces live in the page as JSON (#drop-data), not in here, so
+   a human edits content in the HTML and behaviour stays in the JS. */
+(function(){
+  var sec = document.querySelector('[data-spread]');
+  if (!sec) return;
+
+  var data = document.getElementById('drop-data');
+  if (!data) return;
+  var PIECES;
+  try { PIECES = JSON.parse(data.textContent); } catch (e) { return; }
+  if (!PIECES || !PIECES.length) return;
+
+  var stage  = sec.querySelector('[data-stage]');
+  var frames = Array.prototype.slice.call(sec.querySelectorAll('.frame'));
+  var line   = sec.querySelector('.thread path');
+  var thread = sec.querySelector('.thread');
+  var word   = sec.querySelector('.spine__word');
+  var tabs   = Array.prototype.slice.call(sec.querySelectorAll('.vtab'));
+  var code   = sec.querySelector('[data-code]');
+  var specs  = sec.querySelector('[data-specs]');
+  if (!stage || frames.length !== 4) return;
+
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SLOTS  = ['s0','s1','s2','s3'];
+  var busy   = false;
+
+  /* every frame decoded up front — a swap that waits on the network
+     is not a swap */
+  PIECES.forEach(function(p){
+    p.frames.forEach(function(f){ var i = new Image(); i.src = f.src; });
+  });
+
+  /* ── the thread ────────────────────────────────────────────────
+     From the spine word, through each frame's centre in slot order,
+     and off the right edge. Recomputed whenever anything moves,
+     because a line that lies about where things are is worse than
+     no line at all. */
+  function smooth(p){
+    if (p.length < 3) return '';
+    var d = 'M' + p[0][0].toFixed(1) + ',' + p[0][1].toFixed(1);
+    for (var i = 0; i < p.length - 1; i++){
+      var p0 = p[i-1] || p[i], p1 = p[i], p2 = p[i+1], p3 = p[i+2] || p[i+1];
+      d += ' C' + (p1[0]+(p2[0]-p0[0])/6).toFixed(1) + ',' + (p1[1]+(p2[1]-p0[1])/6).toFixed(1)
+         + ' ' + (p2[0]-(p3[0]-p1[0])/6).toFixed(1) + ',' + (p2[1]-(p3[1]-p1[1])/6).toFixed(1)
+         + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+    }
+    return d;
+  }
+  function drawThread(){
+    var box = stage.getBoundingClientRect();
+    if (!box.width || !line) return;
+    thread.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    var pts = [[0, box.height * 0.5]];
+    frames.slice().sort(function(a,b){ return (+a.dataset.slot) - (+b.dataset.slot); })
+      .forEach(function(f){
+        var r = f.getBoundingClientRect();
+        pts.push([r.left - box.left + r.width/2, r.top - box.top + r.height/2]);
+      });
+    pts.push([box.width, box.height * 0.16]);
+    line.setAttribute('d', smooth(pts));
+  }
+
+  /* ── promote ───────────────────────────────────────────────────
+     FLIP: measure both frames, swap their slot classes, measure
+     again, animate each from where it was to where it now is. The
+     frame travels; nothing cross-fades. */
+  function promote(el){
+    if (busy) return;
+    var hero = sec.querySelector('.frame--hero');
+    if (!hero || el === hero) return;
+    busy = true;
+
+    var a = hero.getBoundingClientRect(), b = el.getBoundingClientRect();
+    var hs = hero.dataset.slot, es = el.dataset.slot;
+
+    hero.classList.remove('frame--hero', SLOTS[hs]);
+    el.classList.remove(SLOTS[es]);
+    hero.classList.add(SLOTS[es]);
+    el.classList.add(SLOTS[hs], 'frame--hero');
+    hero.dataset.slot = es;
+    el.dataset.slot = hs;
+
+    if (reduce){ busy = false; drawThread(); return; }
+
+    [[hero,a],[el,b]].forEach(function(pair){
+      var node = pair[0], was = pair[1], now = node.getBoundingClientRect();
+      node.animate([
+        { transform:'translate(' + (was.left-now.left) + 'px,' + (was.top-now.top) + 'px) ' +
+                    'scale(' + (was.width/now.width) + ',' + (was.height/now.height) + ')' },
+        { transform:'none' }
+      ], { duration:760, easing:'cubic-bezier(.19,1,.22,1)' });
+    });
+
+    var t0 = performance.now();
+    (function tick(now){
+      drawThread();
+      if (now - t0 < 800) requestAnimationFrame(tick);
+      else busy = false;
+    })(t0);
+  }
+
+  frames.forEach(function(f){
+    f.addEventListener('click', function(){ promote(f); });
+  });
+
+  /* ── pieces ────────────────────────────────────────────────────  */
+  function load(i){
+    var p = PIECES[i];
+
+    tabs.forEach(function(t, n){
+      t.setAttribute('aria-selected', n === i ? 'true' : 'false');
+      t.tabIndex = n === i ? 0 : -1;
+    });
+    if (code) code.textContent = p.code + ' · ' + p.name;
+    if (specs) specs.innerHTML = p.specs.map(function(s){
+      return '<span class="t-meta">' + s + '</span>';
+    }).join('');
+
+    word.classList.add('is-out');
+    setTimeout(function(){
+      word.textContent = p.name;
+      word.classList.remove('is-out');
+    }, reduce ? 0 : 240);
+
+    frames.forEach(function(f, n){
+      SLOTS.forEach(function(s){ f.classList.remove(s); });
+      f.classList.toggle('frame--hero', n === 0);
+      f.classList.add(SLOTS[n]);
+      f.dataset.slot = n;
+
+      var img = f.querySelector('img'), tag = f.querySelector('.frame__tag');
+      img.src = p.frames[n].src;
+      img.alt = p.code + ' ' + p.name + ' — ' + p.frames[n].alt;
+      tag.textContent = p.frames[n].tag;
+      if (!reduce) f.animate(
+        [{opacity:0, transform:'translateY(14px)'},{opacity:1, transform:'none'}],
+        {duration:620, delay:n*70, easing:'cubic-bezier(.19,1,.22,1)', fill:'backwards'});
+    });
+
+    requestAnimationFrame(drawThread);
+  }
+
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ load(i); });
+    t.addEventListener('keydown', function(e){
+      var n = i;
+      if (e.key === 'ArrowRight') n = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft') n = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = tabs.length - 1;
+      else return;
+      e.preventDefault(); load(n); tabs[n].focus();
+    });
+  });
+
+  /* ── parallax ──────────────────────────────────────────────────
+     Each slot at a different depth, so the cursor separates them.
+     Small on purpose: the frames should read as having thickness,
+     not as the page sliding around. */
+  var DEPTH = [6, 16, 13, 10];
+  if (!reduce && matchMedia('(hover: hover)').matches){
+    stage.addEventListener('pointermove', function(e){
+      var r = stage.getBoundingClientRect();
+      var dx = (e.clientX - r.left)/r.width - .5, dy = (e.clientY - r.top)/r.height - .5;
+      frames.forEach(function(f){
+        var d = DEPTH[+f.dataset.slot];
+        f.style.transform = 'translate3d(' + (-dx*d) + 'px,' + (-dy*d*.6) + 'px,0)';
+      });
+    });
+    stage.addEventListener('pointerleave', function(){
+      frames.forEach(function(f){ f.style.transform = ''; });
+    });
+  }
+
+  addEventListener('resize', drawThread);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawThread);
+  load(0);
+  setTimeout(drawThread, 400);
+})();
+
+
+/* lock — every unreleased thing on the site carries a [data-lock]
+   seal. One dialog serves all of them; the seal says what goes in it.
+
+   The blur is CSS, so it is on the page before this file runs. With
+   scripts off the thing is still covered and the seal still reads —
+   all this adds is the dialog, so a seal without it is inert rather
+   than broken. */
+(function(){
+  var seals = document.querySelectorAll('[data-lock]');
+  if (!seals.length) return;
+
+  var dlg = document.getElementById('soon');
+  if (!dlg || !dlg.showModal) return;
+
+  var elTitle = dlg.querySelector('[data-soon-title]');
+  var elBody  = dlg.querySelector('[data-soon-body]');
+  var elNote  = dlg.querySelector('[data-soon-note]');
+  var opener  = null;
+
+  function open(seal){
+    opener = seal;
+    elTitle.textContent = seal.getAttribute('data-lock-title') || 'Not out yet';
+    elBody.textContent  = seal.getAttribute('data-lock-body')  || '';
+    var note = seal.getAttribute('data-lock-note');
+    elNote.textContent = note || '';
+    elNote.hidden = !note;
+    dlg.showModal();
+  }
+
+  for (var i = 0; i < seals.length; i++){
+    seals[i].addEventListener('click', function(e){ open(e.currentTarget); });
+  }
+
+  /* the dialog element itself is the backdrop's hit area; the card
+     inside it is not — so this closes on a backdrop click only */
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+
+  var x = dlg.querySelector('[data-soon-close]');
+  if (x) x.addEventListener('click', function(){ dlg.close(); });
+
+  /* Escape and the close button both land here. Focus goes back to
+     the seal that was pressed or the reader loses their place. */
+  dlg.addEventListener('close', function(){
+    if (opener && document.contains(opener)) opener.focus();
+    opener = null;
+  });
+})();

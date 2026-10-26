@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wear — ZinStim</title>
-<meta name="description" content="Apparel. Drop 01: a training tee and a floor short, cut for training and made to outlast the drop.">
+<meta name="description" content="Apparel. Drop 01 &mdash; three colourways, cut for training and made to outlast the drop.">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
 <meta name="theme-color" content="#0D0D0D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Wear — ZinStim">
-<meta property="og:description" content="Apparel. Drop 01: a training tee and a floor short, cut for training and made to outlast the drop.">
+<meta property="og:description" content="Apparel. Drop 01 &mdash; three colourways, cut for training and made to outlast the drop.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -36,16 +36,26 @@
       </ul>
     </div>
   </nav>
+  <button class="bag" type="button" data-bag-open aria-haspopup="dialog">
+    <span class="bag__label">Bag</span>
+    <span class="bag__count" data-bag-count aria-hidden="true">0</span>
+  </button>
+
 </header>
 
 <main>
+  <!-- THE NAME — the category, filled with its own cloth, and one line
+       under it. The page used to say "Wear" twice: a coral display
+       headline here and the aperture again below it. Same shape as
+       Fuel and Instruments now, same pale cloth, so the three category
+       pages read as one set. -->
   <section class="band has-cut" style="padding-top:var(--space-xl)">
     <div class="cut" aria-hidden="true"></div>
     <div class="cut cut--bloom" aria-hidden="true"></div>
     <div class="shell">
-      <h1 class="t-display lines lines--load">
-        <span class="ln"><span class="liq-type liq-type--filled" data-liq="Wear">Wear</span></span>
-      </h1>
+      <div class="aperture">
+        <h1 class="aperture__word aperture__word--rail" style="background-image:url(assets/img/product/k02-back.webp)">Wear</h1>
+      </div>
       <p class="lede settle" style="margin-top:var(--space-md)">What you put on is what you are.</p>
     </div>
   </section>
@@ -53,7 +63,7 @@
   <section class="band" style="padding-top:0">
     <div class="shell">
       <div class="prose">
-        <p>Drop 01 is three pieces. All three are cut for training and finished
+        <p>Drop 01 is two pieces. Both are cut for training and finished
           the way we would want them if we were buying them, which is the only
           standard we have that is worth anything.</p>
         <p>Nothing here is seasonal. If a piece sells out we make it again —
@@ -62,231 +72,45 @@
     </div>
   </section>
 
-  <!-- THE VIEWER — pick a piece, the piece opens.
-       Three scales of the nav's one gesture: the tab's dot opens
-       into a pill, the block opens out of a circle into the ground
-       the piece stands on, and the action opens from a square into
-       a pill with its label rising out of a clip.
-       Plates are placeholders — see §viewer in brand.css. -->
-  <section class="viewer" data-viewer>
-  <svg class="sprite" aria-hidden="true" focusable="false">
-    <defs>
-      <symbol id="v1-front" viewBox="0 0 200 226"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M82,13 C90,29 110,29 118,13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v1-back" viewBox="0 0 200 226"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M82,13 C90,19 110,19 118,13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M60,42 C85,50 115,50 140,42" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M95,21 H105 V28 H95 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v1-detail" viewBox="40 0 120 136"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M82,13 C90,29 110,29 118,13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M85,19 C92,34 108,34 115,19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="3 3"/></symbol>
-      <symbol id="v1-fabric" viewBox="0 0 200 226"><path d="M40,48 H160 V178 H40 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M140,178 L160,158" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M40,60 L52,48 M40,74 L66,48 M40,88 L80,48 M40,102 L94,48 M40,116 L108,48 M40,130 L122,48 M40,144 L136,48 M40,158 L150,48 M40,172 L160,52 M48,178 L160,66 M62,178 L160,80 M76,178 L160,94 M90,178 L160,108 M104,178 L160,122 M118,178 L160,136 M132,178 L160,150 M146,178 L160,164" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v2-front" viewBox="0 0 200 226"><path d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M76,15 C87,35 113,35 124,15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M66,86 L94,86 L94,116 L66,116 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v2-back" viewBox="0 0 200 226"><path d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M76,15 C87,23 113,23 124,15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M52,46 C85,54 115,54 148,46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v2-detail" viewBox="34 58 112 127"><path d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M66,86 L94,86 L94,116 L66,116 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M69,91 H91" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="3 3"/></symbol>
-      <symbol id="v2-fabric" viewBox="0 0 200 226"><path d="M40,48 H160 V178 H40 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M140,178 L160,158" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M40,60 H160 M40,72 H160 M40,84 H160 M40,96 H160 M40,108 H160 M40,120 H160 M40,132 H160 M40,144 H160 M40,156 H160 M40,168 H160" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v3-front" viewBox="0 0 200 226"><path d="M56,20 L144,20 L152,132 L114,132 L100,72 L86,132 L48,132 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M56,34 L144,34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M96,34 Q94,44 92,54 M104,34 Q106,44 108,54" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v3-back" viewBox="0 0 200 226"><path d="M56,20 L144,20 L152,132 L114,132 L100,72 L86,132 L48,132 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M56,34 L144,34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M110,48 H132 V68 H110 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-      <symbol id="v3-detail" viewBox="44 10 112 127"><path d="M56,20 L144,20 L152,132 L114,132 L100,72 L86,132 L48,132 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M56,34 L144,34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M96,34 Q94,44 92,54 M104,34 Q106,44 108,54" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M58,28 H142" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-dasharray="3 3"/></symbol>
-      <symbol id="v3-fabric" viewBox="0 0 200 226"><path d="M40,48 H160 V178 H40 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M140,178 L160,158" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/><path d="M158,48 L160,50 M144,48 L160,64 M130,48 L160,78 M116,48 L160,92 M102,48 L160,106 M88,48 L160,120 M74,48 L160,134 M60,48 L160,148 M46,48 L160,162 M40,56 L160,176 M40,70 L148,178 M40,84 L134,178 M40,98 L120,178 M40,112 L106,178 M40,126 L92,178 M40,140 L78,178 M40,154 L64,178 M40,168 L50,178" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" opacity=".5"/></symbol>
-    </defs>
-  </svg>
+  <!-- THE RACK — the only frame that shows the whole drop at once.
+       Full width, edges masked rather than covered, so it ends in
+       the page instead of sitting in a rectangle. -->
+  <figure class="rack">
+    <img class="rack__img" src="assets/img/product/rack.webp"
+         alt="Drop 01 on the rail &mdash; black, white and coral tees"
+         width="1195" height="896" fetchpriority="high" decoding="async">
+    <figcaption class="rack__cap t-meta">Drop 01 &middot; on the rail &middot; Dhaka</figcaption>
+  </figure>
 
-    <div class="shell shell--full">
-
-      <div class="viewer__head">
-        <div class="viewer__rail" role="tablist" aria-label="Drop 01 pieces">
-        <button class="vtab" type="button" role="tab" id="vt0" aria-controls="vp0" aria-selected="true">
-          <span class="vtab__pill" aria-hidden="true"></span>
-          <span class="vtab__dot" aria-hidden="true"></span>
-          <span class="vtab__code">ZS&mdash;01</span>
-          <span class="vtab__name">Training Tee</span>
-        </button>
-        <button class="vtab" type="button" role="tab" id="vt1" aria-controls="vp1" aria-selected="false">
-          <span class="vtab__pill" aria-hidden="true"></span>
-          <span class="vtab__dot" aria-hidden="true"></span>
-          <span class="vtab__code">ZS&mdash;02</span>
-          <span class="vtab__name">Floor Tee</span>
-        </button>
-        <button class="vtab" type="button" role="tab" id="vt2" aria-controls="vp2" aria-selected="false">
-          <span class="vtab__pill" aria-hidden="true"></span>
-          <span class="vtab__dot" aria-hidden="true"></span>
-          <span class="vtab__code">ZS&mdash;03</span>
-          <span class="vtab__name">Floor Short</span>
-        </button>
-        </div>
-        <span class="viewer__stamp" aria-hidden="true">Drop 01 &middot; Dhaka &middot; 2026</span>
-      </div>
-
-      <div class="viewer__stage">
-        <article class="vpanel is-open" id="vp0" role="tabpanel" aria-labelledby="vt0">
-          <p class="vpanel__code">ZS&mdash;01 &middot; Training Tee</p>
-          <p class="vpanel__caption">
-            <span>240 gsm</span><span>Long-staple cotton</span>
-            <span>Garment-dyed</span><span>Cut for training</span>
-          </p>
-          <h3 class="vpanel__word">
-            <span class="vpanel__full">Training Tee</span>
-            <span class="ln" aria-hidden="true"><span>training.</span></span>
-          </h3>
-          <span class="vpanel__num" aria-hidden="true">001</span>
-          <div class="vpanel__band">
-            <span class="vpanel__block" aria-hidden="true"></span>
-            <div class="vpanel__plate">
-              <div class="vpanel__view is-on" data-v="front">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-front"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-front"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="back">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-back"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-back"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="detail">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-detail"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-detail"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="fabric">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-fabric"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-fabric"/></svg></span>
-              </div>
-            </div>
-            <button class="vpanel__next" type="button" data-next
-                    aria-label="Next piece &mdash; Floor Tee">
-              <span class="vpanel__next-mark" aria-hidden="true">&rarr;</span>
-              <span class="vpanel__next-slot"><span class="vpanel__next-word">Floor Tee</span></span>
-            </button>
-          </div>
-          <div class="vpanel__views" role="group" aria-label="Training Tee &mdash; views">
-            <button class="vview" type="button" data-v="front" aria-pressed="true">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-front"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Front</span>
-            </button>
-            <button class="vview" type="button" data-v="back" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-back"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Back</span>
-            </button>
-            <button class="vview" type="button" data-v="detail" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-detail"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Detail</span>
-            </button>
-            <button class="vview" type="button" data-v="fabric" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v1-fabric"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Fabric</span>
-            </button>
-          </div>
-        </article>
-
-        <article class="vpanel" id="vp1" role="tabpanel" aria-labelledby="vt1">
-          <p class="vpanel__code">ZS&mdash;02 &middot; Floor Tee</p>
-          <p class="vpanel__caption">
-            <span>190 gsm</span><span>Combed cotton</span>
-            <span>Washed</span><span>Boxed fit</span>
-          </p>
-          <h3 class="vpanel__word">
-            <span class="vpanel__full">Floor Tee</span>
-            <span class="ln" aria-hidden="true"><span>floor.</span></span>
-          </h3>
-          <span class="vpanel__num" aria-hidden="true">002</span>
-          <div class="vpanel__band">
-            <span class="vpanel__block" aria-hidden="true"></span>
-            <div class="vpanel__plate">
-              <div class="vpanel__view is-on" data-v="front">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-front"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-front"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="back">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-back"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-back"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="detail">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-detail"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-detail"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="fabric">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-fabric"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-fabric"/></svg></span>
-              </div>
-            </div>
-            <button class="vpanel__next" type="button" data-next
-                    aria-label="Next piece &mdash; Floor Short">
-              <span class="vpanel__next-mark" aria-hidden="true">&rarr;</span>
-              <span class="vpanel__next-slot"><span class="vpanel__next-word">Floor Short</span></span>
-            </button>
-          </div>
-          <div class="vpanel__views" role="group" aria-label="Floor Tee &mdash; views">
-            <button class="vview" type="button" data-v="front" aria-pressed="true">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-front"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Front</span>
-            </button>
-            <button class="vview" type="button" data-v="back" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-back"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Back</span>
-            </button>
-            <button class="vview" type="button" data-v="detail" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-detail"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Detail</span>
-            </button>
-            <button class="vview" type="button" data-v="fabric" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v2-fabric"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Fabric</span>
-            </button>
-          </div>
-        </article>
-
-        <article class="vpanel" id="vp2" role="tabpanel" aria-labelledby="vt2">
-          <p class="vpanel__code">ZS&mdash;03 &middot; Floor Short</p>
-          <p class="vpanel__caption">
-            <span>260 gsm</span><span>Combed cotton</span>
-            <span>7 in inseam</span><span>Cut for training</span>
-          </p>
-          <h3 class="vpanel__word">
-            <span class="vpanel__full">Floor Short</span>
-            <span class="ln" aria-hidden="true"><span>short.</span></span>
-          </h3>
-          <span class="vpanel__num" aria-hidden="true">003</span>
-          <div class="vpanel__band">
-            <span class="vpanel__block" aria-hidden="true"></span>
-            <div class="vpanel__plate">
-              <div class="vpanel__view is-on" data-v="front">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-front"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-front"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="back">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-back"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-back"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="detail">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-detail"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-detail"/></svg></span>
-              </div>
-              <div class="vpanel__view" data-v="fabric">
-                <span class="vpanel__art vpanel__art--out"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-fabric"/></svg></span>
-                <span class="vpanel__art vpanel__art--in"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-fabric"/></svg></span>
-              </div>
-            </div>
-            <button class="vpanel__next" type="button" data-next
-                    aria-label="Next piece &mdash; Training Tee">
-              <span class="vpanel__next-mark" aria-hidden="true">&rarr;</span>
-              <span class="vpanel__next-slot"><span class="vpanel__next-word">Training Tee</span></span>
-            </button>
-          </div>
-          <div class="vpanel__views" role="group" aria-label="Floor Short &mdash; views">
-            <button class="vview" type="button" data-v="front" aria-pressed="true">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-front"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Front</span>
-            </button>
-            <button class="vview" type="button" data-v="back" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-back"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Back</span>
-            </button>
-            <button class="vview" type="button" data-v="detail" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-detail"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Detail</span>
-            </button>
-            <button class="vview" type="button" data-v="fabric" aria-pressed="false">
-              <span class="vview__plate"><svg viewBox="0 0 200 226" aria-hidden="true" focusable="false"><use href="#v3-fabric"/></svg></span>
-              <span class="vview__label"><span class="vview__dot" aria-hidden="true"></span>Fabric</span>
-            </button>
-          </div>
-        </article>
+  <!-- THE GRID — the shop. One card per piece: the garment, the
+       code, the name. The price and the colourways arrive on hover,
+       or outright where there is no cursor to discover them with.
+       Rendered from assets/data/products.json by §shop in shop.js. -->
+  <section class="band" data-grid style="padding-top:var(--space-md)">
+    <div class="shell">
+      <p class="t-meta" style="color:var(--ink-2)" data-grid-count>Drop 01</p>
+      <div class="cardgrid" data-grid-list>
+        <p class="t-body" data-grid-fallback>Loading the drop&hellip;</p>
       </div>
     </div>
   </section>
- 
+
+  <!-- THE CLOTH — Slit. A torch dragged across the weave: the lit
+       half is the cloth as it is, the dim half is the same frame with
+       the light taken out of it. It belongs here, after you have seen
+       the pieces and before you are asked to join anything — the
+       question a tee has to answer is what it feels like. -->
+  <section class="band" style="padding-top:var(--space-xl)">
+    <div class="shell">
+      <p class="t-meta" style="color:var(--ink-2)">Drop 01 &middot; the cloth</p>
+      <div class="slit" data-slit data-slit-src="assets/img/product/k01-fabric.webp"
+           data-slit-alt="Drop 01 &mdash; the cloth up close" style="margin-top:var(--space-md)">
+        <div class="slit__layer slit__layer--dim"><img data-slit-dim src="" alt="" aria-hidden="true"></div>
+        <div class="slit__layer slit__layer--lit"><img data-slit-lit src="" alt=""></div>
+      </div>
+    </div>
+  </section>
+
   <section class="marquee" data-marquee aria-hidden="true">
     <div class="shell">
       <div class="marquee__track">
@@ -345,8 +169,54 @@
 
 </main>
 
+
+<!-- THE BAG — a drawer, not a page: adding something must not cost
+     you the grid you were reading. -->
+<dialog class="drawer" id="bag" aria-label="Your bag">
+  <div class="drawer__in">
+    <div class="drawer__head">
+      <p class="t-ui" style="margin:0">Your bag</p>
+      <button class="drawer__close" type="button" data-bag-close aria-label="Close bag">Close</button>
+    </div>
+    <ul class="drawer__list" data-bag-list></ul>
+    <div class="drawer__foot">
+      <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
+      <button class="btn" type="button" data-bag-checkout>Checkout</button>
+      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
+           send it. The form stays shut until you ask to pay, so the
+           bag is still a bag. -->
+      <!-- novalidate: the browser blocks submit on an invalid form, so
+     the submit handler never ran and the shopper got a native
+     bubble instead of the sentence written for that field. The
+     constraints stay on the inputs — :invalid and :user-invalid
+     still work — the script just does the telling. -->
+      <form class="checkout" data-checkout hidden novalidate>
+        <label><span>Name</span><input name="name" autocomplete="name" required minlength="2"
+          data-say="Please give your full name."></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required
+          data-say="That email address does not look right."></label>
+        <!-- at least seven digits, so a phone that cannot be rung does
+             not become a delivery nobody can arrange. Punctuation and a
+             country code are allowed; "1" is not. -->
+        <label><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+          data-say="A phone number we can reach you on — at least seven digits."></label>
+        <label class="checkout--wide"><span>Address</span><input name="address" autocomplete="street-address" required minlength="6"
+          data-say="A full street address, so this can actually be delivered."></label>
+        <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
+          data-say="Which city?"></label>
+        <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
+      </form>
+      <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>
+    </div>
+  </div>
+</dialog>
+
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/bag.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
 <script src="dotmark.js" defer></script>
 </body>
 </html>

@@ -36,9 +36,55 @@
       </ul>
     </div>
   </nav>
+  <button class="bag" type="button" data-bag-open aria-haspopup="dialog">
+    <span class="bag__label">Bag</span>
+    <span class="bag__count" data-bag-count aria-hidden="true">0</span>
+  </button>
+
 </header>
 
 <main>
+
+  <!-- THE MARK ASSEMBLES — see .seq in brand.css, assets/js/title.js.
+       The page opens on it: garments flash and decelerate (48ms to
+       300ms, a reel running out of tape), black, then the Z cuts out
+       of the cloth, gains its carbon skin, and rises as I-N-S-T-I-M
+       falls in behind it. Runs once, on arrival. The rollcall below
+       is the first line of the page proper, after the title card. -->
+  <section class="seq-band">
+      <div class="seq" id="seq">
+        <span class="seq__flash" data-seq-flash aria-hidden="true"></span>
+
+        <div class="seq__mark" data-seq-mark>
+          <svg class="seq__z" data-seq-z viewBox="0 0 128 114" role="img" aria-label="ZinStim mark">
+            <defs>
+              <!-- the masthead's silhouette, under its own id so the
+                   two clips on this page cannot collide -->
+              <clipPath id="seq-clip">
+                <path d="M3.6,106.0 L5.5,106.9 L8.4,105.0 L120.1,7.8 L121.9,5.2 L122.0,1.4 L121.1,0.0 L1.2,0.0 L0.0,1.1 L0.0,5.5 L1.2,6.9 L32.5,18.0 L38.4,20.9 L43.9,26.4 L45.9,30.0 L47.1,34.6 L46.8,38.5 L43.8,44.4 L3.1,100.5Z"/>
+                <path d="M44.1,79.2 L44.1,83.6 L45.6,84.9 L123.9,113.1 L124.5,113.9 L126.5,113.9 L127.9,111.8 L127.9,107.6 L88.4,67.9 L84.9,65.2 L80.1,63.1 L71.1,62.0 L62.8,64.0 L57.8,67.1Z"/>
+              </clipPath>
+            </defs>
+            <!-- The Z arrives cut out of the cloth, then the real mark
+                 crossfades in over it: carbon weave, bevel and all —
+                 the same shape gaining its skin. The artwork is cropped
+                 tight to the silhouette, so its placement is simply the
+                 viewBox, exactly as the masthead places it. -->
+            <g clip-path="url(#seq-clip)">
+              <image data-seq-fabric href="assets/img/product/cut/white-back.webp"
+                     x="-20" y="-44" width="168" height="202"
+                     preserveAspectRatio="xMidYMid slice" opacity="0"/>
+            </g>
+            <image data-seq-art href="assets/img/zinstim-mark-lg.webp"
+                   x="0" y="0" width="128" height="114"
+                   preserveAspectRatio="xMidYMid meet" opacity="1"/>
+          </svg>
+          <p class="seq__word" data-seq-word aria-hidden="true"><span>I</span><span>N</span><span>S</span><span>T</span><span>I</span><span>M</span></p>
+        </div>
+
+        <p class="seq__code" data-seq-code>ZS&mdash;01 &middot; TRAINING</p>
+      </div>
+  </section>
 
   <!-- HERO — two lines hold, the third deals through and lands.
        Runs once on load. See .rollcall in brand.css. -->
@@ -163,6 +209,7 @@
       </div>
     </div>
   </section>
+
 
   <div class="cleave cleave--light" data-reveal aria-hidden="true">
     <svg viewBox="0 0 1200 300" preserveAspectRatio="none">
@@ -329,8 +376,55 @@
 
 </main>
 
+
+<!-- THE BAG — a drawer, not a page: adding something must not cost
+     you the grid you were reading. -->
+<dialog class="drawer" id="bag" aria-label="Your bag">
+  <div class="drawer__in">
+    <div class="drawer__head">
+      <p class="t-ui" style="margin:0">Your bag</p>
+      <button class="drawer__close" type="button" data-bag-close aria-label="Close bag">Close</button>
+    </div>
+    <ul class="drawer__list" data-bag-list></ul>
+    <div class="drawer__foot">
+      <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
+      <button class="btn" type="button" data-bag-checkout>Checkout</button>
+      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
+           send it. The form stays shut until you ask to pay, so the
+           bag is still a bag. -->
+      <!-- novalidate: the browser blocks submit on an invalid form, so
+     the submit handler never ran and the shopper got a native
+     bubble instead of the sentence written for that field. The
+     constraints stay on the inputs — :invalid and :user-invalid
+     still work — the script just does the telling. -->
+      <form class="checkout" data-checkout hidden novalidate>
+        <label><span>Name</span><input name="name" autocomplete="name" required minlength="2"
+          data-say="Please give your full name."></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required
+          data-say="That email address does not look right."></label>
+        <!-- at least seven digits, so a phone that cannot be rung does
+             not become a delivery nobody can arrange. Punctuation and a
+             country code are allowed; "1" is not. -->
+        <label><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+          data-say="A phone number we can reach you on — at least seven digits."></label>
+        <label class="checkout--wide"><span>Address</span><input name="address" autocomplete="street-address" required minlength="6"
+          data-say="A full street address, so this can actually be delivered."></label>
+        <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
+          data-say="Which city?"></label>
+        <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
+      </form>
+      <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>
+    </div>
+  </div>
+</dialog>
+
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/bag.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
+<script src="assets/js/title.js" defer></script>
 <script src="dotmark.js" defer></script>
 </body>
 </html>

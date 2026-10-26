@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ZinStim — Your next level.</title>
-<meta name="description" content="Training wear and one supplement, built in Dhaka. Every batch number published. Nothing is for sale yet — join the list for drop dates and lab results.">
+<meta name="description" content="Training wear and one supplement, built in Dhaka. Every batch number published. Join the list for drop dates and lab results.">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
 <meta name="theme-color" content="#0D0D0D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZinStim — Your next level.">
-<meta property="og:description" content="Training wear and one supplement, built in Dhaka. Every batch number published. Nothing is for sale yet — join the list for drop dates and lab results.">
+<meta property="og:description" content="Training wear and one supplement, built in Dhaka. Every batch number published. Join the list for drop dates and lab results.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Instrument+Serif:ital@0;1&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -36,11 +36,17 @@
       </ul>
     </div>
   </nav>
+  <button class="bag" type="button" data-bag-open aria-haspopup="dialog">
+    <span class="bag__label">Bag</span>
+    <span class="bag__count" data-bag-count aria-hidden="true">0</span>
+  </button>
+
 </header>
  
 <main>
  
-  <!-- HERO — one line. no product shot, no button. -->
+  <!-- HERO — one line, then one button. There was nothing to sell
+       when this said "no button"; there is now. -->
   <!-- THE CUT — one diagonal, silver leading and oxblood behind, with
        the bloom on top. It runs off both edges, sits behind everything
        and appears once on the page. See §surfaces in brand.css. -->
@@ -52,6 +58,9 @@
         <span class="ln"><span>Your next</span></span>
         <span class="ln"><span><em>level.</em></span></span>
       </h1>
+      <!-- The page's one primary action. It rolls in AFTER the line
+           has settled, so the line gets its moment first. -->
+      <p class="hero__act"><a class="btn" href="wear.html">See the drop</a></p>
     </div>
   </section>
  
@@ -132,17 +141,29 @@
   <section class="doors" id="elements" data-doors>
 
     <div class="doors__field" aria-hidden="true">
+      <!-- Wear's cards are in focus because Wear is open. Fuel's and
+           Instruments' carry the same cloth blurred past recognition:
+           material, not merchandise. Nothing identifiable is claimed —
+           no tub, no watch — and the blur is the site's own language
+           for a thing that is coming. Flat colour plates read as a
+           template nobody finished. -->
       <div class="doors__set" data-set="0">
-        <span class="door-card"></span><span class="door-card"></span>
-        <span class="door-card"></span><span class="door-card"></span>
+        <span class="door-card"><img src="assets/img/product/zs01-full.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs02-full.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs01-mark.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs02-cloth.webp" alt="" loading="lazy" decoding="async"></span>
       </div>
-      <div class="doors__set" data-set="1">
-        <span class="door-card"></span><span class="door-card"></span>
-        <span class="door-card"></span><span class="door-card"></span>
+      <div class="doors__set doors__set--veiled" data-set="1">
+        <span class="door-card"><img src="assets/img/product/zs01-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs02-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs01-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs02-cloth.webp" alt="" loading="lazy" decoding="async"></span>
       </div>
-      <div class="doors__set" data-set="2">
-        <span class="door-card"></span><span class="door-card"></span>
-        <span class="door-card"></span><span class="door-card"></span>
+      <div class="doors__set doors__set--veiled" data-set="2">
+        <span class="door-card"><img src="assets/img/product/zs02-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs01-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs02-cloth.webp" alt="" loading="lazy" decoding="async"></span>
+        <span class="door-card"><img src="assets/img/product/zs01-cloth.webp" alt="" loading="lazy" decoding="async"></span>
       </div>
     </div>
 
@@ -160,6 +181,7 @@
         <span class="door__face door__face--alt" aria-hidden="true">Instruments</span>
       </a>
     </div>
+
   </section>
  
   <!-- THE DROP — what is new. Replaces the 340vh runway.
@@ -188,42 +210,44 @@
 
       <div class="drop__pieces">
 
-        <a class="piece" href="#waitlist" aria-label="Training Tee — join the waitlist">
+        <a class="piece" href="piece.html?p=zs-01" aria-label="ZS—01 Black — see the piece">
           <div class="piece__frame">
             <div class="piece__plate">
-              <svg class="vessel" viewBox="0 0 200 226" aria-hidden="true" focusable="false"><defs><clipPath id="vessel-zs01"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z"/></clipPath></defs><g clip-path="url(#vessel-zs01)"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></g><path class="vessel__line" d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z"/><path class="vessel__line vessel__line--soft" d="M82,13 C90,29 110,29 118,13"/></svg>
+              <img src="assets/img/product/k01-front.webp" alt="ZS—01 Black, folded, wordmark and line" loading="lazy" decoding="async">
             </div>
           </div>
           <div class="piece__meta">
             <span class="piece__code">ZS&mdash;01</span>
-            <h3 class="piece__name">Training Tee</h3>
+            <h3 class="piece__name">Black</h3>
             <span class="piece__slot">
+              <span class="piece__price">&#2547;&nbsp;690</span>
               <span class="piece__spec">240 gsm &middot; long-staple &middot; garment-dyed</span>
             </span>
             <span class="piece__state">
               <span class="piece__pill" aria-hidden="true"></span>
               <span class="piece__dot" aria-hidden="true"></span>
-              <span class="piece__word">Waitlist open</span>
+              <span class="piece__word">Drop 01</span>
             </span>
           </div>
         </a>
 
-        <a class="piece" href="#waitlist" aria-label="Floor Tee — join the waitlist">
+        <a class="piece" href="piece.html?p=zs-02" aria-label="ZS—02 White — see the piece">
           <div class="piece__frame">
             <div class="piece__plate">
-              <svg class="vessel" viewBox="0 0 200 226" aria-hidden="true" focusable="false"><defs><clipPath id="vessel-zs02"><path d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z"/></clipPath></defs><g clip-path="url(#vessel-zs02)"><g class="vessel__level"><path class="vessel__liquid" d="M-200,7 Q-187.5,0 -175,7 T-150,7 T-125,7 T-100,7 T-75,7 T-50,7 T-25,7 T0,7 T25,7 T50,7 T75,7 T100,7 T125,7 T150,7 T175,7 T200,7 T225,7 T250,7 T275,7 T300,7 T325,7 T350,7 T375,7 T400,7 V240 H-200 Z"/></g></g><path class="vessel__line" d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z"/><path class="vessel__line vessel__line--soft" d="M76,15 C87,35 113,35 124,15"/><path class="vessel__line vessel__line--soft" d="M66,86 L94,86 L94,116 L66,116 Z"/></svg>
+              <img src="assets/img/product/k02-front.webp" alt="ZS—02 White, on the rail" loading="lazy" decoding="async">
             </div>
           </div>
           <div class="piece__meta">
             <span class="piece__code">ZS&mdash;02</span>
-            <h3 class="piece__name">Floor Tee</h3>
+            <h3 class="piece__name">White</h3>
             <span class="piece__slot">
+              <span class="piece__price">&#2547;&nbsp;690</span>
               <span class="piece__spec">190 gsm &middot; combed cotton &middot; washed</span>
             </span>
             <span class="piece__state">
               <span class="piece__pill" aria-hidden="true"></span>
               <span class="piece__dot" aria-hidden="true"></span>
-              <span class="piece__word">Waitlist open</span>
+              <span class="piece__word">Drop 01</span>
             </span>
           </div>
         </a>
@@ -253,30 +277,30 @@
       <article class="kit__item" tabindex="0">
         <span class="kit__code">ZS&mdash;01</span>
         <span class="kit__state kit__state--pass">DROP 01</span>
-        <div class="kit__fig" aria-hidden="true">
-          <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M62,22 L82,13 C90,29 110,29 118,13 L138,22 L174,54 L152,80 L140,69 L140,212 L60,212 L60,69 L48,80 L26,54 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M82,13 C90,29 110,29 118,13" fill="none" stroke="currentColor" stroke-width="2.2" opacity=".5"/></svg>
+        <div class="kit__fig">
+          <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—01 Black" loading="lazy" decoding="async">
         </div>
-        <h3 class="kit__name">Training Tee</h3>
+        <h3 class="kit__name">Black</h3>
         <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div></div>
       </article>
       <article class="kit__item" tabindex="0">
         <span class="kit__code">ZS&mdash;02</span>
         <span class="kit__state kit__state--pass">DROP 01</span>
-        <div class="kit__fig" aria-hidden="true">
-          <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M54,26 L76,15 C87,35 113,35 124,15 L146,26 L184,60 L160,90 L148,78 L148,196 L52,196 L52,78 L40,90 L16,60 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M76,15 C87,35 113,35 124,15" fill="none" stroke="currentColor" stroke-width="2.2" opacity=".5"/><path d="M66,86 L94,86 L94,116 L66,116 Z" fill="none" stroke="currentColor" stroke-width="2.2" opacity=".5"/></svg>
+        <div class="kit__fig">
+          <img class="kit__shot" src="assets/img/product/zs02-full.webp" alt="ZS—02 White" loading="lazy" decoding="async">
         </div>
-        <h3 class="kit__name">Floor Tee</h3>
+        <h3 class="kit__name">White</h3>
         <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Combed cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>190 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Washed</b></div><div class="kit__spec"><span>FIT</span><b>Boxed</b></div></div>
       </article>
-      <article class="kit__item" tabindex="0">
-        <span class="kit__code">ZS&mdash;03</span>
-        <span class="kit__state kit__state--pass">DROP 01</span>
-        <div class="kit__fig" aria-hidden="true">
-          <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M56,20 L144,20 L152,132 L114,132 L100,72 L86,132 L48,132 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M56,34 L144,34" stroke="currentColor" stroke-width="2.2" opacity=".5"/></svg>
-        </div>
-        <h3 class="kit__name">Floor Short</h3>
-        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Combed cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>260 gsm</b></div><div class="kit__spec"><span>INSEAM</span><b>7 in</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div></div>
-      </article>
+      <!-- ZS—04 Creatine Mono is HIDDEN, not removed — Kash, 26 Oct.
+           Registration has to clear before it belongs in a catalogue.
+           A <template> and not an HTML comment, because the markup
+           contains "--" (kit__state--warn, var(--zinc-silver)) and a
+           comment cannot hold that: escaping it would have handed back
+           broken markup the day someone restored it. A template renders
+           nothing and keeps every byte. Unwrap these two tags to bring
+           the tile back; the Fuel page and its door are untouched. -->
+      <template data-kit-hidden="ZS-04">
       <article class="kit__item" tabindex="0">
         <span class="kit__code">ZS&mdash;04</span>
         <span class="kit__state kit__state--warn">AWAITING DGDA</span>
@@ -284,8 +308,9 @@
           <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M62,54 L138,54 L132,206 L68,206 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><rect x="56" y="34" width="88" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M74,104 L126,104" stroke="currentColor" stroke-width="2.2" opacity=".5"/></svg>
         </div>
         <h3 class="kit__name">Creatine Mono</h3>
-        <div class="kit__specs"><div class="kit__spec"><span>FORM</span><b>200 mesh</b></div><div class="kit__spec"><span>SERVING</span><b>5 g</b></div><div class="kit__spec"><span>TESTING</span><b>Pending</b></div><div class="kit__spec"><span>STATUS</span><b>Not yet legal to sell</b></div></div>
+        <div class="kit__specs"><div class="kit__spec"><span>FORM</span><b>200 mesh</b></div><div class="kit__spec"><span>SERVING</span><b>5 g</b></div><div class="kit__spec"><span>TESTING</span><b>Pending</b></div><div class="kit__spec"><span>STATUS</span><b>In registration</b></div></div>
       </article>
+      </template>
       </div>
     </div>
   </section>
@@ -297,8 +322,8 @@
     <div class="shell teaser__grid">
       <div class="teaser__copy">
         <p class="t-head lines" data-reveal>
-          <span class="ln"><span>Why nothing</span></span>
-          <span class="ln"><span>is for sale yet.</span></span>
+          <span class="ln"><span>Where this</span></span>
+          <span class="ln"><span><em>started.</em></span></span>
         </p>
         <p class="t-body teaser__lede">
           One decision, made in Dhaka before any of this existed, and everything
@@ -388,8 +413,54 @@
   </footer>
  
 </main>
+
+<!-- THE BAG — a drawer, not a page: adding something must not cost
+     you the grid you were reading. -->
+<dialog class="drawer" id="bag" aria-label="Your bag">
+  <div class="drawer__in">
+    <div class="drawer__head">
+      <p class="t-ui" style="margin:0">Your bag</p>
+      <button class="drawer__close" type="button" data-bag-close aria-label="Close bag">Close</button>
+    </div>
+    <ul class="drawer__list" data-bag-list></ul>
+    <div class="drawer__foot">
+      <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
+      <button class="btn" type="button" data-bag-checkout>Checkout</button>
+      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
+           send it. The form stays shut until you ask to pay, so the
+           bag is still a bag. -->
+      <!-- novalidate: the browser blocks submit on an invalid form, so
+     the submit handler never ran and the shopper got a native
+     bubble instead of the sentence written for that field. The
+     constraints stay on the inputs — :invalid and :user-invalid
+     still work — the script just does the telling. -->
+      <form class="checkout" data-checkout hidden novalidate>
+        <label><span>Name</span><input name="name" autocomplete="name" required minlength="2"
+          data-say="Please give your full name."></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required
+          data-say="That email address does not look right."></label>
+        <!-- at least seven digits, so a phone that cannot be rung does
+             not become a delivery nobody can arrange. Punctuation and a
+             country code are allowed; "1" is not. -->
+        <label><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+          data-say="A phone number we can reach you on — at least seven digits."></label>
+        <label class="checkout--wide"><span>Address</span><input name="address" autocomplete="street-address" required minlength="6"
+          data-say="A full street address, so this can actually be delivered."></label>
+        <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
+          data-say="Which city?"></label>
+        <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
+      </form>
+      <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>
+    </div>
+  </div>
+</dialog>
+
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/bag.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
 <script src="dotmark.js" defer></script>
 </body>
 </html>

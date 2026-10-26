@@ -1,0 +1,135 @@
+{
+  "_note": "Drop 01 is two pieces, Black and White. ZS—03 (Coral) was removed on 26 Oct — Kash: there is no Coral. Swatch hexes are sampled from assets/img/product/rack.webp, the one frame where all five pieces sit under the same light. price is 690 BDT across Drop 01, set by Kash on 25 Oct as a working figure. stock is null where it is not known; a size with stock 0 renders struck through.",
+  "currency": "BDT",
+  "drop": "Drop 01",
+  "pieces": [
+    {
+      "code": "ZS—01",
+      "slug": "zs-01",
+      "name": "Black",
+      "swatch": "#171716",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "S",
+          "stock": null
+        },
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs01-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—01 Black, laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs01-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—01 Black, folded, the art of showing up"
+        },
+        {
+          "src": "assets/img/product/zs01-mark.webp",
+          "tag": "MARK",
+          "alt": "ZS—01 Black, the mark close up"
+        },
+        {
+          "src": "assets/img/product/zs01-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—01 Black, the hem and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Long-staple cotton",
+        "Weight": "240 gsm",
+        "Finish": "Garment-dyed",
+        "Fit": "Trained"
+      }
+    },
+    {
+      "code": "ZS—02",
+      "slug": "zs-02",
+      "name": "White",
+      "swatch": "#E9ECEE",
+      "price": 690,
+      "state": "drop-01",
+      "sizes": [
+        {
+          "label": "S",
+          "stock": null
+        },
+        {
+          "label": "M",
+          "stock": null
+        },
+        {
+          "label": "L",
+          "stock": null
+        },
+        {
+          "label": "XL",
+          "stock": null
+        }
+      ],
+      "images": [
+        {
+          "src": "assets/img/product/zs02-full.webp",
+          "tag": "FULL",
+          "alt": "ZS—02 White, laid flat, wordmark down the back"
+        },
+        {
+          "src": "assets/img/product/zs02-print.webp",
+          "tag": "PRINT",
+          "alt": "ZS—02 White, the mark across the chest"
+        },
+        {
+          "src": "assets/img/product/zs02-hang.webp",
+          "tag": "HANG",
+          "alt": "ZS—02 White, on the hanger"
+        },
+        {
+          "src": "assets/img/product/zs02-cloth.webp",
+          "tag": "CLOTH",
+          "alt": "ZS—02 White, the collar and the cloth"
+        }
+      ],
+      "specs": {
+        "Fabric": "Combed cotton",
+        "Weight": "190 gsm",
+        "Finish": "Washed",
+        "Fit": "Boxed"
+      }
+    }
+  ],
+  "locked": [
+    {
+      "code": "ZS—04",
+      "slug": "zs-04",
+      "name": "Creatine Mono",
+      "category": "fuel",
+      "brief": "Creatine monohydrate. 5 g a serving, one ingredient, no fillers.",
+      "blocker": "Not legal to sell in Bangladesh until it is registered with the Directorate General of Drug Administration.",
+      "state": "awaiting-dgda"
+    },
+    {
+      "code": "ZS—05",
+      "slug": "zs-05",
+      "name": "Instruments",
+      "category": "instruments",
+      "brief": "Watches and fitbands.",
+      "blocker": "No supplier, no sample and no date. The category opens when there is something real to put in it.",
+      "state": "not-started"
+    }
+  ]
+}

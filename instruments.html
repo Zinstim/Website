@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Instruments — ZinStim</title>
-<meta name="description" content="Accessories. Nothing is behind this door yet — no watch, no fitband, no sample.">
+<meta name="description" content="Watches and fitbands. What you cannot measure, you cannot repeat.">
 <link rel="icon" type="image/png" sizes="64x64" href="assets/img/zinstim-favicon.png">
 <meta name="theme-color" content="#0D0D0D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Instruments — ZinStim">
-<meta property="og:description" content="Accessories. Nothing is behind this door yet — no watch, no fitband, no sample.">
+<meta property="og:description" content="Watches and fitbands. What you cannot measure, you cannot repeat.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Anek+Bangla:wdth,wght@75..125,100..800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -36,50 +36,73 @@
       </ul>
     </div>
   </nav>
+  <button class="bag" type="button" data-bag-open aria-haspopup="dialog">
+    <span class="bag__label">Bag</span>
+    <span class="bag__count" data-bag-count aria-hidden="true">0</span>
+  </button>
+
 </header>
 
 <main>
+
+  <!-- THE NAME — the category, filled with its own cloth, and one
+       line saying what it is. Nothing else above the fold. There used
+       to be a ticker, a brief, a second signup and a lab table full
+       of "Pending"; all of it said less than this does. -->
   <section class="band has-cut" style="padding-top:var(--space-xl)">
     <div class="cut" aria-hidden="true"></div>
     <div class="cut cut--bloom" aria-hidden="true"></div>
     <div class="shell">
-      <h1 class="t-display lines lines--load">
-        <span class="ln"><span class="liq-type liq-type--filled" data-liq="Instruments">Instruments</span></span>
-      </h1>
-      <p class="lede settle" style="margin-top:var(--space-md)">Small addition, big difference.</p>
+      <div class="aperture">
+        <h1 class="aperture__word aperture__word--long aperture__word--weave" style="background-image:url(assets/img/product/k02-fabric.webp)">Instruments</h1>
+      </div>
+      <p class="lede settle" style="margin-top:var(--space-md)">What you cannot measure, you cannot repeat.</p>
     </div>
   </section>
 
+  <!-- COMING SOON — said once, loudly, in the house pull-quote rather
+       than as a ticker across the top. A marquee reads as decoration;
+       a quote reads as a statement, and its footer carries the real
+       status instead of repeating the headline. -->
+  <section class="band band--dark quote-band" style="padding:var(--space-xl) 0">
+    <div class="shell">
+      <span class="quote__mark" aria-hidden="true">&ldquo;&thinsp;&rdquo;</span>
+      <blockquote class="quote">
+        <p class="quote__text lines" data-reveal>
+          <span class="ln"><span>Coming soon.</span></span>
+          <span class="ln"><span><em>Stay tuned.</em></span></span>
+        </p>
+        <hr class="quote__rule">
+        <footer class="quote__by">
+          <span><b>ZinStim</b></span>
+          <span>Instruments</span>
+          <span>ZS&mdash;05</span>
+        </footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- THE COVER — nothing is faked here. What the blur hides is the
+       plain truth about this category, written out in full; the seal
+       opens a dialog that says it straight. Stating it in the open
+       was the page giving itself away before anyone had asked. -->
   <section class="band" style="padding-top:0">
     <div class="shell">
-      <div class="prose">
-        <p>Watches and fitbands. This is the category we have not built yet.</p>
-        <p>There is no supplier, no sample and no date. We would rather say that
-          plainly than put a render of something that does not exist behind a
-          door and call it a range.</p>
-        <p>It opens when there is something real to put in it.</p>
+     <div class="lock">
+      <div class="lock__under">
+        <div class="prose">
+          <p>Watches and fitbands. A band that counts, a face that keeps time, and a number you can hold someone to.</p>
+          <p>Held to the same standard as everything else here, or it does not ship.</p>
+          <p>It opens when there is something worth putting in it.</p>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="shell">
-      <p class="t-head lines" data-reveal style="max-width:22ch">
-        <span class="ln"><span>Two doors are open.</span></span>
-      </p>
-      <p class="t-body doors-open__lede">Everything that exists today is behind one of these.</p>
-      <p class="doors-open__actions">
-        <a class="btn" href="wear.html">Wear</a>
-        <a class="btn" href="fuel.html">Fuel</a>
-      </p>
-    </div>
-  </section>
- 
-  <section class="marquee" data-marquee aria-hidden="true">
-    <div class="shell">
-      <div class="marquee__track">
-      <span class="mq-lead mq-fill">Built into&nbsp;</span><span class="mq-tail mq-hollow">your everyday</span><span class="mq-lead mq-fill">Built into&nbsp;</span><span class="mq-tail mq-hollow">your everyday</span><span class="mq-lead mq-fill">Built into&nbsp;</span><span class="mq-tail mq-hollow">your everyday</span><span class="mq-lead mq-fill">Built into&nbsp;</span><span class="mq-tail mq-hollow">your everyday</span>
-      </div>
+      <button class="lock__seal" type="button" data-lock
+        data-lock-title="Not open yet"
+        data-lock-body="This category opens when there is something worth putting in it. We would rather leave it closed than fill it with a render of something that does not exist."
+        data-lock-note="ZS&#8212;05 &#183; not open yet">
+        <span class="lock__dot" aria-hidden="true"></span>Coming soon
+      </button>
+     </div>
     </div>
   </section>
 
@@ -88,8 +111,7 @@
       <path d="M0,300 L0,246 L78,262 L152,214 L232,240 L300,192 L388,218 L468,172 L556,198 L638,152 L726,178 L808,134 L898,160 L978,116 L1068,142 L1140,100 L1200,124 L1200,300 Z"/>
     </svg>
   </div>
- 
-  <!-- JOIN — the only conversion on the site, and every page ends on it. -->
+
   <section class="band band--dark join" id="waitlist">
     <div class="shell">
       <p class="t-head lines" data-reveal>
@@ -133,8 +155,69 @@
 
 </main>
 
+
+<!-- One dialog, shared by every [data-lock] seal on the page. -->
+<dialog class="soon" id="soon" aria-labelledby="soon-title">
+  <div class="soon__card">
+    <p class="soon__eyebrow"><span class="lock__dot" aria-hidden="true"></span>Not out yet</p>
+    <h2 class="soon__title" id="soon-title" data-soon-title></h2>
+    <p class="soon__body" data-soon-body></p>
+    <p class="soon__note" data-soon-note hidden></p>
+    <div class="soon__actions">
+      <button class="soon__close" type="button" data-soon-close>Close</button>
+      <a class="soon__join" href="#waitlist">Tell me when it lands</a>
+    </div>
+  </div>
+</dialog>
+
+
+<!-- THE BAG — a drawer, not a page: adding something must not cost
+     you the grid you were reading. -->
+<dialog class="drawer" id="bag" aria-label="Your bag">
+  <div class="drawer__in">
+    <div class="drawer__head">
+      <p class="t-ui" style="margin:0">Your bag</p>
+      <button class="drawer__close" type="button" data-bag-close aria-label="Close bag">Close</button>
+    </div>
+    <ul class="drawer__list" data-bag-list></ul>
+    <div class="drawer__foot">
+      <p class="drawer__sum"><span>Subtotal</span><span class="price" data-bag-sum>&mdash;</span></p>
+      <button class="btn" type="button" data-bag-checkout>Checkout</button>
+      <!-- SSLCommerz needs a name, a way to reach you and somewhere to
+           send it. The form stays shut until you ask to pay, so the
+           bag is still a bag. -->
+      <!-- novalidate: the browser blocks submit on an invalid form, so
+     the submit handler never ran and the shopper got a native
+     bubble instead of the sentence written for that field. The
+     constraints stay on the inputs — :invalid and :user-invalid
+     still work — the script just does the telling. -->
+      <form class="checkout" data-checkout hidden novalidate>
+        <label><span>Name</span><input name="name" autocomplete="name" required minlength="2"
+          data-say="Please give your full name."></label>
+        <label><span>Email</span><input name="email" type="email" autocomplete="email" required
+          data-say="That email address does not look right."></label>
+        <!-- at least seven digits, so a phone that cannot be rung does
+             not become a delivery nobody can arrange. Punctuation and a
+             country code are allowed; "1" is not. -->
+        <label><span>Phone</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+          data-say="A phone number we can reach you on — at least seven digits."></label>
+        <label class="checkout--wide"><span>Address</span><input name="address" autocomplete="street-address" required minlength="6"
+          data-say="A full street address, so this can actually be delivered."></label>
+        <label><span>City</span><input name="city" autocomplete="address-level2" required minlength="2"
+          data-say="Which city?"></label>
+        <label><span>Postcode</span><input name="postcode" inputmode="numeric" autocomplete="postal-code"></label>
+        <button class="btn checkout--wide" type="submit" data-checkout-go>Pay</button>
+        <p class="t-meta checkout--wide" data-checkout-state role="status" aria-live="polite"></p>
+      </form>
+      <p class="drawer__note" data-bag-note>Your bag is kept on this device.</p>
+    </div>
+  </div>
+</dialog>
+
 <script src="assets/js/nav.js" defer></script>
 <script src="assets/js/site.js" defer></script>
+<script src="assets/js/bag.js" defer></script>
+<script src="assets/js/shop.js" defer></script>
 <script src="dotmark.js" defer></script>
 </body>
 </html>
