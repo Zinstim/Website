@@ -1481,14 +1481,27 @@ img,svg{display:block;max-width:100%}
   .piece,.piece:nth-child(2){grid-column:1 / -1;margin-top:0}
   /* nothing to recede FROM without a cursor */
   .drop__pieces:has(.piece:hover) .piece{opacity:1;filter:none}
-  .piece__spec{opacity:1;transform:none}
+  /* `.piece__slot` is a 1.5rem window that swaps the price out for the
+     spec on hover, and `.piece__spec` is `position:absolute; inset:0`
+     inside it. Without a cursor there is no swap — so revealing the
+     spec simply printed it ON TOP OF the price: measured as two
+     identical boxes at [24, 779, 342, 24]. Let the slot grow and put
+     them on two lines instead. */
+  .piece__slot{height:auto;overflow:visible}
+  .piece__spec{
+    position:static;opacity:1;transform:none;margin-top:.15rem;
+  }
 }
 
 /* movement removed, information kept — the spec stops climbing and
    is simply there. The second plate still arrives on hover, it
    just arrives instantly. */
 @media (prefers-reduced-motion:reduce){
-  .piece__spec{opacity:1;transform:none}
+  /* same overlap as above, by the same route: the spec is revealed
+     without the price being taken away. */
+  .piece__slot{height:auto;overflow:visible}
+  .piece__spec{position:static;opacity:1;transform:none;margin-top:.15rem}
+  .piece:is(:hover,:focus-visible) .piece__price{opacity:1;transform:none}
 }
 
 
@@ -4326,6 +4339,49 @@ html.is-home .home .vessel__liquid{animation-play-state:running}
   .line__rm{padding:.5rem 0}
 }
 .drawer__foot{padding-top:var(--space-md);display:grid;gap:var(--space-sm)}
+
+/* ═══ THE DRAWER, ONCE CHECKOUT IS OPEN ══════════════════════════
+   Two faults, one cause. `.drawer__list` is `flex:1 1 auto` with
+   `min-height:0`, and `.drawer__foot` grows by the height of the whole
+   form the moment it unhides — so the list is crushed to whatever is
+   left: 316px on a Pro Max, 75px on a 16 Pro, 53px on an iPhone 15,
+   and 0px in every landscape. With two lines in the bag that renders
+   "One ৳690" directly above "Subtotal ৳1,380" and the shopper cannot
+   reconcile the figure they are about to pay. You decide to buy and
+   the thing you are buying leaves the screen.
+
+   And because the only scrollable box in the drawer WAS that list,
+   once it collapsed there was nothing left to scroll — so in landscape
+   `Place order` sat at y 480 against a 393px viewport with no way for
+   a finger to reach it. A hardware Tab key scrolled there; nothing a
+   thumb could do did.
+
+   So: the list keeps a floor of one whole line and the FOOT becomes
+   the scroller. Pay is always reachable, and what you are buying never
+   leaves. Driven by a class rather than :has(), because this is
+   load-bearing and :has() is only used for hover elsewhere. */
+.drawer.is-checkout .drawer__list{
+  flex:0 1 auto;
+  min-height:9rem;           /* one full line item, thumbnail and all */
+  max-height:38vh;           /* never more than a third of the panel */
+  overflow-y:auto;overscroll-behavior:contain;
+}
+.drawer.is-checkout .drawer__foot{
+  flex:1 1 auto;min-height:0;
+  overflow-y:auto;overscroll-behavior:contain;
+}
+
+/* A landscape phone is ~393px tall and cannot afford a floor AND a
+   form. There, the whole panel scrolls as one column instead — the
+   order summary is still above the form, you just arrive at it by
+   scrolling rather than by it being pinned. */
+@media (max-height:520px){
+  .drawer.is-checkout .drawer__in{overflow-y:auto;overscroll-behavior:contain}
+  .drawer.is-checkout .drawer__list{
+    flex:0 0 auto;min-height:0;max-height:none;overflow:visible;
+  }
+  .drawer.is-checkout .drawer__foot{flex:0 0 auto;overflow:visible}
+}
 .drawer__sum{
   display:flex;justify-content:space-between;align-items:baseline;
   font-variation-settings:"wdth" 90,"wght" 700;

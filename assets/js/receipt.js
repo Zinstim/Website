@@ -88,13 +88,20 @@
      rather than leaving someone to work it out from the absence of a
      card number. The call is the next thing that happens to them, so
      it is the next thing they read. */
-  /* Kash's call: the placed state carries no lede. The ledger says
-     ORDER TOTAL rather than Total paid, and the confirmation email
-     spells out that nothing was charged and that we will ring. */
+  /* Four words, and only four. The long version — "Order received.
+     Nothing has been charged. We will call you on <number> to confirm
+     and arrange payment before anything ships." — was padding: the H1
+     already thanks them and the ledger already says ORDER TOTAL rather
+     than Total paid. But cutting it to nothing went too far. A tester
+     walking the site cold, with no sight of any of this, pressed Place
+     order and wrote that they did not know whether they had been
+     charged. That is the one thing on this page a reader cannot work
+     out from something else, so it is the one thing that stays. The
+     phone number and the rest live in the email. */
   var lede = $('[data-r-lede]');
   if (state === 'placed') {
-    lede.textContent = '';
-    lede.hidden = true;
+    lede.hidden = false;
+    lede.textContent = 'Nothing has been charged.';
   } else {
     lede.hidden = false;
     lede.textContent =

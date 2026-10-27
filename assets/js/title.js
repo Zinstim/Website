@@ -298,12 +298,50 @@
     settle();
   }
 
+  /* ── readiness, not timing ─────────────────────────────────────
+     The frames above are created with a `src` and nothing ever waited
+     for them. On a COLD cache the observer fires the moment the page
+     loads, run() calls reset() — which wipes the settled lockup — and
+     fourteen beats then play on a fixed setTimeout schedule against
+     695KB of imagery that has not painted. Measured: 1.5s of black
+     with the counter ticking "08 / 14" against nothing, and a full
+     9.2s loop of black when the network is slow. Warm loads paint in
+     4–30ms, which is why this never showed in testing.
+
+     So the sequence now waits until its own pictures can actually be
+     drawn. Until then the page holds the finished lockup — the same
+     thing it shows with JavaScript off, and a better first frame than
+     black either way. A broken or very slow image must not hold it
+     for ever, so the wait is capped. */
+  var ready = false, waiting = null;
+
+  function whenReady(fn) {
+    if (ready) { fn(); return; }
+    if (!waiting) {
+      var jobs = Object.keys(nodes).map(function (k) {
+        var im = nodes[k];
+        if (im.decode) return im.decode()['catch'](function () {});
+        if (im.complete) return Promise.resolve();
+        return new Promise(function (go) { im.onload = im.onerror = go; });
+      });
+      waiting = Promise.race([
+        Promise.all(jobs),
+        new Promise(function (go) { setTimeout(go, 6000); })
+      ]);
+    }
+    waiting.then(function () { ready = true; fn(); });
+  }
+
+  function play() {
+    whenReady(function () { if (inView && !running && !reduce) run(); });
+  }
+
   if (window.IntersectionObserver) {
     new IntersectionObserver(function (es) {
       var vis = es[0].intersectionRatio > 0.4;
       if (vis === inView) return;
       inView = vis;
-      if (inView) { if (!running && !reduce) run(); }
+      if (inView) play();
       else halt();
     }, { threshold: [0, 0.4, 1] }).observe(st);
   } else {
@@ -313,7 +351,7 @@
   try {
     document.addEventListener('visibilitychange', function () {
       if (document.hidden) halt();
-      else if (inView && !running && !reduce) run();
+      else play();
     });
   } catch (e) {}
 

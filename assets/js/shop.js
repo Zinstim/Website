@@ -68,7 +68,10 @@
       if (!items.length){
         /* If the last line was removed while the form was open, fold
            the form away too — otherwise Pay sits over an empty cart. */
-        if (form && !form.hidden){ form.hidden = true; if (go) go.hidden = false; }
+        if (form && !form.hidden){
+          form.hidden = true; if (go) go.hidden = false;
+          dlg.classList.remove('is-checkout');
+        }
         list.innerHTML = '<li class="drawer__empty t-body">Nothing in it yet. ' +
                          '<a href="wear.html">See the drop</a></li>';
         sum.textContent = '—';
@@ -201,6 +204,10 @@
       }
       form.hidden = false;
       open.hidden = true;
+      /* the drawer re-lays itself out once the form is in it: the list
+         keeps a floor and the foot becomes the scroller. See §THE
+         DRAWER, ONCE CHECKOUT IS OPEN in brand.css. */
+      dlg.classList.add('is-checkout');
       var first = form.querySelector('input');
       if (first) first.focus();
       if (go) go.textContent = 'Place order \u00b7 ' + (sum ? sum.textContent : '');
