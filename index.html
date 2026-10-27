@@ -208,16 +208,26 @@
       </h2>
 
 
+      <!-- These two cards duplicate data that already lives in
+           assets/data/products.json: code, name, colour, price and the
+           fabric spec. That duplication is what let the landing page
+           say "ZS—03 Two" over the white tee's photograph and the
+           white tee's spec sheet on 26 Oct. They stay authored here on
+           purpose — this is the landing page and it has to work with
+           JavaScript off — so shop.js now checks them against the
+           catalogue at runtime and complains in the console if they
+           drift again. Change a price or a name here and you must
+           change it there. -->
       <div class="drop__pieces">
 
         <a class="piece" href="piece.html?p=zs-01" aria-label="ZS—01 One, in black — see the piece">
           <div class="piece__frame">
             <div class="piece__plate">
-              <img src="assets/img/product/k01-front.webp" alt="ZS—01 Black, folded, wordmark and line" loading="lazy" decoding="async">
+              <img src="assets/img/product/k01-front.webp" alt="ZS—01 One, in black, folded, wordmark and line" loading="lazy" decoding="async">
             </div>
           </div>
           <div class="piece__meta">
-            <span class="piece__code">ZS&mdash;01</span>
+            <span class="piece__code">ZS&mdash;01 &middot; Black</span>
             <h3 class="piece__name">One</h3>
             <span class="piece__slot">
               <span class="piece__price">&#2547;&nbsp;690</span>
@@ -231,15 +241,15 @@
           </div>
         </a>
 
-        <a class="piece" href="piece.html?p=zs-03" aria-label="ZS—03 Two, in black — see the piece">
+        <a class="piece" href="piece.html?p=zs-02" aria-label="ZS—02 One, in white — see the piece">
           <div class="piece__frame">
             <div class="piece__plate">
-              <img src="assets/img/product/k02-front.webp" alt="ZS—02 White, on the rail" loading="lazy" decoding="async">
+              <img src="assets/img/product/k02-front.webp" alt="ZS—02 One, in white, on the rail" loading="lazy" decoding="async">
             </div>
           </div>
           <div class="piece__meta">
-            <span class="piece__code">ZS&mdash;03</span>
-            <h3 class="piece__name">Two</h3>
+            <span class="piece__code">ZS&mdash;02 &middot; White</span>
+            <h3 class="piece__name">One</h3>
             <span class="piece__slot">
               <span class="piece__price">&#2547;&nbsp;690</span>
               <span class="piece__spec">190 gsm &middot; combed cotton &middot; washed</span>
@@ -284,12 +294,12 @@
         <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div></div>
       </article>
       <article class="kit__item" tabindex="0">
-        <span class="kit__code">ZS&mdash;03</span>
+        <span class="kit__code">ZS&mdash;02</span>
         <span class="kit__state kit__state--pass">DROP 01</span>
         <div class="kit__fig">
-          <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—03 Two, in black" loading="lazy" decoding="async">
+          <img class="kit__shot" src="assets/img/product/zs02-full.webp" alt="ZS—02 One, in white" loading="lazy" decoding="async">
         </div>
-        <h3 class="kit__name">Two</h3>
+        <h3 class="kit__name">One</h3>
         <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Combed cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>190 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Washed</b></div><div class="kit__spec"><span>FIT</span><b>Boxed</b></div></div>
       </article>
       <!-- ZS—04 Creatine Mono is HIDDEN, not removed — Kash, 26 Oct.

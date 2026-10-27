@@ -312,6 +312,54 @@
     });
   }
 
+  /* ── the tripwire ────────────────────────────────────────────────
+     index.html authors its two drop cards and its kit tiles by hand,
+     because the landing page has to render with JavaScript off. That
+     means the code, the name, the price and the fabric spec exist in
+     two places, and on 26 Oct they drifted: a card renumbered to
+     ZS—03 "Two" kept the white tee's photograph, alt text and spec
+     sheet, while products.json had ZS—03 as black, 240gsm,
+     long-staple. Nothing failed, nothing looked broken, and the
+     landing page simply told a different story from the bag.
+
+     This cannot fix the markup, but it can refuse to let the next
+     drift be silent. It runs on any page carrying hand-authored
+     cards, says exactly which field disagrees, and never touches what
+     the shopper sees. */
+  function audit(d){
+    var cards = document.querySelectorAll('.piece[href*="piece.html"]');
+    if (!cards.length || !window.console || !console.warn) return;
+    var bad = [];
+    for (var i = 0; i < cards.length; i++){
+      var a = cards[i];
+      var m = (a.getAttribute('href') || '').match(/[?&]p=([a-z0-9-]+)/i);
+      var q = m && bySlug(d, m[1]);
+      if (!q){ bad.push(a.getAttribute('href') + ' -> no such piece in products.json'); continue; }
+
+      var code = (a.querySelector('.piece__code') || {}).textContent || '';
+      var name = ((a.querySelector('.piece__name') || {}).textContent || '').trim();
+      var spec = (a.querySelector('.piece__spec') || {}).textContent || '';
+      var price = (a.querySelector('.piece__price') || {}).textContent || '';
+
+      /* an em dash in the markup, a hyphen in the data, or the other
+         way round — compare the digits */
+      var num = function(t){ var x = String(t).match(/(\d{2})/); return x ? x[1] : ''; };
+      if (num(code) !== num(q.code)) bad.push(q.slug + ': card says code ' + code.trim() + ', catalogue says ' + q.code);
+      if (name && name !== q.name) bad.push(q.slug + ': card says name "' + name + '", catalogue says "' + q.name + '"');
+      if (q.colour && code && code.toLowerCase().indexOf(q.colour.toLowerCase()) === -1){
+        bad.push(q.slug + ': card code line does not mention ' + q.colour);
+      }
+      var digits = price.replace(/[^0-9]/g, '');
+      if (digits && digits !== String(q.price)) bad.push(q.slug + ': card says ' + price.trim() + ', catalogue says ' + q.price);
+      if (spec && q.specs && q.specs.Weight && spec.indexOf(q.specs.Weight) === -1){
+        bad.push(q.slug + ': card spec "' + spec.trim() + '" does not match catalogue weight ' + q.specs.Weight);
+      }
+    }
+    if (bad.length){
+      console.warn('[zinstim] the hand-authored cards disagree with products.json:\n  ' + bad.join('\n  '));
+    }
+  }
+
   /* ── the grid on Wear ────────────────────────────────────────── */
   function grid(d, host){
     /* The label used to be typed into the page and said "three pieces"
@@ -618,7 +666,14 @@
   /* the lone slit needs no product data, so it runs before the fetch
      and survives the fetch failing */
   loneSlit();
-  if (!gridHost && !pieceRoot) return;
+
+  /* The landing page needs no catalogue to render — its cards are
+     authored so it works without JavaScript. It fetches one anyway
+     ON A DEV HOST ONLY, purely so audit() can shout when those cards
+     drift from products.json. A shopper never pays for this request. */
+  var handCards = document.querySelector('.piece[href*="piece.html"]');
+  var checkOnly = !gridHost && !pieceRoot && handCards && localDev();
+  if (!gridHost && !pieceRoot && !checkOnly) return;
 
   fetch(DATA).then(function(r){
     if (!r.ok) throw new Error('products.json ' + r.status);
@@ -626,6 +681,7 @@
   }).then(function(d){
     if (gridHost) grid(d, gridHost);
     if (pieceRoot) piece(d, pieceRoot);
+    if (handCards && localDev()) audit(d);
   }).catch(function(err){
     /* a shop that cannot read its own stock says so rather than
        showing an empty room */
