@@ -355,6 +355,40 @@
         bad.push(q.slug + ': card spec "' + spec.trim() + '" does not match catalogue weight ' + q.specs.Weight);
       }
     }
+    /* the kit register drifted the same way and was not covered the
+       first time: two tiles both titled "One", and before that a black
+       photograph under ZS—03 carrying the white tee's spec sheet. */
+    var tiles = document.querySelectorAll('.kit__item');
+    for (var t = 0; t < tiles.length; t++){
+      var el = tiles[t];
+      var kc = ((el.querySelector('.kit__code') || {}).textContent || '').trim();
+      var kn = ((el.querySelector('.kit__name') || {}).textContent || '').trim();
+      if (!kc) continue;
+      var kd = null;
+      for (var j = 0; j < d.pieces.length; j++){
+        if (d.pieces[j].code.replace(/\D/g, '') === kc.replace(/\D/g, '')) { kd = d.pieces[j]; break; }
+      }
+      /* codes outside the apparel run belong to Fuel and Instruments */
+      if (!kd) continue;
+      if (kn && kn !== kd.name){
+        bad.push('kit ' + kc + ': tile says "' + kn + '", catalogue says "' + kd.name + '"');
+      }
+      var w = (el.querySelector('.kit__specs') || {}).textContent || '';
+      if (kd.specs && kd.specs.Weight && w && w.indexOf(kd.specs.Weight) === -1){
+        bad.push('kit ' + kc + ': specs do not carry the catalogue weight ' + kd.specs.Weight);
+      }
+    }
+
+    /* two tiles with the same name is the thing a reader notices
+       before any of the above */
+    var names = {};
+    for (var n = 0; n < tiles.length; n++){
+      var nm = ((tiles[n].querySelector('.kit__name') || {}).textContent || '').trim();
+      if (!nm) continue;
+      if (names[nm]) bad.push('kit: two tiles are both called "' + nm + '"');
+      names[nm] = 1;
+    }
+
     if (bad.length){
       console.warn('[zinstim] the hand-authored cards disagree with products.json:\n  ' + bad.join('\n  '));
     }

@@ -2779,18 +2779,25 @@ img,svg{display:block;max-width:100%}
 /* Same ceiling the product grid needed, and for the same reason: with
    Creatine Mono hidden this is two tiles, and an uncapped 1fr track
    handed each of them half the shell — 576 x 960px of register. */
-.kit{display:grid;gap:1px;background:rgba(110,118,121,.28);
+/* The 1px rules between tiles used to be a background on the grid
+   showing through its own gaps. That works only while the tiles fill
+   every cell: `width:fit-content` stopped it painting the space to the
+   right of a single short row, but it could do nothing about a row
+   that WRAPS — with four designs in a three-wide grid, the two empty
+   cells beside the fourth tile came back as a grey slab.
+
+   The rule travels with the tile now. A 1px spread shadow reaches 1px
+   past each tile's box, so in a 1px gap the two neighbours meet and
+   read as one line, and an empty cell has nothing to draw. */
+.kit{display:grid;gap:1px;
   grid-template-columns:repeat(auto-fit,minmax(16rem,22rem));
   justify-content:start;
-  /* The background exists to show through the 1px gaps. Once the
-     tracks stopped filling the container it painted the empty space
-     to their right as a grey slab, so the container shrinks to the
-     tracks it actually has. */
   width:fit-content;max-width:100%}
 @media (max-width:420px){ .kit{grid-template-columns:minmax(0,1fr)} }
 
 .kit__item{
   position:relative;background:var(--zinc-wash);
+  box-shadow:0 0 0 1px rgba(110,118,121,.28);
   padding:var(--space-lg) var(--space-md) var(--space-md);
   display:flex;flex-direction:column;min-height:24rem;
   overflow:hidden;

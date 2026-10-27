@@ -284,6 +284,12 @@
     </div>
     <div class="shell" style="margin-top:var(--space-lg)">
       <div class="kit">
+      <!-- One tile per DESIGN, showing its black colourway; each
+           design also exists in white, which the COLOURS row says.
+           Mirrors assets/data/products.json and is checked against
+           it by audit() in shop.js on a dev host. PLACEHOLDER:
+           designs Two to Four reuse design One's photograph and
+           specs until the real shots are picked off the Drive. -->
       <article class="kit__item" tabindex="0">
         <span class="kit__code">ZS&mdash;01</span>
         <span class="kit__state kit__state--pass">DROP 01</span>
@@ -291,18 +297,36 @@
           <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—01 One, in black" loading="lazy" decoding="async">
         </div>
         <h3 class="kit__name">One</h3>
-        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div></div>
+        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div><div class="kit__spec"><span>COLOURS</span><b>Black and white</b></div></div>
       </article>
       <article class="kit__item" tabindex="0">
-        <span class="kit__code">ZS&mdash;02</span>
+        <span class="kit__code">ZS&mdash;03</span>
         <span class="kit__state kit__state--pass">DROP 01</span>
         <div class="kit__fig">
-          <img class="kit__shot" src="assets/img/product/zs02-full.webp" alt="ZS—02 One, in white" loading="lazy" decoding="async">
+          <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—03 Two, in black" loading="lazy" decoding="async">
         </div>
-        <h3 class="kit__name">One</h3>
-        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Combed cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>190 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Washed</b></div><div class="kit__spec"><span>FIT</span><b>Boxed</b></div></div>
+        <h3 class="kit__name">Two</h3>
+        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div><div class="kit__spec"><span>COLOURS</span><b>Black and white</b></div></div>
       </article>
-      <!-- ZS—04 Creatine Mono is HIDDEN, not removed — Kash, 26 Oct.
+      <article class="kit__item" tabindex="0">
+        <span class="kit__code">ZS&mdash;05</span>
+        <span class="kit__state kit__state--pass">DROP 01</span>
+        <div class="kit__fig">
+          <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—05 Three, in black" loading="lazy" decoding="async">
+        </div>
+        <h3 class="kit__name">Three</h3>
+        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div><div class="kit__spec"><span>COLOURS</span><b>Black and white</b></div></div>
+      </article>
+      <article class="kit__item" tabindex="0">
+        <span class="kit__code">ZS&mdash;07</span>
+        <span class="kit__state kit__state--pass">DROP 01</span>
+        <div class="kit__fig">
+          <img class="kit__shot" src="assets/img/product/zs01-full.webp" alt="ZS—07 Four, in black" loading="lazy" decoding="async">
+        </div>
+        <h3 class="kit__name">Four</h3>
+        <div class="kit__specs"><div class="kit__spec"><span>FABRIC</span><b>Long-staple cotton</b></div><div class="kit__spec"><span>WEIGHT</span><b>240 gsm</b></div><div class="kit__spec"><span>FINISH</span><b>Garment-dyed</b></div><div class="kit__spec"><span>FIT</span><b>Trained</b></div><div class="kit__spec"><span>COLOURS</span><b>Black and white</b></div></div>
+      </article>
+      <!-- ZS—09 Creatine Mono is HIDDEN, not removed — Kash, 26 Oct.
            Registration has to clear before it belongs in a catalogue.
            A <template> and not an HTML comment, because the markup
            contains "--" (kit__state--warn, var(--zinc-silver)) and a
@@ -310,9 +334,9 @@
            broken markup the day someone restored it. A template renders
            nothing and keeps every byte. Unwrap these two tags to bring
            the tile back; the Fuel page and its door are untouched. -->
-      <template data-kit-hidden="ZS-04">
+      <template data-kit-hidden="ZS-09">
       <article class="kit__item" tabindex="0">
-        <span class="kit__code">ZS&mdash;04</span>
+        <span class="kit__code">ZS&mdash;09</span>
         <span class="kit__state kit__state--warn">AWAITING DGDA</span>
         <div class="kit__fig" aria-hidden="true">
           <svg viewBox="0 0 200 226" style="color:var(--zinc-silver)"><path d="M62,54 L138,54 L132,206 L68,206 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><rect x="56" y="34" width="88" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M74,104 L126,104" stroke="currentColor" stroke-width="2.2" opacity=".5"/></svg>
